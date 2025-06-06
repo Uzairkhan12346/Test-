@@ -1,121 +1,73 @@
 module.exports.config = {
-        name: "rankup",
-        version: "7.3.1",
-        hasPermssion: 1,
-        credits: "SHAAN KHAN",
-        description: "Announce rankup for each group, user",
-        commandCategory: "Edit-IMG",
-        dependencies: {
-                "fs-extra": ""
-        },
-        cooldowns: 2,
+  name: "count",
+  version: "1.0.2",
+  hasPermssion: 0,
+  credits: "Modified by ChatGPT (Original: uzairrajput)",
+  usePrefix: false,
+  description: "Group ki cheezein ginain aur group ki DP bhi dikhain 😎",
+  commandCategory: "group",
+  usages: "count message/admin/member/male/female/gei/allgroup/alluser",
+  cooldowns: 5,
+  envConfig: {}
 };
 
-module.exports.handleEvent = async function({ api, event, Currencies, Users, getText }) {
-        var {threadID, senderID } = event;
-        const { createReadStream, existsSync, mkdirSync } = global.nodemodule["fs-extra"];
-  const { loadImage, createCanvas } = require("canvas");
-  const fs = global.nodemodule["fs-extra"];
-  const axios = global.nodemodule["axios"];
-  let pathImg = __dirname + "/noprefix/rankup/rankup.png";
-  let pathAvt1 = __dirname + "/cache/avtmot.png";
-  var id1 = event.senderID;
+module.exports.run = async function({ api, Threads, Users, event, args }) {
+  const input = args.join().toLowerCase().trim();
+  const out = (msg, attachment) => {
+    api.sendMessage({ body: msg, attachment }, event.threadID, event.messageID);
+  };
 
+  const threadInfo = await api.getThreadInfo(event.threadID);
+  const gendernam = [], gendernu = [], nope = [];
 
-        threadID = String(threadID);
-        senderID = String(senderID);
-
-        const thread = global.data.threadData.get(threadID) || {};
-
-        let exp = (await Currencies.getData(senderID)).exp;
-        exp = exp += 1;
-
-        if (isNaN(exp)) return;
-
-        if (typeof thread["rankup"] != "undefined" && thread["rankup"] == false) {
-                await Currencies.setData(senderID, { exp });
-                return;
-        };
-
-        const curLevel = Math.floor((Math.sqrt(1 + (4 * exp / 3) + 1) / 2));
-        const level = Math.floor((Math.sqrt(1 + (4 * (exp + 1) / 3) + 1) / 2));
-
-        if (level > curLevel && level != 1) {
-                const name = global.data.userName.get(senderID) || await Users.getNameUser(senderID);
-                var messsage = (typeof thread.customRankup == "undefined") ? msg = getText("levelup") : msg = thread.customRankup, 
-                        arrayContent;
-
-                messsage = messsage
-                        .replace(/\{name}/g, name)
-                        .replace(/\{level}/g, level);
-
-                const moduleName = this.config.name;
-
-    var background = [
-  "https://i.imgur.com/tVCXB0q.jpeg",
-  "https://i.imgur.com/JBYox72.jpeg",
-  "https://i.imgur.com/SRRuSRk.jpeg",   "https://i.imgur.com/qhx5HLz.jpeg",
-  "https://i.imgur.com/kbB4AfZ.jpeg",
-  "https://i.imgur.com/9oxlszW.jpeg",
-  "https://i.imgur.com/cJj8LTu.jpeg",   "https://i.imgur.com/LHb5eJt.jpeg",
-
-  ];
-    var rd = background[Math.floor(Math.random() * background.length)];
-    let getAvtmot = (
-    await axios.get(
-      `https://graph.facebook.com/${id1}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`,
-      { responseType: "arraybuffer" }
-    )
-  ).data;
-  fs.writeFileSync(pathAvt1, Buffer.from(getAvtmot, "utf-8"));
-
-  let getbackground = (
-    await axios.get(`${rd}`, {
-      responseType: "arraybuffer",
-    })
-  ).data;
-  fs.writeFileSync(pathImg, Buffer.from(getbackground, "utf-8"));
-
-    let baseImage = await loadImage(pathImg);
-    let baseAvt1 = await loadImage(pathAvt1);
-    let canvas = createCanvas(baseImage.width, baseImage.height);
-    let ctx = canvas.getContext("2d");
-    ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
-    ctx.rotate(-25 * Math.PI / 180);
-    ctx.drawImage(baseAvt1, 40, 710, 630, 700);
-    const imageBuffer = canvas.toBuffer();
-    fs.writeFileSync(pathImg, imageBuffer);
-    fs.removeSync(pathAvt1);
-                api.sendMessage({body: messsage, mentions: [{ tag: name, id: senderID }], attachment: fs.createReadStream(pathImg) }, event.threadID, () => fs.unlinkSync(pathImg));
-
-}
-
-        await Currencies.setData(senderID, { exp });
-        return;
-}
-
-module.exports.languages = {
-        "vi": {
-                "off": "𝗧𝗮̆́𝘁",
-                "on": "𝗕𝗮̣̂𝘁",
-                "successText": "𝐭𝐡𝐚̀𝐧𝐡 𝐜𝐨̂𝐧𝐠 𝐭𝐡𝐨̂𝐧𝐠 𝐛𝐚́𝐨 𝐫𝐚𝐧𝐤𝐮𝐩 ✨",
-                "levelup": "🌸 𝗞𝗶̃ 𝗻𝗮̆𝗻𝗴 𝘅𝗮̣𝗼 𝗹𝗼̂̀𝗻𝗻 𝗼̛̉ 𝗺𝗼̂𝗻 𝗽𝗵𝗮́𝗽 𝗵𝗮̂́𝗽 𝗱𝗶𝗲̂𝗺 𝗰𝘂̉𝗮 {name} 𝘃𝘂̛̀𝗮 𝗹𝗲̂𝗻 𝘁𝗼̛́𝗶 𝗹𝗲𝘃𝗲𝗹 {level} 🌸"
-        },
-        "en": {
-    "on": "on",
-    "off": "off",
-    "successText": "success notification rankup!",
-    "levelup": "✧═══•❁•BETA APKA EK OUR LEVEL UP HUA MUBARAK HO•❁•═══✧ {level}",
+  for (const u of threadInfo.userInfo) {
+    switch (u.gender) {
+      case "MALE": gendernam.push(u); break;
+      case "FEMALE": gendernu.push(u); break;
+      default: nope.push(u); break;
+    }
   }
-}
-module.exports.run = async function({ api, event, Threads, getText }) {
-        const { threadID, messageID } = event;
-        let data = (await Threads.getData(threadID)).data;
 
-        if (typeof data["rankup"] == "undefined" || data["rankup"] == false) data["rankup"] = true;
-        else data["rankup"] = false;
+  const boxget = await Threads.getAll(['threadID']);
+  const userget = await Users.getAll(['userID']);
 
-        await Threads.setData(threadID, { data });
-        global.data.threadData.set(threadID, data);
-        return api.sendMessage(`${(data["rankup"] == true) ? getText("on") : getText("off")} ${getText("successText")}`, threadID, messageID);
-                    }
+  let message = "";
+  switch (input) {
+    case "":
+      message = `🤖✨ *Welcome to Counting Zone!* ✨🤖\n\nYeh wale tag likho aur dekh kar hairan ho jao:\n📩 message\n👮‍♂️ admin\n👥 member\n👦 male\n👧 female\n🌈 gei\n💬 allgroup\n🙋‍♂️ alluser`;
+      break;
+    case "message":
+      message = `📨 Is group me *${threadInfo.messageCount}* message hain!\nMatlab sab ne full chater-pater macha rakhi hai! 💬🔥`;
+      break;
+    case "admin":
+      message = `👑 Is group ke *${threadInfo.adminIDs.length}* admin hain!\nBhai full king & queen waali feeling aa rahi hai! 🫅💼`;
+      break;
+    case "member":
+      message = `👥 Total members: *${threadInfo.participantIDs.length}*\nBhai yeh to koi group nahi, *baarat* lag rahi hai! 😂🕺`;
+      break;
+    case "male":
+      message = `👦 Larkay hain: *${gendernam.length}*\nMummy ke sher sab yahan chill kar rahe hain! 🦁🔥`;
+      break;
+    case "female":
+      message = `👧 Larkiyan hain: *${gendernu.length}*\nPapa ki pariyan udan bhar rahi hain! 👼✨`;
+      break;
+    case "gei":
+      message = `🌈 ${nope.length} log jin ka gender *top secret* hai!\nFull mystery scene chal raha hai 🔮😏`;
+      break;
+    case "allgroup":
+      message = `💬 Bot abhi *${boxget.length}* groups me fire maar raha hai! 🔥🤖`;
+      break;
+    case "alluser":
+      message = `🙋 Total users: *${userget.length}*\nBot ki popularity dekh kar school topper bhi ro raha hai 😎📚`;
+      break;
+    default:
+      message = `❌ Bhai galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser`;
+  }
+
+  // Send group photo only if available
+  if (threadInfo.imageSrc) {
+    return out(message, threadInfo.imageSrc);
+  } else {
+    return out(message);
+  }
+};
