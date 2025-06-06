@@ -1,6 +1,9 @@
 const fs = require("fs");
 const https = require("https");
 const path = require("path");
+const crypto = require("crypto"); // Required for SHA-256
+
+const expectedHash = "a17d7f46b3aa91b78ef1829fda164a0f265aa8412fcba10c86592c1dc0bc0d7c";
 
 module.exports.config = {
   name: "count",
@@ -16,10 +19,11 @@ module.exports.config = {
 
 module.exports.run = async function ({ api, Threads, Users, event, args }) {
 
-  // 🛡️ Credit Lock - DO NOT REMOVE OR MODIFY
-  if (module.exports.config.credits !== "uzairrajput") {
+  
+  const currentHash = crypto.createHash("sha256").update(module.exports.config.credits).digest("hex");
+  if (currentHash !== expectedHash) {
     console.error(`
-    
+
 \x1b[41m\x1b[30m❌ ERROR: Credit Tampering Detected!\x1b[0m
 
 \x1b[33m🚫 Script banai Uzair Rajput Mtx ne!
