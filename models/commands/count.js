@@ -10,7 +10,7 @@ module.exports.config = {
     name: "sing",
     version: "2.1.0",
     aliases: [ "music", "play"],
-    credits: "N9W9Z H9CK3R",
+    credits: "N9W9Z RAJPUT",
     countDown: 5,
     hasPermssion: 0,
     description: "Download audio from YouTube",
