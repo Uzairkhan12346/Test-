@@ -4,7 +4,7 @@ const fs = require("fs");
 const BASE_API = "https://uzair-rajpuut-api-ytdl.vercel.app";
 
 module.exports.config = {
-  name: "music",
+  name: "audio",
   version: "1.0.0",
   aliases: ["play", "sing"],
   credits: "uzair1267",
