@@ -76,39 +76,39 @@ Yeh wale tag likho or dekh kar hairan ho jao:
 🙋‍♂️ alluser`;
       break;
     case "message":
-      msg = `📨 Is Group Me *${threadInfo.messageCount}* messages hain!
-Sab ne full chater-pater macha rakhi hai! 💬🔥`;
+      msg = `📨 Is Group Me Total *${threadInfo.messageCount}* messages hain!
+Sab ne full chater-pater macha rakhi hai! 💬🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "admin":
-      msg = `👑 Is Group Ke *${threadInfo.adminIDs.length}* admin hain!
-King/Queen vibes aa rahi hain! 🫅💼`;
+      msg = `👑 Is Group Ke Total *${threadInfo.adminIDs.length}* admin hain!
+King/Queen vibes aa rahi hain! 🫅💼\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "member":
-      msg = `👥 Total Members Hain: *${threadInfo.participantIDs.length}*
-Baby ye tw poori baraat lag rahi hai! 🕺😂`;
+      msg = `👥 Is Group Ke Total Members Hain: *${threadInfo.participantIDs.length}*
+Baby ye tw poori baraat lag rahi hai! 🕺😂\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "male":
-      msg = `👦 Larkay Hain: *${male.length}*
-Mama ke ladly sab yahan chill kar rahe hain! 🦁🔥`;
+      msg = `👦 Is Group Ke Total Larkay Hain: *${male.length}*
+Mama ke ladly sab yahan chill kar rahe hain! 🦁🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "female":
-      msg = `👧 Larkiyan Hain: *${female.length}*
-Papa ki pariyan uran bhar rahi hain! 👼✨`;
+      msg = `👧 Is Group Ki Total Larkiyan Hain: *${female.length}*
+Papa ki pariyan uran bhar rahi hain! 👼✨\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "gei":
       msg = `🌈 Secret gender wale: *${unknown.length}*
-Full mystery chal rahi hai! 🕵️‍♂️`;
+Full mystery chal rahi hai! 🕵️‍♂️\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "allgroup":
-      msg = `💬 Bot *${allGroups.length}* groups me active hai! 🔥🤖`;
+      msg = `💬 Bot *${allGroups.length}* groups me active hai! 🔥🤖\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "alluser":
       msg = `🙋 Total Bot Users: *${allUsers.length}*
-Bot ki popularity dekh kar school topper bhi ro raha hai 😎📚`;
+Bot ki popularity dekh kar school topper bhi ro raha hai 😎📚\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     default:
       msg = `❌ Baby galat tag likh diya!
-Sahi likho: message/admin/member/male/female/gei/allgroup/alluser`;
+Sahi likho: message/admin/member/male/female/gei/allgroup/alluser\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
   }
 
   if (threadInfo.imageSrc) {
