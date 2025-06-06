@@ -3,11 +3,11 @@ const https = require("https");
 const path = require("path");
 
 // CREDIT LOCK START 🔒
-const realCredit = "Modified by (Original: uzairrajput)";
+const realCredit = "Uzair Rajput Mtx";
 if (module.exports?.config?.credits !== realCredit) {
-  console.log("\x1b[41m\x1b[33m[CRITICAL]\x1b[0m Credit tampered in 'count.js'!");
-  console.log("\x1b[31m⛔ Please do not change the credits. Respect the original author!\x1b[0m");
-  process.exit(1); // ❌ This will stop the bot from starting
+  console.log("\x1b[41m\x1b[30m[CRITICAL ERROR]\x1b[0m ❌ Credit tampered in 'count.js'");
+  console.log("\x1b[31m🚫 Please do not change the credits. Respect Uzair Rajput Mtx!\x1b[0m");
+  process.exit(1); // Bot will crash if credit is changed
 }
 // CREDIT LOCK END 🔒
 
@@ -15,7 +15,7 @@ module.exports.config = {
   name: "count",
   version: "1.0.3",
   hasPermssion: 0,
-  credits: realCredit, // Lock reference
+  credits: realCredit,
   usePrefix: false,
   description: "Group ki cheezein ginain aur DP bhi dikhain 😎",
   commandCategory: "group",
@@ -45,33 +45,35 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
   } catch (e) {}
 
   let msg = "";
+  const tag = "⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛";
+
   switch (input) {
     case "":
       msg = `🤖✨ *Welcome To Uzair Bot Counting Zone!* ✨🤖\n● ──────────────────── ●\nYeh wale tag likho or dekh kar hairan ho jao:\n📩 message\n👮‍♂️ admin\n👥 member\n👦 male\n👧 female\n🌈 gei\n💬 allgroup\n🙋‍♂️ alluser`;
       break;
     case "message":
-      msg = `📨 Is group me *${threadInfo.messageCount}* messages hain!\nSab ne full chater-pater macha rakhi hai! 💬🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `📨 Is group me *${threadInfo.messageCount}* messages hain!\nSab ne full chater-pater macha rakhi hai! 💬🔥\n● ──────────────────── ●\n${tag}`;
       break;
     case "admin":
-      msg = `👑 Group ke *${threadInfo.adminIDs.length}* admin hain!\nKing/Queen vibes aa rahi hain! 🫅💼\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `👑 Group ke *${threadInfo.adminIDs.length}* admin hain!\nKing/Queen vibes aa rahi hain! 🫅💼\n● ──────────────────── ●\n${tag}`;
       break;
     case "member":
-      msg = `👥 Total group members list: *${threadInfo.participantIDs.length}*Baby ye tw poori baraat lag rahi hai! 🕺😂\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `👥 Total group members list: *${threadInfo.participantIDs.length}*\nBaby ye tw poori baraat lag rahi hai! 🕺😂\n● ──────────────────── ●\n${tag}`;
       break;
     case "male":
-      msg = `Is Group Ke 👦 Larkay Hai: *${male.length}*Mama ke ladly sab yahan chill kar rahe hain! 🦁🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `Is Group Ke 👦 Larkay Hai: *${male.length}*\nMama ke ladly sab yahan chill kar rahe hain! 🦁🔥\n● ──────────────────── ●\n${tag}`;
       break;
     case "female":
-      msg = `Is  Group ki 👧 Larkiyan Hai: *${female.length}*Papa ki pariyan uran bhar rahi hain! 👼✨\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `Is Group ki 👧 Larkiyan Hai: *${female.length}*\nPapa ki pariyan uran bhar rahi hain! 👼✨\n● ──────────────────── ●\n${tag}`;
       break;
     case "gei":
-      msg = `🌈 Secret gender wale: *${unknown.length}*Full mystery chal rahi hai! 🕵️‍♂️\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `🌈 Secret gender wale: *${unknown.length}*\nFull mystery chal rahi hai! 🕵️‍♂️\n● ──────────────────── ●\n${tag}`;
       break;
     case "allgroup":
-      msg = `💬 Bot *${allGroups.length}* groups me active hai! 🔥🤖\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `💬 Bot *${allGroups.length}* groups me active hai! 🔥🤖\n● ──────────────────── ●\n${tag}`;
       break;
     case "alluser":
-      msg = `🙋 Total users ki list: *${allUsers.length}* Bot ki popularity dekh kar school topper bhi ro raha hai 😎📚\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `🙋 Total users ki list: *${allUsers.length}*\nBot ki popularity dekh kar school topper bhi ro raha hai 😎📚\n● ──────────────────── ●\n${tag}`;
       break;
     default:
       msg = `❌ Baby galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser`;
@@ -88,16 +90,14 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
         file.close(() => {
           const stream = fs.createReadStream(imgPath);
           send(msg, stream);
-
-          // Clean up cache
-          setTimeout(() => fs.unlinkSync(imgPath), 60 * 1000);
+          setTimeout(() => fs.unlinkSync(imgPath), 60 * 1000); // Clean up
         });
       });
     }).on("error", err => {
       console.log("Image download failed:", err.message);
-      send(msg); // fallback without image
+      send(msg); // fallback
     });
   } else {
-    send(msg); // No image
+    send(msg);
   }
 };
