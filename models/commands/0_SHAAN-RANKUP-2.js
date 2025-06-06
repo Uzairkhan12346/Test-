@@ -15,6 +15,21 @@ module.exports.config = {
 };
 
 module.exports.run = async function ({ api, Threads, Users, event, args }) {
+
+  // 🛡️ Credit Lock - DO NOT REMOVE OR MODIFY
+  if (module.exports.config.credits !== "uzairrajput") {
+    console.error(`
+    
+\x1b[41m\x1b[30m❌ ERROR: Credit Tampering Detected!\x1b[0m
+
+\x1b[33m🚫 Script banai Uzair Rajput Mtx ne!
+👎 Tum developer banne ki fake try maar rahe ho!
+🛑 Bot ab turant band ho raha hai...\x1b[0m
+
+    `);
+    throw new Error("❌ Credit Changed - Bot Stopped!");
+  }
+
   const input = args.join().toLowerCase().trim();
   const send = (msg, attachment = null) => {
     api.sendMessage({ body: msg, attachment }, event.threadID, event.messageID);
@@ -47,28 +62,28 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
       msg = `👑 Is Group Ke *${threadInfo.adminIDs.length}* admin hain!\nKing/Queen vibes aa rahi hain! 🫅💼\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "member":
-      msg = `👥 Is Group Ke Total Members Hain: *${threadInfo.participantIDs.length}* Baby ye tw poori baraat lag rahi hai! 🕺😂\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `👥 Total Members Hain: *${threadInfo.participantIDs.length}*\nBaby ye tw poori baraat lag rahi hai! 🕺😂\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "male":
-      msg = `👦 Is Group Ke Larkay Hain: *${male.length}* Mama ke ladly sab yahan chill kar rahe hain! 🦁🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `👦 Larkay Hain: *${male.length}*\nMama ke ladly sab yahan chill kar rahe hain! 🦁🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "female":
-      msg = `👧 Is Group Ki Larkiyan Hain: *${female.length}* Papa ki pariyan uran bhar rahi hain! 👼✨\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `👧 Larkiyan Hain: *${female.length}*\nPapa ki pariyan uran bhar rahi hain! 👼✨\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "gei":
-      msg = `🌈 Secret gender wale: *${unknown.length}* Full mystery chal rahi hai! 🕵️‍♂️\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `🌈 Secret gender wale: *${unknown.length}*\nFull mystery chal rahi hai! 🕵️‍♂️\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "allgroup":
       msg = `💬 Bot *${allGroups.length}* groups me active hai! 🔥🤖\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "alluser":
-      msg = `🙋 Total Bot Using Users: *${allUsers.length}* Bot ki popularity dekh kar school topper bhi ro raha hai 😎📚\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+      msg = `🙋 Total Bot Users: *${allUsers.length}*\nBot ki popularity dekh kar school topper bhi ro raha hai 😎📚\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     default:
-      msg = `❌ Baby galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser`;
+      msg = `❌ Baby galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser\n\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
   }
 
-  // 📸 DP download aur send
+  // 📸 Group DP download aur bhejna
   if (threadInfo.imageSrc) {
     const imgPath = path.join(__dirname, 'cache', `${event.threadID}_dp.jpg`);
 
@@ -80,17 +95,13 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
           const stream = fs.createReadStream(imgPath);
           send(msg, stream);
 
-          // Clean up cache
-          setTimeout(() => {
-            try {
-              fs.unlinkSync(imgPath);
-            } catch {}
-          }, 60 * 1000);
+          // Clean cache
+          setTimeout(() => fs.unlinkSync(imgPath), 60 * 1000);
         });
       });
     }).on("error", err => {
       console.log("Image download failed:", err.message);
-      send(msg); // fallback without image
+      send(msg);
     });
   } else {
     send(msg); // No image
