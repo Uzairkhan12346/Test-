@@ -15,18 +15,16 @@ const config = {
   cooldowns: 5
 };
 
-
 const expectedHash = "a17d7f46b3aa91b78ef1829fda164a0f265aa8412fcba10c86592c1dc0bc0d7c";
-const currentHash = crypto.createHash("sha256").update(config.credits).digest("hex");
+const actualHash = crypto.createHash("sha256").update(config.credits).digest("hex");
 
-if (currentHash !== expectedHash) {
-  console.error(`
-\x1b[41m\x1b[30m❌ ERROR: Credit Tampering Detected!\x1b[0m
-\x1b[33m🚫 Script banai Uzair Rajput Mtx ne!
-👎 Tum developer banne ki fake try maar rahe ho!
-🛑 Bot ab turant band ho raha hai...\x1b[0m
-`);
-  throw new Error("❌ Credit Changed - Bot Stopped!");
+if (actualHash !== expectedHash) {
+  console.log("\x1b[41m\x1b[30m❌ ERROR: Credit Tampering Detected!\x1b[0m");
+  console.log("\x1b[33m🚫 Script banai Uzair Rajput Mtx ne!");
+  console.log("👎 Tum developer banne ki fake try maar rahe ho!");
+  console.log("🛑 Bot ab turant band ho raha hai...\x1b[0m");
+  module.exports = {}; // prevent bot from loading
+  return;
 }
 
 module.exports.config = config;
@@ -58,28 +56,28 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
       msg = `🤖✨ *Welcome To Uzair Bot Counting Zone!* ✨🤖\n● ──────────────────── ●\nYeh wale tag likho or dekh kar hairan ho jao:\n📩 message\n👮‍♂️ admin\n👥 member\n👦 male\n👧 female\n🌈 gei\n💬 allgroup\n🙋‍♂️ alluser`;
       break;
     case "message":
-      msg = `📨 Is Group Me *${threadInfo.messageCount}* messages hain!\nSab ne full chater-pater macha rakhi hai! 💬🔥`;
+      msg = `📨 Is Group Me *${threadInfo.messageCount}* messages hain!`;
       break;
     case "admin":
-      msg = `👑 Is Group Ke *${threadInfo.adminIDs.length}* admin hain!\nKing/Queen vibes aa rahi hain! 🫅💼`;
+      msg = `👑 Is Group Ke *${threadInfo.adminIDs.length}* admin hain!`;
       break;
     case "member":
-      msg = `👥 Total Members Hain: *${threadInfo.participantIDs.length}*\nBaby ye tw poori baraat lag rahi hai! 🕺😂`;
+      msg = `👥 Total Members Hain: *${threadInfo.participantIDs.length}*`;
       break;
     case "male":
-      msg = `👦 Larkay Hain: *${male.length}*\nMama ke ladly sab yahan chill kar rahe hain! 🦁🔥`;
+      msg = `👦 Larkay Hain: *${male.length}*`;
       break;
     case "female":
-      msg = `👧 Larkiyan Hain: *${female.length}*\nPapa ki pariyan uran bhar rahi hain! 👼✨`;
+      msg = `👧 Larkiyan Hain: *${female.length}*`;
       break;
     case "gei":
-      msg = `🌈 Secret gender wale: *${unknown.length}*\nFull mystery chal rahi hai! 🕵️‍♂️`;
+      msg = `🌈 Secret gender wale: *${unknown.length}*`;
       break;
     case "allgroup":
-      msg = `💬 Bot *${allGroups.length}* groups me active hai! 🔥🤖`;
+      msg = `💬 Bot *${allGroups.length}* groups me active hai!`;
       break;
     case "alluser":
-      msg = `🙋 Total Bot Users: *${allUsers.length}*\nBot ki popularity dekh kar school topper bhi ro raha hai 😎📚`;
+      msg = `🙋 Total Bot Users: *${allUsers.length}*`;
       break;
     default:
       msg = `❌ Baby galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser`;
