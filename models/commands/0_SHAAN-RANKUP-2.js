@@ -41,28 +41,28 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
       msg = `🤖✨ *Welcome To Uzair Bot Counting Zone!* ✨🤖\n● ──────────────────── ●\nYeh wale tag likho or dekh kar hairan ho jao:\n📩 message\n👮‍♂️ admin\n👥 member\n👦 male\n👧 female\n🌈 gei\n💬 allgroup\n🙋‍♂️ alluser`;
       break;
     case "message":
-      msg = `📨 Is group me\n● ──────────────────── ●\n *${threadInfo.messageCount}* \n● ──────────────────── ●\nmessages hain!\nSab ne full chater-pater macha rakhi hai! 💬🔥`;
+      msg = `📨 Is group me *${threadInfo.messageCount}* \n● ──────────────────── ●\nmessages hain!\nSab ne full chater-pater macha rakhi hai! 💬🔥`;
       break;
     case "admin":
-      msg = `👑 Group ke\n● ──────────────────── ●\n *${threadInfo.adminIDs.length}* \n● ──────────────────── ●\nadmin hain!\nKing/Queen vibes aa rahi hain! 🫅💼`;
+      msg = `👑 Group ke *${threadInfo.adminIDs.length}* \n● ──────────────────── ●\nadmin hain!\nKing/Queen vibes aa rahi hain! 🫅💼`;
       break;
     case "member":
-      msg = `👥 Total members:\n● ──────────────────── ●\n *${threadInfo.participantIDs.length}*\n● ──────────────────── ●\nBaby ye tw poori baraat lag rahi hai! 🕺😂`;
+      msg = `👥 Total members: *${threadInfo.participantIDs.length}*\n● ──────────────────── ●\nBaby ye tw poori baraat lag rahi hai! 🕺😂`;
       break;
     case "male":
-      msg = `👦 Larkay\n● ──────────────────── ●\n: *${male.length}*\n● ──────────────────── ●\nMama ke ladly sab yahan chill kar rahe hain! 🦁🔥`;
+      msg = `👦 Larkay: *${male.length}*\n● ──────────────────── ●\nMama ke ladly sab yahan chill kar rahe hain! 🦁🔥`;
       break;
     case "female":
-      msg = `👧 Larkiyan:\n● ──────────────────── ●\n *${female.length}*\n● ──────────────────── ●\nPapa ki pariyan uran bhar rahi hain! 👼✨`;
+      msg = `👧 Larkiyan: *${female.length}*\n● ──────────────────── ●\nPapa ki pariyan uran bhar rahi hain! 👼✨`;
       break;
     case "gei":
-      msg = `🌈 Secret gender wale:\n● ──────────────────── ●\n *${unknown.length}*\n● ──────────────────── ●\nFull mystery chal rahi hai! 🕵️‍♂️`;
+      msg = `🌈 Secret gender wale: *${unknown.length}*\n● ──────────────────── ●\nFull mystery chal rahi hai! 🕵️‍♂️`;
       break;
     case "allgroup":
-      msg = `💬 Bot\n● ──────────────────── ●\n *${allGroups.length}* \n● ──────────────────── ●\ngroups me active hai! 🔥🤖`;
+      msg = `💬 Bot *${allGroups.length}* \n● ──────────────────── ●\ngroups me active hai! 🔥🤖`;
       break;
     case "alluser":
-      msg = `🙋 Total users:\n● ──────────────────── ●\n *${allUsers.length}* \n● ──────────────────── ●\nBot ki popularity dekh kar school topper bhi ro raha hai 😎📚`;
+      msg = `🙋 Total users: *${allUsers.length}* \n● ──────────────────── ●\nBot ki popularity dekh kar school topper bhi ro raha hai 😎📚`;
       break;
     default:
       msg = `❌ Baby galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser`;
