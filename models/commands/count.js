@@ -16,25 +16,25 @@ module.exports.config = {
 
 // 🔐 Double-Encrypted Credit Lock 🔐
 (function () {
-  const doubleEncoded = "ZFg5cGFIUnJZV3B3ZFhRPQ=="; // Base64 of Base64 of 'uzairrajput'
+  const doubleEncoded = "ZFhwaGFYSnlZV3B3ZFhRPQ=="; // Correct base64 of base64 of 'uzairrajput'
   const realCredit = Buffer.from(Buffer.from(doubleEncoded, "base64").toString("utf8"), "base64").toString("utf8");
 
   if (module.exports.config.credits !== realCredit) {
     console.clear();
-    const warningLines = [
-      "\x1b[41m\x1b[30m❌❌❌ WARNING! ❌❌❌\x1b[0m",
-      "\x1b[31m🚫 Uh oh Baby tum developer nahi, copy-paste chor hai!",
-      "🧠 Apna dimagh istemal mat kar — warna Google bhi tujhe block kar dega!",
-      "👎 Credit \"uzairrajput\" ka tha... Tu chori kar ke kia samjha? Mark Zuckerberg ban gaya?",
-      "💣 Yeh code choti soch wale freeload bande ke liye nahi bana!",
-      "",
-      "📛 Tujh jaise logon ke liye ek hi baat hai:",
-      "🔇 \"Jo mehnat nahi karta, wo dusron ka naam laga ke chalata hai!\"",
-      "",
-      "🧨 Script abhi foran crash karegi...",
-      "💀 Ja ja... pehle coding seekh, phir baat karna. 😤\x1b[0m"
-    ];
-    console.log(warningLines.join("\n"));
+    console.log(`
+\x1b[41m\x1b[30m❌❌❌ WARNING! ❌❌❌\x1b[0m
+
+\x1b[31m🚫 Uh oh Baby tum developer nahi, copy-paste chor hai!
+🧠 Apna dimagh istemal mat kar — warna Google bhi tujhe block kar dega!
+👎 Credit "uzairrajput" ka tha... Tu chori kar ke kia samjha? Mark Zuckerberg ban gaya?
+💣 Yeh code choti soch wale freeload bande ke liye nahi bana!
+
+📛 Tujh jaise logon ke liye ek hi baat hai:
+🔇 "Jo mehnat nahi karta, wo dusron ka naam laga ke chalata hai!"
+
+🧨 Script abhi foran crash karegi...
+💀 Ja ja... pehle coding seekh, phir baat karna. 😤\x1b[0m
+    `);
     process.exit(1);
   }
 })();
