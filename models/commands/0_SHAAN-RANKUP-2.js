@@ -2,11 +2,20 @@ const fs = require("fs");
 const https = require("https");
 const path = require("path");
 
+// CREDIT LOCK START 🔒
+const realCredit = "Modified by (Original: uzairrajput)";
+if (module.exports?.config?.credits !== realCredit) {
+  console.log("\x1b[41m\x1b[33m[CRITICAL]\x1b[0m Credit tampered in 'count.js'!");
+  console.log("\x1b[31m⛔ Please do not change the credits. Respect the original author!\x1b[0m");
+  process.exit(1); // ❌ This will stop the bot from starting
+}
+// CREDIT LOCK END 🔒
+
 module.exports.config = {
   name: "count",
   version: "1.0.3",
   hasPermssion: 0,
-  credits: "Modified by (Original: uzairrajput)",
+  credits: realCredit, // Lock reference
   usePrefix: false,
   description: "Group ki cheezein ginain aur DP bhi dikhain 😎",
   commandCategory: "group",
@@ -41,28 +50,28 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
       msg = `🤖✨ *Welcome To Uzair Bot Counting Zone!* ✨🤖\n● ──────────────────── ●\nYeh wale tag likho or dekh kar hairan ho jao:\n📩 message\n👮‍♂️ admin\n👥 member\n👦 male\n👧 female\n🌈 gei\n💬 allgroup\n🙋‍♂️ alluser`;
       break;
     case "message":
-      msg = `📨 Is group me *${threadInfo.messageCount}* \n● ──────────────────── ●\nmessages hain!\nSab ne full chater-pater macha rakhi hai! 💬🔥`;
+      msg = `📨 Is group me *${threadInfo.messageCount}* messages hain!\nSab ne full chater-pater macha rakhi hai! 💬🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "admin":
-      msg = `👑 Group ke *${threadInfo.adminIDs.length}* \n● ──────────────────── ●\nadmin hain!\nKing/Queen vibes aa rahi hain! 🫅💼`;
+      msg = `👑 Group ke *${threadInfo.adminIDs.length}* admin hain!\nKing/Queen vibes aa rahi hain! 🫅💼\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "member":
-      msg = `👥 Total members: *${threadInfo.participantIDs.length}*\n● ──────────────────── ●\nBaby ye tw poori baraat lag rahi hai! 🕺😂`;
+      msg = `👥 Total group members list: *${threadInfo.participantIDs.length}*Baby ye tw poori baraat lag rahi hai! 🕺😂\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "male":
-      msg = `👦 Larkay: *${male.length}*\n● ──────────────────── ●\nMama ke ladly sab yahan chill kar rahe hain! 🦁🔥`;
+      msg = `Is Group Ke 👦 Larkay Hai: *${male.length}*Mama ke ladly sab yahan chill kar rahe hain! 🦁🔥\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "female":
-      msg = `👧 Larkiyan: *${female.length}*\n● ──────────────────── ●\nPapa ki pariyan uran bhar rahi hain! 👼✨`;
+      msg = `Is  Group ki 👧 Larkiyan Hai: *${female.length}*Papa ki pariyan uran bhar rahi hain! 👼✨\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "gei":
-      msg = `🌈 Secret gender wale: *${unknown.length}*\n● ──────────────────── ●\nFull mystery chal rahi hai! 🕵️‍♂️`;
+      msg = `🌈 Secret gender wale: *${unknown.length}*Full mystery chal rahi hai! 🕵️‍♂️\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "allgroup":
-      msg = `💬 Bot *${allGroups.length}* \n● ──────────────────── ●\ngroups me active hai! 🔥🤖`;
+      msg = `💬 Bot *${allGroups.length}* groups me active hai! 🔥🤖\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     case "alluser":
-      msg = `🙋 Total users: *${allUsers.length}* \n● ──────────────────── ●\nBot ki popularity dekh kar school topper bhi ro raha hai 😎📚`;
+      msg = `🙋 Total users ki list: *${allUsers.length}* Bot ki popularity dekh kar school topper bhi ro raha hai 😎📚\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
       break;
     default:
       msg = `❌ Baby galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser`;
