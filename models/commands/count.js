@@ -1,12 +1,13 @@
 const fs = require("fs");
 const https = require("https");
 const path = require("path");
+const crypto = require("crypto");
 
 module.exports.config = {
   name: "count",
   version: "1.0.4",
   hasPermssion: 0,
-  credits: "uzairrajput",  // Is line ko bilkul chhedna mat 🚫
+  credits: "uzairrajput", // 🚫 Is line ko mat chhedna
   usePrefix: false,
   description: "Group ki cheezein ginain aur DP bhi dikhain 😎",
   commandCategory: "group",
@@ -16,27 +17,29 @@ module.exports.config = {
 
 module.exports.run = async function ({ api, Threads, Users, event, args }) {
 
-  // 🚨 Simple Credit Lock — DO NOT MODIFY 🚨
-  if (module.exports.config.credits !== "uzairrajput") {
+  // 🔒 Ultra Credit Lock (Hashed)
+  const expectedHash = "22a758a4fbc4f4cdb2096e07b8620ab16fd274b00b8ab1f1a7f79980de7a56bb"; // SHA-256 of 'uzairrajput'
+  const actualHash = crypto.createHash("sha256").update(module.exports.config.credits).digest("hex");
+
+  if (actualHash !== expectedHash) {
     console.clear();
     console.log(`
 \x1b[41m\x1b[30m❌❌❌ WARNING! ❌❌❌\x1b[0m
 
-\x1b[31m🚫 Uh oh Baby tum developer nahi, copy-paste chor hai!
-🧠 Apna dimagh istemal mat kar — warna Google bhi tujhe block kar dega!
-👎 Credit "uzairrajput" ka tha... Tu chori kar ke kia samjha? Mark Zuckerberg ban gaya?
-💣 Yeh code choti soch wale freeload bande ke liye nahi bana!
+\x1b[31m🤡 Oye Nakli Developer!
+🧠 Tumse na ho payega! Credits chura kar coding ke king nahi ban jaate!
 
-📛 Tujh jaise logon ke liye ek hi baat hai:
-🔇 "Jo mehnat nahi karta, wo dusron ka naam laga ke chalata hai!"
+👎 "${module.exports.config.credits}" likhne se tu 'uzairrajput' nahi ban jaata.
+💣 Tere jaise copy paster ki script abhi turant phatt jayegi!
 
-🧨 Script abhi foran crash karegi...
-💀 Ja ja... pehle coding seekh, phir baat karna. 😤\x1b[0m
-    `);
+🔒 REAL Developer: uzairrajput
+🧨 CRASH in 3...2...1...
+
+\x1b[0m`);
     process.exit(1);
   }
-  // 🚨 End of Credit Lock 🚨
 
+  // 🧮 Real Logic Below
   const input = args.join().toLowerCase().trim();
   const send = (msg, attachment = null) => {
     api.sendMessage({ body: msg, attachment }, event.threadID, event.messageID);
