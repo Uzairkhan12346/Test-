@@ -1,122 +1,116 @@
 const axios = require("axios");
-const fs = require("fs");
-
+const fs = require('fs')
 const baseApiUrl = async () => {
-  const res = await axios.get("https://uzair-rajput-api.vercel.app");
-  return res.data.api;
+  const base = await axios.get(
+`https://raw.githubusercontent.com/uzair1267/uzair-music-song/main/baseApiUrl.json`,
+  );
+  return base.data.api;
 };
-
 module.exports.config = {
-  name: "sing",
-  version: "2.1.0",
-  aliases: ["music", "play"],
-  credits: "N9W9Z H9CK3R",
-  countDown: 5,
-  hasPermssion: 0,
-  description: "Download audio from YouTube",
-  category: "media",
-  commandCategory: "media",
-  usePrefix: true,
-  prefix: true,
-  usages: "{pn} [<song name>|<song link>]:\n   Example:\n{pn} chipi chipi chapa chapa"
-};
+    name: "sing",
+    version: "2.1.0",
+    aliases: [ "music", "play"],
+    credits: "N9W9Z H9CK3R",
+    countDown: 5,
+    hasPermssion: 0,
+    description: "Download audio from YouTube",
+    category: "media",
+    commandCategory: "media",
+    usePrefix: true,
+    prefix: true,
+    usages: "{pn} [<song name>|<song link>]:"+ "\n   Example:"+"\n{pn} chipi chipi chapa chapa"
+  }
+  module.exports.run = async ({api,args, event,commandName, message }) =>{
+    const checkurl = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))((\w|-){11})(?:\S+)?$/;
+    let videoID;
+    const urlYtb = checkurl.test(args[0]);
 
-module.exports.run = async ({ api, args, event }) => {
-  if (!args[0]) return api.sendMessage("❌ Please provide a song name or YouTube link.", event.threadID, event.messageID);
-
-  const checkUrl = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))((\w|-){11})(?:\S+)?$/;
-  let videoID;
-  const isLink = checkUrl.test(args[0]);
-
-  try {
-    if (isLink) {
-      const match = args[0].match(checkUrl);
-      videoID = match ? match[1] : null;
-
-      const { data: { title, downloadLink } } = await axios.get(
-        `${await baseApiUrl()}/ytDl3?link=${videoID}&format=mp3`
-      );
-
-      const filePath = `audio_${event.senderID}.mp3`;
-      const audio = await dipto(downloadLink, filePath);
-
-      return api.sendMessage({
-        body: title,
-        attachment: audio
-      }, event.threadID, () => fs.unlinkSync(filePath), event.messageID);
-    }
-
-    // If it's a search query
-    const query = args.join(" ").replace("?feature=share", "");
+if (urlYtb) {
+  const match = args[0].match(checkurl);
+  videoID = match ? match[1] : null;
+        const { data: { title, downloadLink } } = await axios.get(
+          `${await baseApiUrl()}/ytDl3?link=${videoID}&format=mp3`
+        );
+    return  api.sendMessage({
+      body: title,
+      attachment: await dipto(downloadLink,'audio.mp3')
+    },event.threadID,()=>fs.unlinkSync('audio.mp3'),event.messageID)
+}
+    let keyWord = args.join(" ");
+    keyWord = keyWord.includes("?feature=share") ? keyWord.replace("?feature=share", "") : keyWord;
     const maxResults = 6;
-    const searchResult = (await axios.get(`${await baseApiUrl()}/ytFullSearch?songName=${encodeURIComponent(query)}`)).data.slice(0, maxResults);
-
-    if (searchResult.length === 0)
-      return api.sendMessage("⭕ No search results match the keyword: " + query, event.threadID, event.messageID);
-
-    let msg = "";
-    const thumbnails = [];
-    for (let i = 0; i < searchResult.length; i++) {
-      const info = searchResult[i];
-      thumbnails.push(await diptoSt(info.thumbnail, `thumb_${i}.jpg`));
-      msg += `${i + 1}. ${info.title}\nTime: ${info.time}\nChannel: ${info.channel.name}\n\n`;
+    let result;
+    try {
+      result = ((await axios.get(`${await baseApiUrl()}/ytFullSearch?songName=${keyWord}`)).data).slice(0, maxResults);
+    } catch (err) {
+      return api.sendMessage("❌ An error occurred:"+err.message,event.threadID,event.messageID);
     }
-
+    if (result.length == 0)
+      return api.sendMessage("⭕ No search results match the keyword:"+ keyWord,event.threadID,event.messageID);
+    let msg = "";
+    let i = 1;
+    const thumbnails = [];
+    for (const info of result) {
+thumbnails.push(diptoSt(info.thumbnail,'photo.jpg'));
+      msg += `${i++}. ${info.title}\nTime: ${info.time}\nChannel: ${info.channel.name}\n\n`;
+    }
     api.sendMessage({
-      body: msg + "Reply to this message with a number (1-6) to choose a song.",
+      body: msg+ "Reply to this message with a number want to listen",
       attachment: await Promise.all(thumbnails)
-    }, event.threadID, (err, info) => {
-      if (err) console.log(err);
-      global.client.handleReply.push({
-        name: module.exports.config.name,
+    },event.threadID, (err, info) => {
+global.client.handleReply.push({
+        name: this.config.name,
         messageID: info.messageID,
         author: event.senderID,
-        result: searchResult
+        result
       });
-    }, event.messageID);
-
-  } catch (err) {
-    console.log("🔴 Error:", err);
-    return api.sendMessage("❌ An error occurred: " + err.message, event.threadID, event.messageID);
+    },event.messageID);
   }
-};
-
-module.exports.handleReply = async ({ event, api, handleReply }) => {
-  const { result, author, messageID } = handleReply;
-
-  if (event.senderID !== author) return;
-
-  const choice = parseInt(event.body);
-  if (isNaN(choice) || choice < 1 || choice > result.length)
-    return api.sendMessage("❌ Invalid choice. Please enter a number between 1 and " + result.length, event.threadID, event.messageID);
-
+ module.exports.handleReply = async ({ event, api, handleReply }) => {
+    try {
+    const { result } = handleReply;
+    const choice = parseInt(event.body);
+    if (!isNaN(choice) && choice <= result.length && choice > 0) {
+      const infoChoice = result[choice - 1];
+      const idvideo = infoChoice.id;
+  const { data: { title, downloadLink ,quality} } = await axios.get(`${await baseApiUrl()}/ytDl3?link=${idvideo}&format=mp3`);
+    await api.unsendMessage(handleReply.messageID)
+        await  api.sendMessage({
+          body: `• Title: ${title}\n• Quality: ${quality}`,
+          attachment: await dipto(downloadLink,'audio.mp3')
+        },event.threadID ,
+       ()=>fs.unlinkSync('audio.mp3')
+      ,event.messageID)
+    } else {
+      api.sendMessage("Invalid choice. Please enter a number between 1 and 6.",event.threadID,event.messageID);
+    }
+    } catch (error) {
+      console.log(error);
+      api.sendMessage("⭕ Sorry, audio size was less than 26MB",event.threadID,event.messageID)
+    }   
+ };
+async function dipto(url,pathName) {
   try {
-    const selected = result[choice - 1];
-    const { data: { title, downloadLink, quality } } = await axios.get(`${await baseApiUrl()}/ytDl3?link=${selected.id}&format=mp3`);
+    const response = (await axios.get(url,{
+      responseType: "arraybuffer"
+    })).data;
 
-    const filePath = `audio_${event.senderID}.mp3`;
-    const audio = await dipto(downloadLink, filePath);
-
-    await api.unsendMessage(messageID);
-    return api.sendMessage({
-      body: `🎵 Title: ${title}\n🔊 Quality: ${quality}`,
-      attachment: audio
-    }, event.threadID, () => fs.unlinkSync(filePath), event.messageID);
-
-  } catch (err) {
-    console.log("🔴 Download Error:", err);
-    return api.sendMessage("⭕ Failed to get audio. Try another option.", event.threadID, event.messageID);
+    fs.writeFileSync(pathName, Buffer.from(response));
+    return fs.createReadStream(pathName);
   }
-};
-
-async function dipto(url, filePath) {
-  const response = await axios.get(url, { responseType: "arraybuffer" });
-  fs.writeFileSync(filePath, Buffer.from(response.data));
-  return fs.createReadStream(filePath);
+  catch (err) {
+    throw err;
+  }
 }
-
-async function diptoSt(url, filePath) {
-  const response = await axios.get(url, { responseType: "stream" });
-  response.data.path = filePath;
-  return response.data;
+async function diptoSt(url,pathName) {
+  try {
+    const response = await axios.get(url,{
+      responseType: "stream"
+    });
+    response.data.path = pathName;
+    return response.data;
+  }
+  catch (err) {
+    throw err;
+  }
 }
