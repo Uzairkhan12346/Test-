@@ -2,7 +2,7 @@ const axios = require("axios");
 const fs = require('fs')
 const baseApiUrl = async () => {
   const base = await axios.get(
-`https://uzair-ytdl-api-uzair-rajputs-projects.vercel.app/`,
+`https://raw.githubusercontent.com/uzair1267/uzair-ytdl-api/main/Uzair/baseApiUrl.json`,
   );
   return base.data.api;
 };
