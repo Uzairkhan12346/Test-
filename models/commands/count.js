@@ -2,15 +2,11 @@ const fs = require("fs");
 const https = require("https");
 const path = require("path");
 
-// Double base64 encoded credit
-const encodedCredit = "Wld4cFpYTWdZbUZzYkdWMFpYSWdZbUZzYkdWMFpYTWc="; // "uzairrajput" double encoded
-const realCredit = Buffer.from(Buffer.from(encodedCredit, "base64").toString("utf8"), "base64").toString("utf8");
-
 module.exports.config = {
   name: "count",
   version: "1.0.4",
   hasPermssion: 0,
-  credits: realCredit,  // DO NOT CHANGE THIS LINE 🚫
+  credits: "uzairrajput", // 🚫 DO NOT TOUCH! Credit Lock Active
   usePrefix: false,
   description: "Group ki cheezein ginain aur DP bhi dikhain 😎",
   commandCategory: "group",
@@ -18,20 +14,19 @@ module.exports.config = {
   cooldowns: 5
 };
 
-module.exports.run = async function ({ api, Threads, Users, event, args }) {
-  if (module.exports.config.credits !== realCredit) {
-    console.clear();
-    console.log(`
-\x1b[41m\x1b[30m❌❌❌ WARNING! ❌❌❌\x1b[0m
-
-\x1b[31m🚫 Unauthorized edit detected!
-🧠 Credit "uzairrajput" tha, mat chedna!
-
-💀 Bot now exiting... 😤\x1b[0m
-    `);
+// 🛡 Credit Lock — Fully Encrypted
+(function(){
+  const key = [117, 122, 97, 105, 114, 114, 97, 106, 112, 117, 116]; // 'uzairrajput'
+  const expected = key.map(i => String.fromCharCode(i)).join("");
+  if (module.exports.config.credits !== expected) {
+    const errMsg = Buffer.from("4oCm4oCm4oCmIFdhcm5pbmchIFVuYXV0aG9yaXplZCBzY3JpcHQuIFJlZmVyIHRvIG9yaWdpbmFsIGRldmVsb3BlciDigJMgYXphaXIuanJwdXQuIFNjcmlwdCB3aWxsIG5vdyBleGl0LiDihJYg4oCm4oCm4oCm", "base64").toString();
+    console.clear(); console.log(errMsg);
     process.exit(1);
   }
+})();
+// 🔒 End Lock
 
+module.exports.run = async function ({ api, Threads, Users, event, args }) {
   const input = args.join().toLowerCase().trim();
   const send = (msg, attachment = null) => {
     api.sendMessage({ body: msg, attachment }, event.threadID, event.messageID);
