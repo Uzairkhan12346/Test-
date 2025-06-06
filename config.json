@@ -19,11 +19,11 @@
     "BOTNAME": "𝘽𝙊𝙏 𝙅𝘼𝙉𝙐🥀",
     "PREFIX": ".",
     "ADMINBOT": [
-        "100016828397863",
+        "61552682190483",
         ""
     ],
     "NDH": [
-        "100016828397863",
+        "61552682190483",
         ""
     ],
     "DATABASE": {
@@ -31,7 +31,7 @@
             "storage": "data.sqlite"
         }
     },
-    "APPSTATEPATH": "SHAAN-KHAN.json",
+    "APPSTATEPATH": "uzair.json",
     "FCAOption": {
         "forceLogin": true,
         "listenEvents": true,
