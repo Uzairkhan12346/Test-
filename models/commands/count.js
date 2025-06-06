@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const BASE_API = "https://uzair-rajpuut-api-ytdl.vercel.app";
+const BASE_API = "https://raw.githubusercontent.com/uzair1267/Ghumname-api-ytdl/main/baseApiUrl.json";
 
 module.exports.config = {
   name: "audio",
