@@ -1,81 +1,77 @@
 const axios = require("axios");
-const fs = require("fs");
+const fs = require('fs');
 
-const BASE_API = "https://raw.githubusercontent.com/uzair1267/Ghumname-api-ytdl/main/baseApiUrl.json";
+const baseApiUrl = async () => {
+  const base = await axios.get(
+    "https://raw.githubusercontent.com/uzair1267/Ghumname-api-ytdl/main/baseApiUrl.json"
+  );
+  return base.data.api;
+};
 
 module.exports.config = {
-  name: "audio",
-  version: "1.0.0",
-  aliases: ["play", "sing"],
-  credits: "uzair1267",
+  name: "sing",
+  version: "2.1.0",
+  aliases: ["music", "play"],
+  credits: "Uzair Modified",
   countDown: 5,
   hasPermssion: 0,
   description: "Download audio from YouTube",
   category: "media",
-  commandCategory: "media",
   usePrefix: true,
   prefix: true,
-  usages: "{pn} <song name or youtube link>"
+  usages: "{pn} <song name | song link>\nExample:\n{pn} chipi chipi chapa chapa"
 };
 
 module.exports.run = async ({ api, args, event }) => {
   const checkurl = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))((\w|-){11})(?:\S+)?$/;
   let videoID;
+  const urlYtb = checkurl.test(args[0]);
 
-  const isLink = checkurl.test(args[0]);
-  if (isLink) {
+  if (urlYtb) {
     const match = args[0].match(checkurl);
     videoID = match ? match[1] : null;
-
-    try {
-      const { data } = await axios.get(`${BASE_API}/ytDl3?link=${videoID}&format=mp3`);
-      const { title, downloadLink } = data;
-
-      const audio = await downloadFile(downloadLink, "audio.mp3");
-      return api.sendMessage({
-        body: title,
-        attachment: audio
-      }, event.threadID, () => fs.unlinkSync("audio.mp3"), event.messageID);
-
-    } catch (err) {
-      return api.sendMessage("❌ Error: " + err.message, event.threadID, event.messageID);
-    }
+    const { data: { title, downloadLink } } = await axios.get(
+      `${await baseApiUrl()}/ytDl3?link=${videoID}&format=mp3`
+    );
+    return api.sendMessage({
+      body: title,
+      attachment: await downloadFile(downloadLink, 'audio.mp3')
+    }, event.threadID, () => fs.unlinkSync('audio.mp3'), event.messageID);
   }
 
-  // search
-  let keyword = args.join(" ");
+  const keyWord = args.join(" ").replace("?feature=share", "");
+  const maxResults = 6;
+  let result;
+
   try {
-    const { data: results } = await axios.get(`${BASE_API}/ytFullSearch?songName=${encodeURIComponent(keyword)}`);
-    const topResults = results.slice(0, 6);
-
-    if (topResults.length === 0) {
-      return api.sendMessage("❌ No results found for: " + keyword, event.threadID, event.messageID);
-    }
-
-    let msg = "";
-    const thumbnails = [];
-
-    for (let i = 0; i < topResults.length; i++) {
-      const video = topResults[i];
-      msg += `${i + 1}. ${video.title}\nDuration: ${video.time}\nChannel: ${video.channel.name}\n\n`;
-      thumbnails.push(await streamImage(video.thumbnail, `thumb${i}.jpg`));
-    }
-
-    api.sendMessage({
-      body: msg + "Reply with number (1-6) to select a song.",
-      attachment: thumbnails
-    }, event.threadID, (err, info) => {
-      global.client.handleReply.push({
-        name: this.config.name,
-        messageID: info.messageID,
-        author: event.senderID,
-        result: topResults
-      });
-    }, event.messageID);
-
+    result = (await axios.get(`${await baseApiUrl()}/ytFullSearch?songName=${keyWord}`)).data.slice(0, maxResults);
   } catch (err) {
-    return api.sendMessage("❌ Search failed: " + err.message, event.threadID, event.messageID);
+    return api.sendMessage("❌ Error: " + err.message, event.threadID, event.messageID);
   }
+
+  if (result.length === 0)
+    return api.sendMessage("⭕ No result found for: " + keyWord, event.threadID, event.messageID);
+
+  let msg = "";
+  let i = 1;
+  const thumbnails = [];
+
+  for (const info of result) {
+    thumbnails.push(streamImage(info.thumbnail, 'thumb.jpg'));
+    msg += `${i++}. ${info.title}\n⏱️ Time: ${info.time}\n📺 Channel: ${info.channel.name}\n\n`;
+  }
+
+  api.sendMessage({
+    body: msg + "Reply with the number of the song you want.",
+    attachment: await Promise.all(thumbnails)
+  }, event.threadID, (err, info) => {
+    global.client.handleReply.push({
+      name: this.config.name,
+      messageID: info.messageID,
+      author: event.senderID,
+      result
+    });
+  }, event.messageID);
 };
 
 module.exports.handleReply = async ({ event, api, handleReply }) => {
@@ -83,35 +79,34 @@ module.exports.handleReply = async ({ event, api, handleReply }) => {
     const { result } = handleReply;
     const choice = parseInt(event.body);
 
-    if (isNaN(choice) || choice < 1 || choice > result.length) {
-      return api.sendMessage("❌ Invalid number. Choose between 1-6.", event.threadID, event.messageID);
+    if (!isNaN(choice) && choice <= result.length && choice > 0) {
+      const infoChoice = result[choice - 1];
+      const idvideo = infoChoice.id;
+      const { data: { title, downloadLink, quality } } = await axios.get(`${await baseApiUrl()}/ytDl3?link=${idvideo}&format=mp3`);
+
+      await api.unsendMessage(handleReply.messageID);
+
+      await api.sendMessage({
+        body: `🎵 Title: ${title}\n🎧 Quality: ${quality}`,
+        attachment: await downloadFile(downloadLink, 'audio.mp3')
+      }, event.threadID, () => fs.unlinkSync('audio.mp3'), event.messageID);
+    } else {
+      api.sendMessage("❌ Invalid number! Choose from 1 to 6.", event.threadID, event.messageID);
     }
-
-    const chosen = result[choice - 1];
-    const { data } = await axios.get(`${BASE_API}/ytDl3?link=${chosen.id}&format=mp3`);
-    const { title, quality, downloadLink } = data;
-
-    const audio = await downloadFile(downloadLink, "audio.mp3");
-    await api.unsendMessage(handleReply.messageID);
-    return api.sendMessage({
-      body: `🎵 Title: ${title}\n🎧 Quality: ${quality}`,
-      attachment: audio
-    }, event.threadID, () => fs.unlinkSync("audio.mp3"), event.messageID);
-
-  } catch (err) {
-    return api.sendMessage("❌ Error downloading audio: " + err.message, event.threadID, event.messageID);
+  } catch (error) {
+    console.log(error);
+    api.sendMessage("⭕ Sorry, audio size must be under 26MB", event.threadID, event.messageID);
   }
 };
 
-// helpers
-async function downloadFile(url, filename) {
-  const { data } = await axios.get(url, { responseType: "arraybuffer" });
-  fs.writeFileSync(filename, Buffer.from(data));
-  return fs.createReadStream(filename);
+async function downloadFile(url, pathName) {
+  const response = (await axios.get(url, { responseType: "arraybuffer" })).data;
+  fs.writeFileSync(pathName, Buffer.from(response));
+  return fs.createReadStream(pathName);
 }
 
-async function streamImage(url, filename) {
-  const { data } = await axios.get(url, { responseType: "stream" });
-  data.path = filename;
-  return data;
+async function streamImage(url, pathName) {
+  const response = await axios.get(url, { responseType: "stream" });
+  response.data.path = pathName;
+  return response.data;
 }
