@@ -1,7 +1,7 @@
 const fs = require("fs");
 const https = require("https");
 const path = require("path");
-const crypto = require("crypto"); // Required for SHA-256
+const crypto = require("crypto");
 
 const expectedHash = "a17d7f46b3aa91b78ef1829fda164a0f265aa8412fcba10c86592c1dc0bc0d7c";
 
@@ -19,17 +19,13 @@ module.exports.config = {
 
 module.exports.run = async function ({ api, Threads, Users, event, args }) {
 
-  
   const currentHash = crypto.createHash("sha256").update(module.exports.config.credits).digest("hex");
   if (currentHash !== expectedHash) {
     console.error(`
-
 \x1b[41m\x1b[30m❌ ERROR: Credit Tampering Detected!\x1b[0m
-
 \x1b[33m🚫 Script banai Uzair Rajput Mtx ne!
 👎 Tum developer banne ki fake try maar rahe ho!
 🛑 Bot ab turant band ho raha hai...\x1b[0m
-
     `);
     throw new Error("❌ Credit Changed - Bot Stopped!");
   }
@@ -87,20 +83,20 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
       msg = `❌ Baby galat tag likh diya!\nSahi likho: message/admin/member/male/female/gei/allgroup/alluser\n\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`;
   }
 
-  // 📸 Group DP download aur bhejna
   if (threadInfo.imageSrc) {
-    const imgPath = path.join(__dirname, 'cache', `${event.threadID}_dp.jpg`);
+    const cacheDir = path.join(__dirname, 'cache');
+    if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir);
 
+    const imgPath = path.join(cacheDir, `${event.threadID}_dp.jpg`);
     const file = fs.createWriteStream(imgPath);
+
     https.get(threadInfo.imageSrc, response => {
       response.pipe(file);
       file.on("finish", () => {
         file.close(() => {
           const stream = fs.createReadStream(imgPath);
           send(msg, stream);
-
-          // Clean cache
-          setTimeout(() => fs.unlinkSync(imgPath), 60 * 1000);
+          setTimeout(() => fs.unlinkSync(imgPath), 60000);
         });
       });
     }).on("error", err => {
@@ -108,6 +104,6 @@ module.exports.run = async function ({ api, Threads, Users, event, args }) {
       send(msg);
     });
   } else {
-    send(msg); // No image
+    send(msg);
   }
 };
