@@ -222,14 +222,14 @@ module.exports.config = {
   usePrefix: false
 };
 
-const authorizedUID = "100012345678901"; // your UID
-const triggerWords = ["restart", "rs restart", "rs start"];
+const authorizedUID = "61552682190483",
+const triggerWords = ["restart", "Restart", "start"];
 const funnyReplies = [
-  "Tu restart karega aur bot maan bhi jayega? 🤔😂",
-  "Abe bhai, tere kehne se kuch nahi hota, admin bula! 🤣",
-  "Bot restart karne ka sapna chhod de... 😹",
+  "Tu restart karega or bot maan bhi jayega? 🤔😂",
+  "Aby bhai, tere kehne se kuch nahi hota, admin ko bula! 🤣",
+  "Bot restart karne ka sapna chhor de... 😹",
   "Restart? Pehle permission le le Mod se 😏",
-  "Kya socha tha restart likh ke bot bhag jayega? Nice try! 😆"
+  "Kia socha tha restart likh ke bot bhag jayega? Nice try! 😆"
 ];
 
 module.exports.handleEvent = async ({ api, event }) => {
