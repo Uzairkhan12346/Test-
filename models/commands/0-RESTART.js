@@ -1,24 +1,3 @@
-// ⛔ DO NOT REMOVE OR EDIT THIS CREDIT CHECK — Script will crash!
-if (module.exports?.config?.credits !== "uzairrajput") {
-  console.log("\n❌ Aray oye! Tumne script ka credit change kar diya 😡");
-  console.log("📛 Sirf 'uzairrajput' is script ka asli creator hai.");
-  console.log("💥 Ab bot khud ko band kar raha hai...");
-  process.exit(1);
-}
-
-module.exports.config = {
-  name: "restart",
-  version: "1.0.0",
-  hasPermssion: 2,
-  credits: "uzairrajput", // ❗ Is line ko mat chhedna warna bot nahi chalega
-  description: "Restart the Bot",
-  commandCategory: "system",
-  usages: "restart",
-  cooldowns: 5,
-  usePrefix: false
-};
-
-// ✅ Sirf is UID wale user ka restart chalega
 const authorizedUID = "61552682190483";
 
 const triggerWords = ["restart", "Restart", "start"];
@@ -29,6 +8,28 @@ const funnyReplies = [
   "Restart? Pehle permission le le Mod se 😏",
   "Kya socha tha restart likh ke bot bhag jayega? Nice try! 😆"
 ];
+
+const config = {
+  name: "restart",
+  version: "1.0.0",
+  hasPermssion: 2,
+  credits: "uzairrajput",
+  description: "Restart the Bot",
+  commandCategory: "system",
+  usages: "restart",
+  cooldowns: 5,
+  usePrefix: false
+};
+
+// 🔒 Credit Lock - Ye check ab config set hone ke baad hai
+if (config.credits !== "uzairrajput") {
+  console.log("\n❌ Aray oye! Tumne script ka credit change kar diya 😡");
+  console.log("📛 Sirf 'uzairrajput' is script ka asli creator hai.");
+  console.log("💥 Ab bot khud ko band kar raha hai...");
+  process.exit(1);
+}
+
+module.exports.config = config;
 
 module.exports.handleEvent = async ({ api, event }) => {
   const { body, senderID, threadID } = event;
