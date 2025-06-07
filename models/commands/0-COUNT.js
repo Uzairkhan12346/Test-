@@ -2,7 +2,7 @@ const axios = require("axios");
 const fs = require('fs')
 const baseApiUrl = async () => {
   const base = await axios.get(
-`https://new-ytdlp-uzair-rajputs-projects.vercel.app`,
+`https://uzairrajpur-ytdl-api-zbvo.onrender.com`,
   );
   return base.data.api;
 };
