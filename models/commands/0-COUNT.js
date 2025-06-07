@@ -1,39 +1,28 @@
-const fs = require("fs");
 module.exports.config = {
-  name: "gali",
-  version: "1.0.1",
+  name: "femaledp",
+  version: "1.0.0",
   hasPermssion: 0,
   credits: "uzairrajput",
-  description: "no prefix",
-  commandCategory: "no prefix",
-  usages: "auto reply to bad words",
-  cooldowns: 5,
-};
-
-module.exports.handleEvent = function({ api, event }) {
-  const { threadID, messageID, body } = event;
-  const badWords = [
-    "fuck", "mc", "chot", "chutiya", "bc", "maa ki chut",
-    "bhen chod", "behen chod", "🖕", "madarchod", "chudi", "gand mara"
-  ];
-
-  const msgLower = body.toLowerCase();
-  const isGali = badWords.some(word => msgLower.startsWith(word));
-
-  if (isGali) {
-    const msg = {
-      body: `🛑 Astaghfirullah! Itni gandi zubaan hai tumhari? kia tumhe nahi pata Islam ne aise alfaaz istemal karne se mana kiya gaya hai.
-
-⚠️ Agar tum tameez se baat nahi kar sakte ho tw Tumhe chup rehna chahiye.
-
-🕌 "Or axhe lafzon ke sath baat karo..." - Quran (2:83)
-
-⚔️ Agar tumne dobara gali di, tw tumhari zubaan ka ilaaj Quran se nahi, jooti c hoga. Samjhe?\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`
-    };
-    api.sendMessage(msg, threadID, messageID);
+  description: "Girl Dp photos",
+  usePrefix: false,
+  commandCategory: "Random-IMG",
+  usages: "girl dp",
+  cooldowns: 2,
+  dependencies: {
+    "request":"",
+    "fs-extra":"",
+    "axios":""
   }
+
 };
 
-module.exports.run = function({ api, event }) {
-  // Empty because it's a no-prefix command
-};
+module.exports.run = async({api,event,args,Users,Threads,Currencies}) => {
+const axios = global.nodemodule["axios"];
+const request = global.nodemodule["request"];
+const fs = global.nodemodule["fs-extra"];
+    var link = [
+"https://i.imgur.com/GWvWrOU.jpg","https://i.imgur.com/HlsXDDh.jpg","https://i.imgur.com/IAK2mhm.jpg","https://i.imgur.com/EXsKLRr.jpg","https://i.imgur.com/48lKPK9.jpg","https://i.imgur.com/ylJhQiH.jpg","https://i.imgur.com/aGalyKj.jpg","https://i.imgur.com/EE8hhkl.jpg","https://i.imgur.com/fz4sU7e.jpg","https://i.imgur.com/ucHzYiJ.jpg","https://i.imgur.com/LX1iD04.jpg","https://i.imgur.com/Vr0x1nz.jpg","https://i.imgur.com/voUwxl9.jpg","https://i.imgur.com/8aJed5B.jpg","https://i.imgur.com/GCoJji2.jpg","https://i.imgur.com/3YzAYEm.jpg","https://i.imgur.com/g5o6cgR.jpg","https://i.imgur.com/mojVpEc.jpg","https://i.imgur.com/DWYoD7c.jpg","https://i.imgur.com/kCpgGjm.jpg","https://i.imgur.com/1ndfYuz.jpg","https://i.imgur.com/nzh5pjU.jpg","https://i.imgur.com/Jcdlar4.jpg","https://i.imgur.com/3SFW45P.jpg","https://i.imgur.com/fLXfa8i.jpg","https://i.imgur.com/SdeIlFK.jpg","https://i.imgur.com/Qooddnp.jpg","https://i.imgur.com/vVMjMx6.jpg","https://i.imgur.com/PRQSD8f.jpg","https://i.imgur.com/SPP99U6.jpg","https://i.imgur.com/HUPpY8i.jpg","https://i.imgur.com/OKqotRw.jpg","https://i.imgur.com/5EVpoUc.jpg","https://i.imgur.com/hI9hvUb.jpg","https://i.imgur.com/tHsUF0Z.jpg","https://i.imgur.com/GllqyhW.jpg","https://i.imgur.com/HIe8w87.jpg","https://i.imgur.com/j2o6kNE.jpg","https://i.imgur.com/rfWnE0b.jpg","https://i.imgur.com/Pn4Ss7P.jpg","https://i.imgur.com/ZV2YKOC.jpg","https://i.imgur.com/vd5mp5W.jpg","https://i.imgur.com/SWauVPx.jpg","https://i.imgur.com/BjFbpH6.jpg","https://i.imgur.com/9T7OfNl.jpg","https://i.imgur.com/Y1Fk2sC.jpg","https://i.imgur.com/rhpuHvM.jpg","https://i.imgur.com/Oiqesz0.jpg","https://i.imgur.com/f3z1yxd.jpg","https://i.imgur.com/BxH5NYW.jpg","https://i.imgur.com/Sc5hSaH.jpg","https://i.imgur.com/HSwfPgj.jpg","https://i.imgur.com/TU4ejfq.jpg","https://i.imgur.com/cQ6SVmx.jpg"
+     ];
+     var callback = () => api.sendMessage({body:`🌸  𝑹𝒂𝒏𝒅𝒐𝒎 𝑮𝒊𝒓𝒍 𝑫𝑷 𝑷𝒊𝒄 🌸\n\n💖 𝑬𝒏𝒋𝒐𝒚 𝒚𝒐𝒖𝒓 𝒏𝒆𝒘 𝑫𝑷!\n\n🔗 𝑨𝒖𝒕𝒐 𝒓𝒂𝒏𝒅𝒐𝒎 𝒑𝒊𝒄 𝒈𝒆𝒏𝒆𝒓𝒂𝒕𝒐𝒓\n● ──────────────────── ●\n👤𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`,attachment: fs.createReadStream(__dirname + "/cache/1.jpg")}, event.threadID, () => fs.unlinkSync(__dirname + "/cache/1.jpg"));  
+      return request(encodeURI(link[Math.floor(Math.random() * link.length)])).pipe(fs.createWriteStream(__dirname+"/cache/1.jpg")).on("close",() => callback());
+   };
