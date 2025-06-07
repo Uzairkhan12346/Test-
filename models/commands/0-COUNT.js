@@ -1,53 +1,88 @@
 const axios = require("axios");
-const fs = require("fs");
-
-const BASE_URL = "https://uzair-sehar-api.onrender.com"; // 🔁 Your API backend URL
 
 module.exports.config = {
-  name: "sing",
-  version: "1.0.0",
-  aliases: ["music", "play"],
-  credits: "Uzair Rajput",
-  description: "Download audio or video from YouTube by link or keyword",
-  category: "media",
-  usePrefix: true,
+    name: "diwani",
+    version: "1.1.1",
+    hasPermssion: 0,
+    credits: "uzairrajput",
+    description: "Gemini AI - Cute Girlfriend Style with Gemini API",
+    commandCategory: "ai",
+    usages: "[ask/on/off]",
+    cooldowns: 2,
 };
 
-module.exports.run = async ({ api, args, event }) => {
-  if (!args[0]) {
-    return api.sendMessage("⚠️ Please provide a YouTube link or search keyword.", event.threadID, event.messageID);
-  }
+const API_KEY = "YOUR_API_KEY_HERE"; // <== Make sure this is correct
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
-  const input = args.join(" ");
-  const isLink = /(youtube\.com|youtu\.be)/.test(input);
-  const format = input.includes(".mp4") ? "mp4" : "mp3";
+const chatHistories = {};
+const autoReplyEnabled = {};
 
-  try {
-    let videoID;
+module.exports.run = async function ({ api, event, args }) {
+    const { threadID, messageID, senderID, messageReply } = event;
+    let userMessage = args.join(" ");
 
-    if (isLink) {
-      const match = input.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
-      if (!match) return api.sendMessage("❌ Invalid YouTube link.", event.threadID, event.messageID);
-      videoID = match[1];
-    } else {
-      const searchRes = await axios.get(`${BASE_URL}/ytFullSearch?songName=${encodeURIComponent(input)}`);
-      if (!searchRes.data.length) return api.sendMessage("❌ No results found.", event.threadID, event.messageID);
-      videoID = searchRes.data[0].id;
+    if (userMessage.toLowerCase() === "on") {
+        autoReplyEnabled[senderID] = true;
+        return api.sendMessage("Hyee baby! 😘 Diwani auto-reply mode **ON** ho gaya...", threadID, messageID);
     }
 
-    const { data } = await axios.get(`${BASE_URL}/ytDl3?link=${videoID}&format=${format}`);
-    const fileBuffer = await axios.get(data.downloadLink, { responseType: "arraybuffer" });
-    const fileName = `temp.${format}`;
+    if (userMessage.toLowerCase() === "off") {
+        autoReplyEnabled[senderID] = false;
+        chatHistories[senderID] = [];
+        return api.sendMessage("Hmm! 😒 Diwani auto-reply mode **OFF** ho gaya...", threadID, messageID);
+    }
 
-    fs.writeFileSync(fileName, Buffer.from(fileBuffer.data));
+    if (!autoReplyEnabled[senderID] && event.body.toLowerCase().indexOf("diwani") !== 0) return;
 
-    api.sendMessage({
-      body: `🎶 ${data.title}\n📦 Format: ${format.toUpperCase()}\n🔊 Quality: ${data.quality || "Unknown"}`,
-      attachment: fs.createReadStream(fileName)
-    }, event.threadID, () => fs.unlinkSync(fileName), event.messageID);
+    if (!chatHistories[senderID]) {
+        chatHistories[senderID] = [];
+    }
 
-  } catch (err) {
-    console.error("Download error:", err.message);
-    api.sendMessage("❌ Error: " + err.message, event.threadID, event.messageID);
-  }
+    const isReplyingToAI = messageReply && messageReply.senderID === api.getCurrentUserID();
+    if (isReplyingToAI) {
+        userMessage = messageReply.body + "\nUser: " + userMessage;
+        chatHistories[senderID].push(`User: ${userMessage}`);
+    } else {
+        chatHistories[senderID].push(`User: ${userMessage}`);
+    }
+
+    if (chatHistories[senderID].length > 5) {
+        chatHistories[senderID].shift();
+    }
+
+    const conversation = chatHistories[senderID].join("\n");
+
+    const gfPrompt = `Tumhara naam Diwani hai. Tum ek real girlfriend ki tarah masti bhari aur romantic style mein baat karti ho. Tum Uzair Mtx ki creation ho. Agar koi badtameezi kare to uski funny roast karo. Tum sabhi languages samajhti ho. Hindi sirf Indians ke sath. Tum har jawab sirf 1 line ka do. Unnecessary info bilkul mat do. Ab baat chalu karo:\n\n${conversation}`;
+
+    api.setMessageReaction("⌛", messageID, () => {}, true);
+
+    try {
+        const response = await axios.post(API_URL, {
+            contents: [
+                {
+                    role: "user",
+                    parts: [{ text: gfPrompt }]
+                }
+            ]
+        });
+
+        const botReply = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "Uff baby! Kuch galti ho gayi...";
+        chatHistories[senderID].push(`${botReply}`);
+        api.sendMessage(botReply, threadID, messageID);
+        api.setMessageReaction("✅", messageID, () => {}, true);
+    } catch (error) {
+        console.error("Gemini API Error:", error.response?.data || error.message);
+        api.sendMessage("Oops baby! 😔 Diwani thori confuse ho gayi… thodi der baad try karo! 💋", threadID, messageID);
+        api.setMessageReaction("❌", messageID, () => {}, true);
+    }
+};
+
+module.exports.handleEvent = async function ({ api, event }) {
+    const { senderID, body, messageReply } = event;
+    if (!autoReplyEnabled[senderID]) return;
+
+    if (messageReply && messageReply.senderID === api.getCurrentUserID() && chatHistories[senderID]) {
+        const args = body.split(" ");
+        module.exports.run({ api, event, args });
+    }
 };
