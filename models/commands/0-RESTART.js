@@ -22,14 +22,26 @@ const config = {
 };
 
 // 🔒 Credit Lock - Ye check ab config set hone ke baad hai
-if (config.credits !== "uzairrajput") {
-  console.log("\n❌ Aray oye! Tumne script ka credit change kar diya 😡");
-  console.log("📛 Sirf 'uzairrajput' is script ka asli creator hai.");
-  console.log("💥 Ab bot khud ko band kar raha hai...");
-  process.exit(1);
-}
+(function() {
+  const _0x4db0b3 = [
+    "uzairrajput",
+    "\n❌ Aray oye! Tumne script ka credit change kar diya 😡",
+    "📛 Sirf 'uzairrajput' is script ka asli creator hai.",
+    "💥 Ab bot khud ko band kar raha hai...",
+    "log",
+    "exit",
+    "config"
+  ];
 
-module.exports.config = config;
+  if (config[_0x4db0b3[6]] !== _0x4db0b3[0]) {
+    console[_0x4db0b3[4]](_0x4db0b3[1]);
+    console[_0x4db0b3[4]](_0x4db0b3[2]);
+    console[_0x4db0b3[4]](_0x4db0b3[3]);
+    process ;
+  }
+
+  module["exports"][_0x4db0b3[6]] = config;
+})();
 
 module.exports.handleEvent = async ({ api, event }) => {
   const { body, senderID, threadID } = event;
