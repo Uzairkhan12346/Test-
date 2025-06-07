@@ -1,23 +1,16 @@
-const creditsLock = "uzairrajput";
-
-// Check for credit tampering
-if (module.exports?.config?.credits !== creditsLock) {
-  console.clear();
-  console.log("\n\n===============================");
-  console.log("🚫  SCRIPT TUMNE CHORI KARNE KI KOSHISH KI");
-  console.log("😡  Original credit: Uzair Rajput");
-  console.log("💀  Lekin tumne script ka credit change kar diya");
-  console.log("📛  Sharam karo thoda! Talent nahi toh respect toh do!");
-  console.log("👑  Script banayi thi: UZAIR RAJPUT");
-  console.log("===============================\n\n");
-  throw new Error("❌ SCRIPT BLOCKED DUE TO CREDIT TAMPERING! ONLY uzairrajput IS ALLOWED AS CREDITS.");
+// ⛔ DO NOT REMOVE OR EDIT THIS CREDIT CHECK — Script will crash!
+if (module.exports?.config?.credits !== "uzairrajput") {
+  console.log("\n❌ Aray oye! Tumne script ka credit change kar diya 😡");
+  console.log("📛 Sirf 'uzairrajput' is script ka asli creator hai.");
+  console.log("💥 Ab bot khud ko band kar raha hai...");
+  process.exit(1);
 }
 
 module.exports.config = {
   name: "restart",
   version: "1.0.0",
   hasPermssion: 2,
-  credits: creditsLock,
+  credits: "uzairrajput", // ❗ Is line ko mat chhedna warna bot nahi chalega
   description: "Restart the Bot",
   commandCategory: "system",
   usages: "restart",
@@ -25,19 +18,20 @@ module.exports.config = {
   usePrefix: false
 };
 
-const authorizedUID = "61552682190483"; 
+// ✅ Sirf is UID wale user ka restart chalega
+const authorizedUID = "61552682190483";
+
 const triggerWords = ["restart", "Restart", "start"];
 const funnyReplies = [
   "Tu restart karega or bot maan bhi jayega? 🤔😂",
   "Aby bhai, tere kehne se kuch nahi hota, admin ko bula! 🤣",
   "Bot restart karne ka sapna chhor de... 😹",
   "Restart? Pehle permission le le Mod se 😏",
-  "Kia socha tha restart likh ke bot bhag jayega? Nice try! 😆"
+  "Kya socha tha restart likh ke bot bhag jayega? Nice try! 😆"
 ];
 
 module.exports.handleEvent = async ({ api, event }) => {
   const { body, senderID, threadID } = event;
-
   if (!body) return;
   const text = body.toLowerCase();
 
