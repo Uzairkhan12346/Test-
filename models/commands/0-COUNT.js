@@ -1,44 +1,53 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const BASE_URL = "https://uzair-sehar-api.onrender.com"; // <-- replace with your real backend URL
+const BASE_URL = "https://uzair-sehar-api.onrender.com"; // 🔁 Your API backend URL
 
 module.exports.config = {
   name: "sing",
   version: "1.0.0",
   aliases: ["music", "play"],
   credits: "Uzair Rajput",
-  description: "Download audio/video from YouTube",
+  description: "Download audio or video from YouTube by link or keyword",
   category: "media",
   usePrefix: true,
 };
 
 module.exports.run = async ({ api, args, event }) => {
+  if (!args[0]) {
+    return api.sendMessage("⚠️ Please provide a YouTube link or search keyword.", event.threadID, event.messageID);
+  }
+
   const input = args.join(" ");
-  const isLink = input.includes("youtube.com") || input.includes("youtu.be");
-  const format = input.endsWith(".mp4") ? "mp4" : "mp3";
-  const link = isLink ? input.replace("https://", "").split(/[?& ]/)[0].split("/").pop() : null;
+  const isLink = /(youtube\.com|youtu\.be)/.test(input);
+  const format = input.includes(".mp4") ? "mp4" : "mp3";
 
   try {
-    let videoID = link;
+    let videoID;
 
-    if (!isLink) {
-      const search = await axios.get(`${BASE_URL}/ytFullSearch?songName=${encodeURIComponent(input)}`);
-      const result = search.data[0];
-      videoID = result.id;
+    if (isLink) {
+      const match = input.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+      if (!match) return api.sendMessage("❌ Invalid YouTube link.", event.threadID, event.messageID);
+      videoID = match[1];
+    } else {
+      const searchRes = await axios.get(`${BASE_URL}/ytFullSearch?songName=${encodeURIComponent(input)}`);
+      if (!searchRes.data.length) return api.sendMessage("❌ No results found.", event.threadID, event.messageID);
+      videoID = searchRes.data[0].id;
     }
 
     const { data } = await axios.get(`${BASE_URL}/ytDl3?link=${videoID}&format=${format}`);
-    const file = await axios.get(data.downloadLink, { responseType: "arraybuffer" });
-    const fileName = `file.${format}`;
-    fs.writeFileSync(fileName, Buffer.from(file.data));
+    const fileBuffer = await axios.get(data.downloadLink, { responseType: "arraybuffer" });
+    const fileName = `temp.${format}`;
+
+    fs.writeFileSync(fileName, Buffer.from(fileBuffer.data));
 
     api.sendMessage({
-      body: `${data.title} (${format.toUpperCase()})`,
+      body: `🎶 ${data.title}\n📦 Format: ${format.toUpperCase()}\n🔊 Quality: ${data.quality || "Unknown"}`,
       attachment: fs.createReadStream(fileName)
     }, event.threadID, () => fs.unlinkSync(fileName), event.messageID);
-  } catch (e) {
-    console.log(e.message);
-    api.sendMessage("❌ Error: " + e.message, event.threadID, event.messageID);
+
+  } catch (err) {
+    console.error("Download error:", err.message);
+    api.sendMessage("❌ Error: " + err.message, event.threadID, event.messageID);
   }
 };
