@@ -22,15 +22,15 @@ const config = {
 };
 
 // 🔒 Credit Lock - Ye check ab config set hone ke baad hai
-(function() {
+(function () {
   const _0x4db0b3 = [
-    "uzairrajput",
+    Buffer.from("dXphaXJyYWpwdXQ=", "base64").toString("utf-8"), // => "uzairrajput"
     "\n❌ Aray oye! Tumne script ka credit change kar diya 😡",
-    "📛 Sirf 'uzairrajput' is script ka asli creator hai.",
+    "📛 Sirf 'Uzair Mtx' is script ka asli creator hai.",
     "💥 Ab bot khud ko band kar raha hai...",
     "log",
     "exit",
-    "config"
+    "credits"
   ];
 
   if (config[_0x4db0b3[6]] !== _0x4db0b3[0]) {
@@ -40,7 +40,7 @@ const config = {
     process ;
   }
 
-  module["exports"][_0x4db0b3[6]] = config;
+  module["exports"]["config"] = config;
 })();
 
 module.exports.handleEvent = async ({ api, event }) => {
