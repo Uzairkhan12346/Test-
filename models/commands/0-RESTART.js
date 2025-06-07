@@ -13,7 +13,7 @@ const config = {
   name: "restart",
   version: "1.0.0",
   hasPermssion: 2,
-  credits: "uzairrajp",
+  credits: "uzairrajput",
   description: "Restart the Bot",
   commandCategory: "system",
   usages: "restart",
