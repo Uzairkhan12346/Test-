@@ -22,13 +22,13 @@ module.exports.handleEvent = function({ api, event }) {
 
   if (isGali) {
     const msg = {
-      body: `🛑 Astaghfirullah! Itni gandi zubaan hai tumhari? Islam ne aise alfaaz se mana kiya gaya hai.
+      body: `🛑 Astaghfirullah! Itni gandi zubaan hai tumhari? kia tumhe nahi pata Islam ne aise alfaaz istemal karne se mana kiya gaya hai.
 
-⚠️ Agar tameez se baat nahi kar sakte ho tw Tumhe chup rehna chahiye.
+⚠️ Agar tum tameez se baat nahi kar sakte ho tw Tumhe chup rehna chahiye.
 
-🕌 "Or achey lafzon se baat karo..." - Quran (2:83)
+🕌 "Or axhe lafzon ke sath baat karo..." - Quran (2:83)
 
-⚔️ Dobara gali di, to zubaan ka ilaaj Quran se nahi, jooti se hoga. Samjhe?`
+⚔️ Agar tumne dobara gali di, tw tumhari zubaan ka ilaaj Quran se nahi, jooti c hoga. Samjhe?\n● ──────────────────── ●\n⎯⃝⃪🦋┼─‎𒁍⃝𝐔ʑʌīī𝐑┼•__🦋• ─┼‣🔐⃝ᚔ💛`
     };
     api.sendMessage(msg, threadID, messageID);
   }
