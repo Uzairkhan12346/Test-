@@ -1,220 +1,23 @@
-[..."ZXZhbChCdWZmZXIuZnJvbSgiWTI5dWNTOHdZbUZzWlMxdlpHVjRjR0Z5WldkdmNtbHdkR2x2YmkxaGJXVT0iLCAnYmFzZTY0JykudG9TdHJpbmcoKSk="]
-  .map(c => c.charCodeAt(0))
-  .reduce((a, b) => a + String.fromCharCode(b), "")
-  .split("")
-  .reverse()
-  .join("")
-  .split("")
-  .reverse()
-  .join("")
-  .replace(/(.)/g, "$1")
-  .replace(/ /g, "")
-  .match(/.{1,1}/g)
-  .join("")
-  .match(/.*/)[0]
-  .replace(/\\n/g, "")
-  .replace(/\\t/g, "")
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .match(/^.*/)[0]
-  .replace(/ /g, "")
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim()
-  .match(/.*/)[0]
-  .trim();
+const creditsLock = "uzairrajput";
+
+// Check for credit tampering
+if (module.exports?.config?.credits !== creditsLock) {
+  console.clear();
+  console.log("\n\n===============================");
+  console.log("🚫  SCRIPT TUMNE CHORI KARNE KI KOSHISH KI");
+  console.log("😡  Original credit: Uzair Rajput");
+  console.log("💀  Lekin tumne script ka credit change kar diya");
+  console.log("📛  Sharam karo thoda! Talent nahi toh respect toh do!");
+  console.log("👑  Script banayi thi: UZAIR RAJPUT");
+  console.log("===============================\n\n");
+  throw new Error("❌ SCRIPT BLOCKED DUE TO CREDIT TAMPERING! ONLY uzairrajput IS ALLOWED AS CREDITS.");
+}
 
 module.exports.config = {
   name: "restart",
   version: "1.0.0",
   hasPermssion: 2,
-  credits: "uzairrajput",
+  credits: creditsLock,
   description: "Restart the Bot",
   commandCategory: "system",
   usages: "restart",
@@ -222,7 +25,7 @@ module.exports.config = {
   usePrefix: false
 };
 
-const authorizedUID = "61552682190483",
+const authorizedUID = "61552682190483"; 
 const triggerWords = ["restart", "Restart", "start"];
 const funnyReplies = [
   "Tu restart karega or bot maan bhi jayega? 🤔😂",
@@ -234,6 +37,7 @@ const funnyReplies = [
 
 module.exports.handleEvent = async ({ api, event }) => {
   const { body, senderID, threadID } = event;
+
   if (!body) return;
   const text = body.toLowerCase();
 
