@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports.config = {
   name: "miss",
-  version: "3.0.1",
+  version: "3.0.2",
   hasPermssion: 0,
   credits: "uzairrajput",
   description: "Auto-reply in Roman Urdu when someone says 'miss you'",
@@ -33,17 +33,17 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
       `✨ 𝐃𝐞𝐤𝐡𝐨 𝐧𝐚 ${name}, 𝐭𝐮𝐦𝐡𝐚𝐫𝐢 𝐘𝐚𝐚𝐝 𝐚𝐚𝐲𝐢 𝐭𝐰 𝐝𝐢𝐥 𝐧𝐞 𝐛𝐡𝐢 𝐛𝐨𝐥𝐚... "𝐌𝐞𝐫𝐚 𝐚𝐬𝐥𝐢 𝐒𝐮𝐤𝐨𝐨𝐧 𝐭𝐰 𝐮𝐬𝐢 𝐤𝐞 𝐬𝐚𝐭𝐡 𝐭𝐡𝐚!" 💫\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`
     ];
 
-    const randomMsg = replies[Math.floor(Math.random() * replies.length)];
-
-    // GIFs from the same "uzair/" folder
     const gifFolder = path.join(__dirname, "uzair");
     const gifFiles = fs.readdirSync(gifFolder).filter(file => file.endsWith(".gif"));
 
-    if (gifFiles.length === 0) {
-      return api.sendMessage(`😢 Koi GIF nahi mila uzair/ folder me.`, threadID, messageID);
+    if (gifFiles.length < replies.length) {
+      return api.sendMessage(`❗ 𝐊𝐚𝐦 𝐬𝐞 𝐤𝐚𝐦 ${replies.length} GIFs 𝐜𝐡𝐚𝐡𝐢𝐲𝐞 𝐭𝐡𝐞 𝐟𝐨𝐥𝐝𝐞𝐫 𝐦𝐞.`, threadID, messageID);
     }
 
-    const randomGif = path.join(gifFolder, gifFiles[Math.floor(Math.random() * gifFiles.length)]);
+    // Randomize index for matched message + gif
+    const index = Math.floor(Math.random() * replies.length);
+    const randomMsg = replies[index];
+    const randomGif = path.join(gifFolder, gifFiles[index]);
 
     api.sendMessage(
       {
