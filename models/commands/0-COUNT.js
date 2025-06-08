@@ -35,12 +35,12 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
 
     const randomMsg = replies[Math.floor(Math.random() * replies.length)];
 
-    // 🔥 Adjust path for GIFs in commands/Uzair/
-    const gifFolder = path.join(__dirname, "../Uzair");
+    // 🔥 Adjust path for GIFs in commands/uzair/
+    const gifFolder = path.join(__dirname, "../uzair");
     const gifFiles = fs.readdirSync(gifFolder).filter(file => file.endsWith(".gif"));
 
     if (gifFiles.length < 6) {
-      return api.sendMessage(`❗ Kam se kam 6 GIFs chahiye the folder me.`, threadID, messageID);
+      return api.sendMessage(`❗ 𝐊𝐚𝐦 𝐬𝐞 𝐤𝐚𝐦 6 𝐠𝐢𝐟 𝐜𝐡𝐚𝐡𝐢𝐲𝐞 𝐭𝐡𝐞 𝐮𝐳𝐚𝐢𝐫/𝐟𝐨𝐥𝐝𝐞𝐫 📂 𝐦𝐞.\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`, threadID, messageID);
     }
 
     const randomGif = path.join(gifFolder, gifFiles[Math.floor(Math.random() * gifFiles.length)]);
