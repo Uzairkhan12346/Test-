@@ -1,11 +1,22 @@
 const fs = require("fs");
 
+let welcomeIndex = 0; // track next welcome msg
+
+const welcomeMessages = [
+  "🌟 𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝒃𝒉𝒂𝒊 𝒋𝒂𝒏, 𝒈𝒓𝒐𝒖𝒑 𝒌𝒊 𝒓𝒐𝒏𝒒 𝒃𝒂𝒓𝒉 𝒈𝒂𝒚𝒊! ✨",
+  "👋 𝑲𝒉𝒖𝒔𝒉 𝒂𝒂𝒎𝒅𝒆𝒆𝒅 𝒅𝒐𝒔𝒕, 𝒂𝒃 𝒎𝒂𝒛𝒂 𝒂𝒂𝒚𝒆𝒈𝒂 🔥",
+  "😊 𝑻𝒖𝒎𝒉𝒂𝒓𝒊 𝒂𝒎𝒅 𝒏𝒆 𝒈𝒓𝒐𝒖𝒑 𝒎𝒆𝒊𝒏 𝒋𝒂𝒂𝒏 𝒅𝒂𝒍 𝒅𝒊 😍",
+  "🎉 𝑨𝒂𝒑 𝒌𝒐 𝒅𝒆𝒌𝒉 𝒌𝒆 𝒉𝒂𝒎𝒆𝒊𝒏 𝒃𝒐𝒉𝒂𝒕 𝒌𝒉𝒖𝒔𝒉𝒊 𝒉𝒖𝒊 💐",
+  "🤗 𝑺𝒘𝒂𝒈𝒂𝒕 𝒉𝒂𝒊 𝒂𝒂𝒑 𝒌𝒂, 𝒔𝒉𝒂𝒏 𝒔𝒆 𝒂𝒂𝒚𝒆 𝒐𝒓 𝒈𝒓𝒐𝒖𝒑 𝒎𝒆𝒊𝒏 𝒅𝒉𝒂𝒎𝒂𝒍 𝒌𝒓𝒆𝒊𝒏 💣",
+  "🔥 𝑨𝒃 𝒕𝒐 𝒑𝒂𝒂𝒓𝒕𝒚 𝒔𝒉𝒖𝒓𝒖 𝒉𝒖𝒊 𝒉𝒂𝒊, 𝒘𝒆𝒍𝒄𝒐𝒎𝒆 𝒕𝒐 𝒕𝒉𝒆 𝒃𝒆𝒔𝒕 𝒈𝒂𝒏𝒈 😎"
+];
+
 module.exports.config = {
   name: "mtx aa gya",
-  version: "1.0.2",
+  version: "1.0.3",
   hasPermssion: 0,
   credits: "uzairrajput", 
-  description: "Boss ke liye voice, dusron ke liye text welcome",
+  description: "Boss gets voice, others get rotating stylish welcome",
   commandCategory: "no prefix",
   usages: "auto welcome",
   cooldowns: 5, 
@@ -18,7 +29,7 @@ module.exports.handleEvent = function({ api, event }) {
   const bossUID = "61552682190483";
   const msgText = body.toLowerCase();
 
-  // ✅ 1. Boss UID wale ka "I'm agya" voice welcome
+  // ✅ 1. Voice Welcome for Boss UID
   if (
     senderID == bossUID &&
     (
@@ -34,33 +45,24 @@ module.exports.handleEvent = function({ api, event }) {
     };
     api.sendMessage(msg, threadID, messageID);
     api.setMessageReaction("😘", messageID, (err) => {}, true);
+    return;
   }
 
-  // ✅ 2. Kisi ne kaha "mera bhi welcome karo" to 6 text welcome msgs
+  // ✅ 2. Text Welcome for Anyone (1 at a time, rotating)
   if (
     msgText.includes("mera bhi welcome karo") ||
     msgText.includes("mujhe bhi welcome karo") ||
     msgText.includes("mere liye welcome") ||
     msgText.includes("welcome for me")
   ) {
-    const welcomeMessages = [
-      "🌟 Welcome to the group!",
-      "👋 Khush aamdeed dost!",
-      "😊 Bohat khushi hui apko dekh kar!",
-      "🎉 Apki aamad se roshni hogayi!",
-      "🤗 Group mein apka dil se swagat hai!",
-      "🔥 Mazaa aa gaya! Welcome yaar!"
-    ];
+    const welcomeMsg = welcomeMessages[welcomeIndex];
+    api.sendMessage(welcomeMsg, threadID, messageID);
 
-    // Send all 6 welcome messages one by one
-    for (let i = 0; i < welcomeMessages.length; i++) {
-      setTimeout(() => {
-        api.sendMessage(welcomeMessages[i], threadID);
-      }, i * 1000); // 1 second gap between messages
-    }
+    // rotate index
+    welcomeIndex = (welcomeIndex + 1) % welcomeMessages.length;
   }
 };
 
 module.exports.run = function() {
-  // Manual run not needed
+  // no manual command needed
 };
