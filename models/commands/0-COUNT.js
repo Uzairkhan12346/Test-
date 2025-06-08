@@ -2,42 +2,41 @@ module.exports.config = {
   name: "meme",
   version: "1.0.0",
   hasPermssion: 0,
-  credits: "nnl", //thích thay cre ko bố m đã bố thí cho dùng rồi bớt bớt lại nha con chó
-  description: "Random meme",
-  commandCategory: "hình ảnh",
+  credits: "Uzair Edit",
+  description: "Random Stylish Memes",
+  commandCategory: "fun",
   usages: "meme",
-  cooldowns: 5,
-  dependencies: {
-    "request":"",
-    "fs-extra":"",
-    "axios":""
-  }
+  cooldowns: 5
 };
 
-const request = require('request');
-const fs = require("fs");
+const axios = require('axios');
+const fs = require('fs');
 
 module.exports.run = async ({ api, event }) => {
-  const axios = require('axios');
   const threadID = event.threadID;
 
-  const imageUrls = await Promise.all(Array.from({ length: 6 }, async () => {
-    const res = await axios.get('https://api.apibot.repl.co/meme');
-    return res.data.data;
-    
-  }));
+  // 🔥 Stylish Roman Urdu Meme Links (Add more as needed)
+  const memeUrls = [
+    "https://i.imgflip.com/7x2a4k.jpg",
+    "https://i.redd.it/b5f2tkw70zq81.jpg",
+    "https://i.imgflip.com/7v2yzg.jpg",
+    "https://i.redd.it/yh3e0efvcnq61.jpg",
+    "https://i.redd.it/m4p37xem2uq61.jpg",
+    "https://i.pinimg.com/736x/d1/99/bd/d199bd2a98b119c0e02d75ef0559e3a3.jpg"
+  ];
 
-  const attachments = await Promise.all(imageUrls.map(async (url) => {
-    return (await axios({
-      url,
-      method: "GET",
-      responseType: "stream"
-    })).data
+  const randomMemes = Array.from({ length: 6 }, () => {
+    const rand = memeUrls[Math.floor(Math.random() * memeUrls.length)];
+    return rand;
+  });
+
+  const attachments = await Promise.all(randomMemes.map(async (url) => {
+    return (await axios.get(url, { responseType: 'stream' })).data;
   }));
 
   api.sendMessage({
-    body: `[🖤] → 𝗔̉𝗻𝗵 𝗺𝗲𝗺𝗲 𝗰𝘂̉𝗮 𝗯𝗮̣𝗻 𝗯𝗲̂𝗻 𝗱𝘂̛𝗼̛́𝗶
-⚠️ 𝗔̉𝗻𝗵 𝘀𝗲̃ 𝗿𝗮 𝗻𝗴𝗮̂̃𝘂 𝗻𝗵𝗶𝗲̂𝗻 𝘁𝘂̛̀ 𝟭 => 𝟲 𝗮̉𝗻𝗵`,
+    body: `🌚 𝗟𝗲 𝗠𝗲𝗺𝗲 𝗔𝗮𝗴𝗮𝗲 𝗧𝗲𝗿𝗲 𝗟𝗶𝗲 🤣
+🖼️ 𝟲 Random Memes From Roman Urdu World`,
     attachment: attachments
   }, threadID);
 };
