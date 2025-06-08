@@ -1,74 +1,74 @@
-const fs = require("fs");
-
-let welcomeIndex = 0; // track next welcome msg
-
-const welcomeMessages = [
-  "🌟 𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝒃𝒂𝒃𝒚, 𝐚𝐩𝐤𝐞 𝐚𝐧𝐞 𝐜 𝐢𝐬 𝒈𝒓𝒐𝒖𝒑 𝒌𝒊 𝒓𝒐𝒏𝒒 𝒐𝒓 𝒃𝒂𝒓𝒉 𝒈𝒂𝒚𝒊! ✨\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "👋 𝑲𝒉𝒖𝒔𝒉 𝒂𝒂𝒎𝒅𝒆𝒆𝒅 𝒃𝒂𝒃𝒚, 𝒂𝒃 𝒎𝒂𝒛𝒂 𝒂𝒂𝒚𝒆𝒈𝒂 𝒏𝒂 🔥\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "😊 𝑻𝒖𝒎𝒉𝒂𝒓𝒊 𝒂𝒎𝒅 𝒏𝒆 𝒈𝒓𝒐𝒖𝒑 𝒎𝒆 𝒋𝒂𝒂𝒏 𝒅𝒂𝒍 𝒅𝒊 😍\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "🎉 𝑨𝒂𝒑 𝒌𝒐 𝒅𝒆𝒌𝒉 𝒌𝒆 𝒉𝒂𝒎𝒆𝒊𝒏 𝒃𝒐𝒉𝒂𝒕 𝒌𝒉𝒖𝒔𝒉𝒊 𝒉𝒖𝒊 💐\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "🤗 𝑺𝒘𝒂𝒈𝒂𝒕 𝒉𝒂𝒊 𝒂𝒂𝒑 𝒌𝒂, 𝒔𝒉𝒂𝒏 𝒔𝒆 𝒂𝒂𝒚𝒆 𝒐𝒓 𝒈𝒓𝒐𝒖𝒑 𝒎𝒆 𝒅𝒉𝒂𝒎𝒂𝒍 𝐦𝐚𝐜𝐡𝐚 𝒅𝒆𝒏 💣\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "🔥 𝑨𝒃𝒊 𝒕𝒐 𝒑𝒂𝒂𝒓𝒕𝒚 𝒔𝒉𝒖𝒓𝒖 𝒉𝒖𝒊 𝒉𝒂𝒊, 𝒘𝒆𝒍𝒄𝒐𝒎𝒆 𝒕𝒐 𝒕𝒉𝒆 𝒃𝒆𝒔𝒕 𝒈𝒂𝒏𝒈 😎\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "🌟 𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝒕𝒐 𝒕𝒉𝒆 𝒈𝒓𝒐𝒖𝒑!\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "👋 𝑲𝒉𝒖𝒔𝒉 𝒂𝒂𝒎𝒅𝒆𝒆𝒅 𝒅𝒐𝒔𝒕!\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "😊 𝑩𝒐𝒉𝒂𝒕 𝒌𝒉𝒖𝒔𝒉𝒊 𝒉𝒖𝒊 𝒂𝒑𝒌𝒐 𝒅𝒆𝒌𝒉 𝒌𝒂𝒓!\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "🎉 𝑨𝒑𝒌𝒊 𝒂𝒂𝒎𝒂𝒅 𝒔𝒆 𝒓𝒐𝒔𝒉𝒏𝒊 𝒉𝒐 𝒈𝒂𝒚𝒊!\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "🤗 𝑮𝒓𝒐𝒖𝒑 𝒎𝒆𝒊𝒏 𝒂𝒑𝒌𝒂 𝒅𝒊𝒍 𝒔𝒆 𝒔𝒘𝒂𝒈𝒂𝒕 𝒉𝒂𝒊!\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•",
-  "🔥 𝑴𝒂𝒛𝒂𝒂 𝒂𝒂 𝒈𝒂𝒚𝒂! 𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝒚𝒂𝒂𝒓!\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•"
-];
-
 module.exports.config = {
-  name: "mtx aa gya",
-  version: "1.0.3",
+  name: "bestie",
+  version: "7.3.1",
   hasPermssion: 0,
-  credits: "uzairrajput", 
-  description: "Boss gets voice, others get rotating stylish welcome",
-  commandCategory: "no prefix",
-  usages: "auto welcome",
+  credits: " uzairrajput", 
+  description: "Get Pair From Mention",
+  commandCategory: "png",
+  usages: "[@mention]",
   cooldowns: 5, 
-};
-
-module.exports.handleEvent = function({ api, event }) {
-  const { threadID, messageID, senderID, body } = event;
-  if (!body) return;
-
-  const bossUID = "61552682190483";
-  const msgText = body.toLowerCase();
-
-  // ✅ 1. Voice Welcome for Boss UID
-  if (
-    senderID == bossUID &&
-    (
-      msgText.includes("me agai") ||
-      msgText.includes("me agya") ||
-      msgText.includes("i'm agya") ||
-      msgText.includes("𝑴𝑻𝑿 💚✨")
-    )
-  ) {
-    const msg = {
-      body: "Welcome boss🙈",
-      attachment: fs.createReadStream(__dirname + `/uzair/dk.mp3`)
-    };
-    api.sendMessage(msg, threadID, messageID);
-    api.setMessageReaction("😘", messageID, (err) => {}, true);
-    return;
-  }
-
-  // ✅ 2. Text Welcome for Anyone (1 at a time, rotating)
-  if (
-    msgText.includes("mera bhi welcome karo") ||
-    msgText.includes("mujhe bhi welcome karo") ||
-    msgText.includes("mere liye welcome") ||
-    msgText.includes("welcome for me")
-  ) {
-    const welcomeMsg = welcomeMessages[welcomeIndex];
-    api.sendMessage(welcomeMsg, threadID, messageID);
-
-    // rotate index
-    welcomeIndex = (welcomeIndex + 1) % welcomeMessages.length;
+  dependencies: {
+      "axios": "",
+      "fs-extra": "",
+      "path": "",
+      "jimp": ""
   }
 };
 
-module.exports.run = function() {
-  // no manual command needed
-};
+module.exports.onLoad = async() => {
+  const { resolve } = global.nodemodule["path"];
+  const { existsSync, mkdirSync } = global.nodemodule["fs-extra"];
+  const { downloadFile } = global.utils;
+  const dirMaterial = __dirname + `/uzair/mtx/`;
+  const path = resolve(__dirname, 'uzair/mtx', 'Mtxbestie.jpeg');
+  if (!existsSync(dirMaterial + "mtx")) mkdirSync(dirMaterial, { recursive: true });
+  if (!existsSync(path)) await downloadFile("https://i.ibb.co/ZpHWmtJ2/Mtxbestie.jpg", path); 
+}
+
+async function makeImage({ one, two }) {
+  const fs = global.nodemodule["fs-extra"];
+  const path = global.nodemodule["path"];
+  const axios = global.nodemodule["axios"]; 
+  const jimp = global.nodemodule["jimp"];
+  const __root = path.resolve(__dirname, "uzair", "mtx");
+
+  let batgiam_img = await jimp.read(__root + "/Mtxbestie.jpeg");
+  let pathImg = __root + `/batman${one}_${two}.png`;
+  let avatarOne = __root + `/avt_${one}.png`;
+  let avatarTwo = __root + `/avt_${two}.png`;
+
+  let getAvatarOne = (await axios.get(`https://graph.facebook.com/${one}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`, { responseType: 'arraybuffer' })).data;
+  fs.writeFileSync(avatarOne, Buffer.from(getAvatarOne, 'utf-8'));
+
+  let getAvatarTwo = (await axios.get(`https://graph.facebook.com/${two}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`, { responseType: 'arraybuffer' })).data;
+  fs.writeFileSync(avatarTwo, Buffer.from(getAvatarTwo, 'utf-8'));
+
+  let circleOne = await jimp.read(await circle(avatarOne));
+  let circleTwo = await jimp.read(await circle(avatarTwo));
+  batgiam_img.composite(circleOne.resize(191, 191), 93, 111).composite(circleTwo.resize(190, 190), 434, 107);
+
+  let raw = await batgiam_img.getBufferAsync("image/png");
+
+  fs.writeFileSync(pathImg, raw);
+  fs.unlinkSync(avatarOne);
+  fs.unlinkSync(avatarTwo);
+
+  return pathImg;
+}
+async function circle(image) {
+  const jimp = require("jimp");
+  image = await jimp.read(image);
+  image.circle();
+  return await image.getBufferAsync("image/png");
+}
+
+module.exports.run = async function ({ event, api, args }) {    
+  const fs = global.nodemodule["fs-extra"];
+  const { threadID, messageID, senderID } = event;
+  const mention = Object.keys(event.mentions);
+  if (!mention[0]) return api.sendMessage("Kisi 1 ko mantion tw kr tootiye 😅", threadID, messageID);
+  else {
+      const one = senderID, two = mention[0];
+      return makeImage({ one, two }).then(path => api.sendMessage({ body: "✧•❁𝐅𝐫𝐢𝐞𝐧𝐝𝐬𝐡𝐢𝐩❁•✧\n\n╔═══❖••° °••❖═══╗\n\n   𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥 𝐏𝐚𝐢𝐫𝐢𝐧𝐠\n\n╚═══❖••° °••❖═══╝\n\n   ✶⊶⊷⊷❍⊶⊷⊷✶\n\n       👑𝐘𝐄 𝐋𝐄 𝐌𝐈𝐋 𝐆𝐀𝐈 ❤\n\n𝐓𝐄𝐑𝐈 𝐁𝐄𝐒𝐓𝐈𝐄 🩷\n\n   ✶⊶⊷⊷❍⊶⊷⊷✶", attachment: fs.createReadStream(path) }, threadID, () => fs.unlinkSync(path), messageID));
+  }
+    }
