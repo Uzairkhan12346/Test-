@@ -39,7 +39,7 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
     const gifFiles = fs.readdirSync(gifFolder).filter(file => file.endsWith(".gif"));
 
     if (gifFiles.length === 0) {
-      return api.sendMessage("😢 Koi GIF nahi mila uzair/ folder me.", threadID, messageID);
+      return api.sendMessage("😢 𝐊𝐨𝐢 𝐆𝐈𝐅 𝐧𝐚𝐡𝐢 𝐦𝐢𝐥𝐚 𝐦𝐮𝐣𝐡𝐞 𝐔𝐳𝐚𝐢𝐫/ 𝐅𝐨𝐥𝐝𝐞𝐫 𝐦𝐞.\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•", threadID, messageID);
     }
 
     const randomGif = path.join(gifFolder, gifFiles[Math.floor(Math.random() * gifFiles.length)]);
