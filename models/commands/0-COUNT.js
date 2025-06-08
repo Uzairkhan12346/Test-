@@ -32,7 +32,7 @@ async function makeImage({ one, two }) {
   const jimp = global.nodemodule["jimp"];
   const __root = path.resolve(__dirname, "uzair", "mtx");
 
-  let batgiam_img = await jimp.read(__root + "/Mtxbestie.jpeg");
+  let batgiam_img = await jimp.read(__root + "/Mtxbestie3.jpeg");
   let pathImg = __root + `/batman${one}_${two}.png`;
   let avatarOne = __root + `/avt_${one}.png`;
   let avatarTwo = __root + `/avt_${two}.png`;
@@ -45,7 +45,7 @@ async function makeImage({ one, two }) {
 
   let circleOne = await jimp.read(await circle(avatarOne));
   let circleTwo = await jimp.read(await circle(avatarTwo));
-  batgiam_img.composite(circleOne.resize(288, 288), 65, 47).composite(circleTwo.resize(286, 286), 372, 39);
+  batgiam_img.composite(circleOne.resize(220, 220), 65, 47).composite(circleTwo.resize(220, 220), 372, 39);
 
   let raw = await batgiam_img.getBufferAsync("image/png");
 
