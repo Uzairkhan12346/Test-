@@ -1,31 +1,45 @@
-const fs = require("fs"); const axios = require("axios"); const path = require("path");
+module.exports.config = {
+  name: "autosetgroup",
+  version: "1.0.0",
+  hasPermission: 1,
+  credits: "Uzair",
+  description: "Auto reset group name, emoji, and photo if changed.",
+  commandCategory: "group",
+  usages: "[]",
+  cooldowns: 5,
+};
 
-const dataPath = path.join(__dirname, "lockData.json"); const imageDir = path.join(__dirname, "uzair");
+const DEFAULT_NAME = "𝑴𝒀 𝑪𝑼𝑻𝑬 𝑮𝑹𝑶𝑼𝑷 💖";
+const DEFAULT_EMOJI = "💖";
+const DEFAULT_IMAGE_PATH = __dirname + "/cache/default.jpg"; // Put your default group image here
 
-// Folder create if not exists if (!fs.existsSync(imageDir)) fs.mkdirSync(imageDir);
+module.exports.handleEvent = async function ({ event, api }) {
+  const threadID = event.threadID;
 
-// Load lock data from file if exists let lockData = {}; if (fs.existsSync(dataPath)) { lockData = JSON.parse(fs.readFileSync(dataPath, "utf-8")); }
+  try {
+    const threadInfo = await api.getThreadInfo(threadID);
 
-function saveLockData() { fs.writeFileSync(dataPath, JSON.stringify(lockData, null, 2)); }
+    // Auto reset name
+    if (threadInfo.threadName !== DEFAULT_NAME) {
+      await api.setTitle(DEFAULT_NAME, threadID);
+    }
 
-module.exports.config = { name: "lockgroup", version: "3.0.0", hasPermssion: 1, credits: "Uzair🔥", description: "Group ka name, photo aur emoji lock karo aur auto reset karo (persistent)", commandCategory: "group", usages: "[on/off/status/list]", cooldowns: 5 };
+    // Auto reset emoji
+    if (threadInfo.emoji !== DEFAULT_EMOJI) {
+      await api.setGroupEmoji(DEFAULT_EMOJI, threadID);
+    }
 
-module.exports.run = async function ({ api, event, args }) { const threadID = event.threadID;
+    // Auto reset group picture (only if photo URL changed)
+    const currentImageSrc = threadInfo.imageSrc || "";
+    if (!currentImageSrc.includes("your_default_image_url_here")) {
+      const fs = require("fs");
+      const imageStream = fs.createReadStream(DEFAULT_IMAGE_PATH);
+      await api.changeGroupImage(imageStream, threadID);
+    }
 
-if (!args[0]) return api.sendMessage("⚠️ Use: lockgroup on/off/status/list", threadID);
+  } catch (err) {
+    console.log("Error in autosetgroup:", err);
+  }
+};
 
-const option = args[0].toLowerCase();
-
-if (option === "on") { try { const threadInfo = await api.getThreadInfo(threadID); const groupName = threadInfo.threadName; const groupEmoji = threadInfo.emoji || null;
-
-// No need to fetch group image, bot will use first image from uzair/ folder
-
-  lockData[threadID] = {
-    name: groupName,
-    image: "auto", // flag to auto-pick from uzair folder
-    emoji: groupEmoji
-  };
-  saveLockData();
-
-  return api.sendMessage(`🔒 Group ka naam, photo aur emoji ab LOCK ho chuke hain!\n🖼️ Photo uzair
-
+module.exports.run = async function () {};
