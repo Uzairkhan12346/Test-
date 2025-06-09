@@ -18,7 +18,6 @@ function formatUptime(seconds) {
   return `${d}d ${h}h ${m}m ${s}s`;
 }
 
-// To track which message already responded
 const respondedMsgIDs = new Set();
 
 module.exports.handleEvent = async ({ api, event, Users }) => {
@@ -27,18 +26,21 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
 
   const react = body.toLowerCase();
   if (
-    (react.includes("er") ||
-    react.includes("mak") ||
-    react.includes("or")) &&
+    (react.includes("er") || react.includes("mak") || react.includes("or")) &&
     !respondedMsgIDs.has(messageID)
   ) {
-    respondedMsgIDs.add(messageID); // Prevent replying again
+    respondedMsgIDs.add(messageID);
 
     const name = await Users.getNameUser(senderID);
     const uptime = formatUptime(process.uptime());
 
     const now = new Date();
-    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
     const dateStr = now.toLocaleDateString("en-PK", options);
     const timeStr = now.toLocaleTimeString("en-PK");
 
@@ -50,6 +52,8 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
       `💡 𝐉𝐚𝐛 𝐬𝐞 𝐭𝐮𝐦 𝐬𝐨𝐲𝐞 𝐭𝐡𝐞, 𝐦𝐞𝐢𝐧 𝐜𝐨𝐝𝐞 𝐜𝐡𝐚𝐥𝐚 𝐫𝐚𝐡𝐚 𝐭𝐡𝐚 — ${uptime}`,
     ];
 
+    const randomLine = poeticUptimeLines[Math.floor(Math.random() * poeticUptimeLines.length)];
+
     const msg = {
       body: `✨👑 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐓𝐇𝐄 𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐂𝐄𝐍𝐓𝐑𝐄 👑✨
 ━━━━━━━━━━━━━━━━━━
@@ -60,21 +64,17 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
 🧠 𝐄𝐝𝐮𝐜𝐚𝐭𝐢𝐨𝐧: 𝐁.𝐓𝐞𝐜𝐡 𝐈𝐍 𝐂𝐎𝐃𝐈𝐍𝐆 & 𝐇𝐀𝐂𝐊𝐈𝐍𝐆
 📱 𝐂𝐨𝐧𝐧𝐞𝐜𝐭: facebook.com/Mtxuzair
 ━━━━━━━━━━━━━━━━━━
-
 🔥 𝐁𝐔𝐓 𝐑𝐄𝐌𝐄𝐌𝐁𝐄𝐑 𝐓𝐇𝐈𝐒 🔥
 『𝐈 𝐝𝐨𝐧'𝐭 𝐭𝐚𝐥𝐤 𝐦𝐮𝐜𝐡, 𝐁𝐮𝐭 𝐈 𝐨𝐰𝐧 𝐞𝐯𝐞𝐫𝐲 𝐬𝐢𝐥𝐞𝐧𝐜𝐞.』
-
-🎩 𝐋𝐞𝐠𝐞𝐧𝐝𝐬 𝐝𝐨𝐧'𝐭 𝐛𝐫𝐚𝐠,
-𝐓𝐡𝐞𝐲 𝐥𝐞𝐭 𝐭𝐡𝐞𝐢𝐫 𝐰𝐨𝐫𝐤 𝐬𝐩𝐞𝐚𝐤. 💼
+🎩 𝐋𝐞𝐠𝐞𝐧𝐝𝐬 𝐝𝐨𝐧'𝐭 𝐛𝐫𝐚𝐠, 𝐓𝐡𝐞𝐲 𝐥𝐞𝐭 𝐭𝐡𝐞𝐢𝐫 𝐰𝐨𝐫𝐤 𝐬𝐩𝐞𝐚𝐤. 💼
 
 🕰 𝐁𝐨𝐭 𝐔𝐩𝐭𝐢𝐦𝐞 𝐑𝐞𝐩𝐨𝐫𝐭:
-${poeticUptimeLines.join("\n")}
+${randomLine}
 
 📆 𝐃𝐚𝐭𝐞: ${dateStr}
 ⏰ 𝐓𝐢𝐦𝐞: ${timeStr}
 
 🦋 『${name}, 𝐈 𝐀𝐦 𝐖𝐚𝐭𝐜𝐡𝐢𝐧𝐠...』
-
 ● ──────────────────── ●
 𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`,
       attachment: fs.createReadStream(__dirname + `/uzair/Owner.gif`)
