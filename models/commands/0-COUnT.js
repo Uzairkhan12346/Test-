@@ -1,6 +1,6 @@
 const fs = require("fs");
 module.exports.config = {
-  name: "owner",
+  name: "q",
   version: "11.0.0",
   hasPermssion: 0,
   credits: "uzairrajput",
@@ -15,9 +15,9 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
   const react = event.body.toLowerCase();
 
   if (
-    react.includes("owner") ||
-    react.includes("oner") ||
-    react.includes("malik")
+    react.includes("l") ||
+    react.includes("k") ||
+    react.includes("q")
   ) {
     const msg = {
       body: `
