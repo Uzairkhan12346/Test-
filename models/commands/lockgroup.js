@@ -2,18 +2,32 @@ const fs = require("fs");
 const axios = require("axios");
 const path = require("path");
 
+const dataPath = path.join(__dirname, "lockData.json");
+const imageDir = path.join(__dirname, "uzair");
+
+// Folder create if not exists
+if (!fs.existsSync(imageDir)) fs.mkdirSync(imageDir);
+
+// Load lock data from file if exists
+let lockData = {};
+if (fs.existsSync(dataPath)) {
+  lockData = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
+}
+
+function saveLockData() {
+  fs.writeFileSync(dataPath, JSON.stringify(lockData, null, 2));
+}
+
 module.exports.config = {
   name: "lockgroup",
-  version: "1.0.0",
+  version: "2.0.0",
   hasPermssion: 1,
   credits: "Uzair🔥",
-  description: "Group ka name, photo aur emoji lock karo aur auto reset karo",
+  description: "Group ka name, photo aur emoji lock karo aur auto reset karo (persistent)",
   commandCategory: "group",
   usages: "[on/off]",
   cooldowns: 5
 };
-
-const lockData = {};
 
 module.exports.run = async function ({ api, event, args }) {
   const threadID = event.threadID;
@@ -31,7 +45,7 @@ module.exports.run = async function ({ api, event, args }) {
       // Group image save karo agar hai
       if (groupImageSrc) {
         const img = await axios.get(groupImageSrc, { responseType: "arraybuffer" });
-        imagePath = path.join(__dirname, "uzair", `group_${threadID}.jpg`);
+        imagePath = path.join(imageDir, `group_${threadID}.jpg`);
         fs.writeFileSync(imagePath, Buffer.from(img.data, "binary"));
       }
 
@@ -40,6 +54,7 @@ module.exports.run = async function ({ api, event, args }) {
         image: imagePath,
         emoji: groupEmoji
       };
+      saveLockData();
 
       return api.sendMessage(`🔒 Group ka naam, photo aur emoji ab LOCK ho chuke hain!\n🔁 Koi change karega toh wapas reset ho jaayega.`, threadID);
     } catch (err) {
@@ -56,6 +71,8 @@ module.exports.run = async function ({ api, event, args }) {
     }
 
     delete lockData[threadID];
+    saveLockData();
+
     return api.sendMessage("🔓 Lock hata diya gaya! Ab koi bhi name, photo ya emoji change kar sakta hai.", threadID);
   }
 
@@ -81,21 +98,26 @@ module.exports.handleEvent = async function ({ api, event }) {
     }
 
     // 🙂 Emoji reset
-    if (lockedEmoji && currentEmoji !== lockedEmoji) {
-      await api.changeThreadEmoji(lockedEmoji, threadID);
-      api.sendMessage(`🙂 Group emoji change hua tha.\nWapas "${lockedEmoji}" kar diya.`, threadID);
+    if (currentEmoji !== lockedEmoji) {
+      await api.changeThreadEmoji(lockedEmoji || "", threadID);
+      api.sendMessage(`🙂 Group emoji change hua tha.\nWapas "${lockedEmoji || 'remove'}" kar diya.`, threadID);
     }
 
     // 🖼️ Image reset
-    if (lockedImagePath && currentImage) {
-      const currentImgRes = await axios.get(currentImage, { responseType: "arraybuffer" });
-      const currentBuffer = Buffer.from(currentImgRes.data, "binary");
-
+    if (lockedImagePath && fs.existsSync(lockedImagePath)) {
       const lockedBuffer = fs.readFileSync(lockedImagePath);
 
-      if (!currentBuffer.equals(lockedBuffer)) {
+      if (!currentImage) {
         await api.changeGroupImage(fs.createReadStream(lockedImagePath), threadID);
-        api.sendMessage("🖼️ Group ki photo badli gayi thi.\nWapas original photo laga di gayi.", threadID);
+        api.sendMessage("🖼️ Group ki photo delete kar di gayi thi.\nWapas original photo laga di gayi.", threadID);
+      } else {
+        const currentImgRes = await axios.get(currentImage, { responseType: "arraybuffer" });
+        const currentBuffer = Buffer.from(currentImgRes.data, "binary");
+
+        if (!currentBuffer.equals(lockedBuffer)) {
+          await api.changeGroupImage(fs.createReadStream(lockedImagePath), threadID);
+          api.sendMessage("🖼️ Group ki photo badli gayi thi.\nWapas original photo laga di gayi.", threadID);
+        }
       }
     }
 
