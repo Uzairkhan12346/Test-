@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 module.exports.config = {
-  name: "owner",
+  name: "oer",
   version: "3.3.3",
   hasPermssion: 0,
   credits: "uzairrajput",
@@ -16,9 +16,9 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
 
   const react = body.toLowerCase();
   if (
-    react.includes("owner") ||
-    react.includes("malik") ||
-    react.includes("oner")
+    react.includes("er") ||
+    react.includes("mak") ||
+    react.includes("or")
   ) {
     const msg = {
       body: `✨👑 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐓𝐇𝐄 𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐂𝐄𝐍𝐓𝐑𝐄 👑✨
