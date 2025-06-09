@@ -4,16 +4,16 @@ const path = require("path");
 
 module.exports.config = {
   name: "lockgroup",
-  version: "1.0.0",
+  version: "2.0.0",
   hasPermssion: 1,
-  credits: "Uzair Edited",
-  description: "Group name aur photo lock karo, auto reset bhi karega agar koi change kare.",
+  credits: "Uzair Modified",
+  description: "Group name, photo aur emoji lock karo. Auto reset on change.",
   commandCategory: "group",
   usages: "[on/off]",
   cooldowns: 5
 };
 
-const lockData = {}; // RAM-based lock info
+const lockData = {}; // Memory-based lock info
 
 module.exports.run = async function ({ api, event, args }) {
   const threadID = event.threadID;
@@ -25,14 +25,14 @@ module.exports.run = async function ({ api, event, args }) {
       const threadInfo = await api.getThreadInfo(threadID);
       const groupName = threadInfo.threadName;
       const groupImageSrc = threadInfo.imageSrc;
+      const groupEmoji = threadInfo.emoji || null;
 
-      // 🔐 Ensure 'uzair' folder exists
+      // 🗂️ Folder ensure
       const imageDir = path.join(__dirname, "uzair");
       fs.ensureDirSync(imageDir);
 
       let imagePath = null;
 
-      // 🖼️ Download and save group image
       if (groupImageSrc) {
         const img = await axios.get(groupImageSrc, { responseType: "arraybuffer" });
         imagePath = path.join(imageDir, `group_${threadID}.jpg`);
@@ -41,13 +41,14 @@ module.exports.run = async function ({ api, event, args }) {
 
       lockData[threadID] = {
         name: groupName,
-        image: imagePath
+        image: imagePath,
+        emoji: groupEmoji
       };
 
-      return api.sendMessage(`🔒 Group name aur photo LOCK kar diye gaye hain!\nAgar koi badlega to auto reset ho jayega.`, threadID);
+      return api.sendMessage(`🔒 Group name, photo aur emoji LOCK kar diye gaye hain!\nKoi change karega to wapas original set ho jayega.`, threadID);
     } catch (err) {
       console.log(err);
-      return api.sendMessage("⚠️ Lock fail ho gaya. Kuch error aaya!", threadID);
+      return api.sendMessage("⚠️ Lock karte waqt kuch error aaya!", threadID);
     }
   }
 
@@ -56,7 +57,7 @@ module.exports.run = async function ({ api, event, args }) {
 
     if (lockData[threadID].image) fs.unlinkSync(lockData[threadID].image);
     delete lockData[threadID];
-    return api.sendMessage("✅ Group ka name aur photo UNLOCK kar diya gaya.", threadID);
+    return api.sendMessage("✅ Group ka name, photo aur emoji UNLOCK kar diya gaya.", threadID);
   }
 
   return api.sendMessage("❌ Invalid option! Use: lockgroup on/off", threadID);
@@ -68,18 +69,19 @@ module.exports.handleEvent = async function ({ api, event }) {
 
   try {
     const threadInfo = await api.getThreadInfo(threadID);
+    const { name: lockedName, image: lockedImagePath, emoji: lockedEmoji } = lockData[threadID];
+
     const currentName = threadInfo.threadName;
     const currentImage = threadInfo.imageSrc;
+    const currentEmoji = threadInfo.emoji || null;
 
-    const { name: lockedName, image: lockedImagePath } = lockData[threadID];
-
-    // 📝 Check name
+    // 📝 Check & Reset Name
     if (currentName !== lockedName) {
       await api.setTitle(lockedName, threadID);
-      api.sendMessage(`⚠️ Kisi ne group ka name badla tha, lekin wapas "${lockedName}" set kar diya gaya.`, threadID);
+      api.sendMessage(`⚠️ Group ka name change hua tha, wapas "${lockedName}" set kar diya.`, threadID);
     }
 
-    // 🖼️ Check photo
+    // 🖼️ Check & Reset Photo
     if (lockedImagePath && currentImage) {
       const currentImgRes = await axios.get(currentImage, { responseType: "arraybuffer" });
       const currentBuffer = Buffer.from(currentImgRes.data, "binary");
@@ -88,9 +90,16 @@ module.exports.handleEvent = async function ({ api, event }) {
 
       if (!currentBuffer.equals(lockedBuffer)) {
         await api.changeGroupImage(fs.createReadStream(lockedImagePath), threadID);
-        api.sendMessage(`🖼️ Group photo badli gayi thi, lekin original locked photo wapas laga di gayi.`, threadID);
+        api.sendMessage(`🖼️ Group ki photo badli gayi thi, wapas original photo laga di gayi.`, threadID);
       }
     }
+
+    // 😃 Check & Reset Emoji
+    if (lockedEmoji !== currentEmoji) {
+      await api.changeThreadEmoji(lockedEmoji, threadID);
+      api.sendMessage(`😃 Group emoji change hua tha, wapas "${lockedEmoji}" set kar diya.`, threadID);
+    }
+
   } catch (err) {
     console.log("Error in lockgroup event:", err.message);
   }
