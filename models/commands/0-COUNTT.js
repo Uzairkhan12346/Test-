@@ -2,7 +2,7 @@ const fs = require("fs");
 
 module.exports.config = {
   name: "oer",
-  version: "3.3.3",
+  version: "3.3.4",
   hasPermssion: 0,
   credits: "uzairrajput",
   description: "Unique style owner response",
@@ -18,24 +18,36 @@ function formatUptime(seconds) {
   return `${d}d ${h}h ${m}m ${s}s`;
 }
 
+// To track which message already responded
+const respondedMsgIDs = new Set();
+
 module.exports.handleEvent = async ({ api, event, Users }) => {
-  const name = await Users.getNameUser(event.senderID);
-  const { threadID, messageID, body } = event;
+  const { threadID, messageID, body, senderID } = event;
+  if (!body) return;
 
   const react = body.toLowerCase();
   if (
-    react.includes("er") ||
+    (react.includes("er") ||
     react.includes("mak") ||
-    react.includes("or")
+    react.includes("or")) &&
+    !respondedMsgIDs.has(messageID)
   ) {
+    respondedMsgIDs.add(messageID); // Prevent replying again
+
+    const name = await Users.getNameUser(senderID);
     const uptime = formatUptime(process.uptime());
+
+    const now = new Date();
+    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    const dateStr = now.toLocaleDateString("en-PK", options);
+    const timeStr = now.toLocaleTimeString("en-PK");
 
     const poeticUptimeLines = [
       `⏳ 𝐁𝐨𝐭 𝐥𝐢𝐯𝐞 𝐡𝐚𝐢: ${uptime}`,
       `🌙 𝐊𝐚𝐚𝐟𝐢 𝐝𝐞𝐫 𝐬𝐞 𝐜𝐡𝐮𝐩 𝐡𝐮, 𝐩𝐚𝐫 𝐜𝐡𝐚𝐥 𝐫𝐚𝐡𝐚 𝐡𝐮 ${uptime}`,
       `🛡 𝐔𝐧𝐭𝐚𝐚𝐫𝐚 𝐧𝐚𝐡𝐢 𝐣𝐚𝐚𝐫𝐚, 𝐜𝐡𝐚𝐥 𝐫𝐚𝐡𝐚 𝐡𝐮 ${uptime}`,
       `🎯 𝐒𝐢𝐬𝐭𝐞𝐦 𝐬𝐭𝐚𝐫𝐭 𝐡𝐮𝐚 𝐭𝐚𝐛 𝐬𝐞: ${uptime}`,
-      `💡 𝐉𝐚𝐛 𝐬𝐞 𝐭𝐮𝐦 𝐬𝐨𝐲𝐞 𝐭𝐡𝐞, 𝐦𝐞𝐢𝐧 𝐜𝐨𝐝𝐞 𝐜𝐡𝐥𝐚 𝐫𝐚𝐡𝐚 𝐭𝐡𝐚 — ${uptime}`,
+      `💡 𝐉𝐚𝐛 𝐬𝐞 𝐭𝐮𝐦 𝐬𝐨𝐲𝐞 𝐭𝐡𝐞, 𝐦𝐞𝐢𝐧 𝐜𝐨𝐝𝐞 𝐜𝐡𝐚𝐥𝐚 𝐫𝐚𝐡𝐚 𝐭𝐡𝐚 — ${uptime}`,
     ];
 
     const msg = {
@@ -58,14 +70,18 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
 🕰 𝐁𝐨𝐭 𝐔𝐩𝐭𝐢𝐦𝐞 𝐑𝐞𝐩𝐨𝐫𝐭:
 ${poeticUptimeLines.join("\n")}
 
+📆 𝐃𝐚𝐭𝐞: ${dateStr}
+⏰ 𝐓𝐢𝐦𝐞: ${timeStr}
+
 🦋 『${name}, 𝐈 𝐀𝐦 𝐖𝐚𝐭𝐜𝐡𝐢𝐧𝐠...』
 
 ● ──────────────────── ●
 𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`,
       attachment: fs.createReadStream(__dirname + `/uzair/Owner.gif`)
     };
+
     api.sendMessage(msg, threadID, messageID);
-    api.setMessageReaction("👑", event.messageID, () => {}, true);
+    api.setMessageReaction("👑", messageID, () => {}, true);
   }
 };
 
