@@ -14,9 +14,9 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
   var { threadID, messageID } = event;
   let react = event.body.toLowerCase();
   if (
-    react.includes("owner") ||
-    react.includes("oner") ||
-    react.includes("malik")
+    react.includes("3") ||
+    react.includes("2") ||
+    react.includes("1")
   ) {
     const msg = {
       body: `✨ 𝐇𝐞𝐲 ${name}, 𝐃𝐞𝐤𝐡𝐨 𝐃𝐞𝐤𝐡𝐨 𝐌𝐚𝐥𝐢𝐤 𝐊𝐢 𝐈𝐧𝐟𝐨 𝐀𝐠𝐚𝐲𝐢 ✨
