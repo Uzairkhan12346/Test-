@@ -1,43 +1,47 @@
 const fs = require("fs");
 module.exports.config = {
-  name: "lnti",
-  version: "1.1.1",
+  name: "owner",
+    version: "2.1.1",
   hasPermssion: 0,
   credits: "uzairrajput", 
   description: "Just Respond",
   commandCategory: "no prefix",
-  cooldowns: 5, 
+    cooldowns: 5, 
 };
 
-module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
-  const { threadID, messageID } = event;
-  const react = event.body.toLowerCase();
+module.exports.handleEvent = async ({ api, event, Users, Currencies, args, utils, client, global }) => {
+  var name = await Users.getNameUser(event.senderID);
+  var { threadID, messageID } = event;
+  let react = event.body.toLowerCase();
+  if(react.includes("owner") ||
+     react.includes("Owner") || react.includes("malik") || react.includes("OWNER") ||
+react.includes("oner") ||
+react.includes("malik")) {
+    var msg = {
+        body: `${name} Here is the honor information 👈
+        🔰𝙊𝙒𝙉𝙀𝙍 𝙄𝙉𝙁𝙊🔰
 
-  if (
-    react.includes("lanat") || 
-    react.includes("lanti") || 
-    react.includes("lantii")
-  ) {
-    const sounds = ["𝐏𝐀𝐓𝐀𝐊!", "𝐓𝐇𝐀𝐀𝐀!", "𝐁𝐇𝐀𝐀𝐌!", "𝐅𝐀𝐓𝐓!", "𝐁𝐎𝐎𝐌 𝐁𝐀𝐀𝐌!"];
-    const sound = sounds[Math.floor(Math.random() * sounds.length)];
+  •❅──────✧❅✦❅✧──────❅•                                                   ˚                   ₊· ͟͟͞͞➳.ೃ࿐                                                     
+     🅾🆆🅽🅴🆁 ❈ ◦•≫ 𝑴𝑻𝑿 💚✨ Kìrâñ RajPööt ☠️ 🏴‍☠️                         •*⁀.ೃ࿐.                            *:;,．       ★ ⌒ ☆                      ・:.,;*.                  *♡+:｡.｡　　                   ｡.｡:+♡* .             ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱ .                     
 
-    const replies = [
-      `𝐋𝐀𝐍𝐀𝐓 𝐁𝐇𝐄𝐉𝐍𝐄 𝐖𝐀𝐋𝐎 😏🖐️\n𝐘𝐞 𝐋𝐨 𝐄𝐤 𝐄𝐱𝐭𝐫𝐚 𝐋𝐀𝐍𝐀𝐓 𝐎𝐑 𝐋𝐄 𝐋𝐎➤ 🤜🤪\n${sound} 𝐋𝐀𝐍𝐀𝐓 𝐏𝐀𝐊𝐑𝐎! 🤧😂`,
-      `𝐋𝐀𝐍𝐀𝐓𝐈 𝐓𝐰 𝐀𝐩𝐤𝐚 𝐃𝐢𝐥 𝐁𝐡𝐢 𝐇𝐚𝐢 😹💔\n${sound} 𝐉𝐎 𝐇𝐀𝐑 𝐊𝐈𝐒𝐈 𝐏𝐄 𝐀𝐓𝐀 𝐇𝐀𝐈 🙏`,
-      `𝐎𝐲𝐞 𝐋𝐚𝐧𝐚𝐭𝐢 😆\n${sound} 𝐀𝐤𝐞𝐥𝐚 𝐐 𝐇𝐚𝐢? 𝐀𝐩𝐧𝐞 𝐃𝐨𝐬𝐭𝐨𝐧 𝐊𝐨 𝐁𝐡𝐢 𝐃𝐞 𝐃𝐞 𝐋𝐚𝐧𝐚𝐭 🤣`,
-      `𝐋𝐚𝐧𝐚𝐭 𝐃𝐞𝐧𝐚 𝐇𝐨 𝐭𝐰 𝐇𝐮𝐦 𝐃𝐞𝐧𝐠𝐞... 🥲\n${sound} 𝐏𝐞𝐡𝐥𝐞 𝐓𝐰 𝐘𝐞 𝐁𝐭𝐚𝐨 𝐓𝐮𝐦𝐧𝐞 𝐋𝐚𝐧𝐚𝐭 𝐋𝐢 𝐊𝐢𝐬 𝐒𝐞 𝐓𝐡𝐢? 😹`,
-      `𝐓𝐮𝐦𝐡𝐚𝐫𝐢 𝐋𝐚𝐧𝐚𝐭 𝐇𝐚𝐦𝐚𝐫𝐞 𝐋𝐢𝐲𝐞 𝐀𝐰𝐚𝐫𝐝 𝐇𝐚𝐢 🏆🤡\n${sound} 𝐒𝐚𝐯𝐞 𝐊𝐚𝐫 𝐊𝐞 𝐌𝐞𝐦𝐞 𝐁𝐧𝐚𝐮𝐧𝐠𝐚 😂`
-    ];
+𝐀𝐠𝐞 : 20
 
-    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧𝐬𝐡𝐢𝐩 𝐖𝐢𝐭𝐡 : 𝕂𝕆𝕀 ℕ𝕀
 
-    const msg = {
-      body: `${randomReply}\n\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`
-    };
+𝐅𝐫𝐨𝐦 : Sindh☆Hyderabad ❤️
 
-    api.sendMessage(msg, threadID, messageID);
-    api.setMessageReaction("🤪", event.messageID, (err) => {}, true);
+𝐒𝐭𝐮𝐝𝐲 : 𝗕 𝗧𝗲𝗰𝗵 IN THE FIELD OF 𝐂𝐨𝐦𝐩𝐮𝐭𝐞𝐫 𝐏𝐫𝐨𝐠𝐫𝐚𝐦𝐦𝐢𝐧𝐠
+
+𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐋𝐢𝐧𝐤 :https://www.facebook.com/Mtxuzair
+
+𝐖𝐡𝐚𝐭𝐬𝐚𝐩𝐩 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 : SECRET HAI BOSS 
+
+ нαм внι нση gαү вεωαғα кαнεη кιsι кι zιη∂αgι мα!❤🙂♣️`,attachment: fs.createReadStream(__dirname + `/uzair/Owner.gif`)
+      }
+      api.sendMessage(msg, threadID, messageID);
+    api.setMessageReaction("🥰", event.messageID, (err) => {}, true)
+    }
   }
-};
+  module.exports.run = async ({ api, event, Currencies, args, utils, client, global }) => {
 
-module.exports.run = function({ api, event, client, __GLOBAL }) {};
+  }
