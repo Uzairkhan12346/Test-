@@ -2,105 +2,105 @@ const fs = require("fs-extra");
 const axios = require("axios");
 const path = require("path");
 
-const LOCK_PATH = path.join(__dirname, "Uzair", "lockgroup.json");
-fs.ensureDirSync(path.join(__dirname, "Uzair")); // Make sure Uzair folder exists
-if (!fs.existsSync(LOCK_PATH)) fs.writeJsonSync(LOCK_PATH, {}); // Create empty JSON if not exist
-
 module.exports.config = {
   name: "lockgroup",
-  version: "1.0.0",
+  version: "2.0.0",
   hasPermssion: 1,
   credits: "Uzair Rajput Mtx",
-  description: "Group name, emoji, theme aur photo ko lock karein (auto-reset)",
-  commandCategory: "Group",
+  description: "Group name, photo, emoji aur theme lock karne ka command.",
+  commandCategory: "group",
   usages: "[on/off]",
-  cooldowns: 5,
+  cooldowns: 5
 };
+
+const lockData = {};
 
 module.exports.run = async function ({ api, event, args }) {
   const threadID = event.threadID;
-  const data = fs.readJsonSync(LOCK_PATH);
 
-  if (!args[0]) return api.sendMessage("❌ Istemaal: lockgroup on/off", threadID);
+  if (!args[0]) return api.sendMessage("⚠️ Bara-e-meherbani: lockgroup on/off likho!", threadID);
 
   if (args[0].toLowerCase() === "on") {
     try {
-      const info = await api.getThreadInfo(threadID);
-      const name = info.threadName;
-      const emoji = info.emoji;
-      const themeID = info.threadThemeID;
-      const imageSrc = info.imageSrc;
+      const threadInfo = await api.getThreadInfo(threadID);
+      const groupName = threadInfo.threadName;
+      const groupImageSrc = threadInfo.imageSrc;
+      const emoji = threadInfo.emoji;
+      const themeID = threadInfo.threadThemeID;
 
       let imagePath = null;
-      if (imageSrc) {
-        const imgData = await axios.get(imageSrc, { responseType: "arraybuffer" });
-        imagePath = path.join(__dirname, "Uzair", `group_${threadID}.jpg`);
-        fs.writeFileSync(imagePath, Buffer.from(imgData.data, "binary"));
+
+      if (groupImageSrc) {
+        const img = await axios.get(groupImageSrc, { responseType: "arraybuffer" });
+        imagePath = path.join(__dirname, "cache", `group_${threadID}.jpg`);
+        fs.writeFileSync(imagePath, Buffer.from(img.data, "binary"));
       }
 
-      data[threadID] = {
-        name,
-        emoji,
-        themeID,
-        image: imagePath
+      lockData[threadID] = {
+        name: groupName,
+        image: imagePath,
+        emoji: emoji,
+        themeID: themeID
       };
 
-      fs.writeJsonSync(LOCK_PATH, data, { spaces: 2 });
-      return api.sendMessage(`🔒 Group ka name, emoji, theme aur photo lock kar diye gaye hain.\nKoi bhi change karega to wapas reset ho jayega.`, threadID);
-    } catch (e) {
-      console.error(e);
-      return api.sendMessage("⚠️ Lock lagane mein masla hua!", threadID);
+      return api.sendMessage("🔒 Group ka **Name**, **Photo**, **Emoji** aur **Theme** ab lock kar diya gaya hai!\n👀 Agar kisi ne change kiya toh main foran wapas reset kar dunga.", threadID);
+    } catch (err) {
+      console.log(err);
+      return api.sendMessage("❌ Lock laganay mein masla aa gaya! Dubara koshish karo.", threadID);
     }
   }
 
   if (args[0].toLowerCase() === "off") {
-    if (!data[threadID]) return api.sendMessage("⚠️ Ye group pehle se unlocked hai!", threadID);
+    if (!lockData[threadID]) return api.sendMessage("⚠️ Bhai! Group pe pehle se hi koi lock nahi laga hua.", threadID);
 
-    if (data[threadID].image) fs.unlinkSync(data[threadID].image);
-    delete data[threadID];
-    fs.writeJsonSync(LOCK_PATH, data, { spaces: 2 });
+    if (lockData[threadID].image) fs.unlinkSync(lockData[threadID].image);
+    delete lockData[threadID];
 
-    return api.sendMessage("✅ Group ka lock hata diya gaya hai.", threadID);
+    return api.sendMessage("✅ Group ka **Name**, **Photo**, **Emoji** aur **Theme** ka lock hata diya gaya hai.", threadID);
   }
 
-  return api.sendMessage("❌ Ghalat option! Istemaal: lockgroup on/off", threadID);
+  return api.sendMessage("⚠️ Ghalat option! Sirf likho: lockgroup on/off", threadID);
 };
 
 module.exports.handleEvent = async function ({ api, event }) {
   const threadID = event.threadID;
-  const data = fs.readJsonSync(LOCK_PATH);
-  if (!data[threadID]) return;
+  if (!lockData[threadID]) return;
 
   try {
-    const info = await api.getThreadInfo(threadID);
-    const { name, emoji, themeID, image } = data[threadID];
+    const threadInfo = await api.getThreadInfo(threadID);
+    const currentName = threadInfo.threadName;
+    const currentImage = threadInfo.imageSrc;
+    const currentEmoji = threadInfo.emoji;
+    const currentThemeID = threadInfo.threadThemeID;
 
-    if (info.threadName !== name) {
-      await api.setTitle(name, threadID);
-      api.sendMessage(`📛 Group ka name change kiya gaya tha, wapas "${name}" kar diya gaya.`, threadID);
+    const { name: lockedName, image: lockedImagePath, emoji: lockedEmoji, themeID: lockedThemeID } = lockData[threadID];
+
+    if (currentName !== lockedName) {
+      await api.setTitle(lockedName, threadID);
+      api.sendMessage(`⚠️ Kisi ne group ka name change kiya tha. Wapas "${lockedName}" set kar diya gaya hai.`, threadID);
     }
 
-    if (info.emoji !== emoji) {
-      await api.changeThreadEmoji(emoji, threadID);
-      api.sendMessage(`😎 Emoji change hua tha, wapas "${emoji}" kar diya gaya.`, threadID);
-    }
+    if (lockedImagePath && currentImage) {
+      const currentImgRes = await axios.get(currentImage, { responseType: "arraybuffer" });
+      const currentBuffer = Buffer.from(currentImgRes.data, "binary");
+      const lockedBuffer = fs.readFileSync(lockedImagePath);
 
-    if (info.threadThemeID !== themeID) {
-      await api.setThreadTheme(themeID, threadID);
-      api.sendMessage(`🎨 Theme change ki gayi thi, wapas original kar di gayi.`, threadID);
-    }
-
-    if (image && info.imageSrc) {
-      const currentImg = await axios.get(info.imageSrc, { responseType: "arraybuffer" });
-      const currentBuffer = Buffer.from(currentImg.data, "binary");
-      const originalBuffer = fs.readFileSync(image);
-
-      if (!currentBuffer.equals(originalBuffer)) {
-        await api.changeGroupImage(fs.createReadStream(image), threadID);
-        api.sendMessage(`🖼️ Group ki photo change hui thi, wapas original photo laga di gayi.`, threadID);
+      if (!currentBuffer.equals(lockedBuffer)) {
+        await api.changeGroupImage(fs.createReadStream(lockedImagePath), threadID);
+        api.sendMessage("🖼️ Group ki photo change hui thi. Wapas lock wali photo laga di gayi hai.", threadID);
       }
     }
-  } catch (e) {
-    console.error("🔧 lockgroup error:", e.message);
+
+    if (lockedEmoji !== currentEmoji) {
+      await api.setEmoji(lockedEmoji, threadID);
+      api.sendMessage(`😊 Emoji change hua tha. Wapas "${lockedEmoji}" set kar diya gaya hai.`, threadID);
+    }
+
+    if (lockedThemeID !== currentThemeID) {
+      await api.setTheme(lockedThemeID, threadID);
+      api.sendMessage("🎨 Theme change hua tha. Wapas pehle wala lock theme laga diya gaya hai.", threadID);
+    }
+  } catch (err) {
+    console.log("lockgroup error:", err.message);
   }
 };
