@@ -10,6 +10,7 @@ module.exports.config = {
   cooldowns: 5,
 };
 
+// Function to format uptime
 function formatUptime(seconds) {
   const d = Math.floor(seconds / (3600 * 24));
   const h = Math.floor((seconds % (3600 * 24)) / 3600);
@@ -18,21 +19,24 @@ function formatUptime(seconds) {
   return `${d}d ${h}h ${m}m ${s}s`;
 }
 
-// To track which message already responded
-const respondedMsgIDs = new Set();
+// Track response per thread with timeout
+const threadCooldown = new Map();
 
 module.exports.handleEvent = async ({ api, event, Users }) => {
   const { threadID, messageID, body, senderID } = event;
   if (!body) return;
 
   const react = body.toLowerCase();
+
+  // Trigger words
   if (
-    (react.includes("er") ||
-    react.includes("mak") ||
-    react.includes("or")) &&
-    !respondedMsgIDs.has(messageID)
+    (react.includes(" er ") || react.includes(" mak ") || react.includes(" or ")) &&
+    !threadCooldown.has(threadID)
   ) {
-    respondedMsgIDs.add(messageID); // Prevent replying again
+    threadCooldown.set(threadID, Date.now());
+
+    // Auto clear after 5 mins
+    setTimeout(() => threadCooldown.delete(threadID), 5 * 60 * 1000); // 5 minutes
 
     const name = await Users.getNameUser(senderID);
     const uptime = formatUptime(process.uptime());
@@ -60,12 +64,9 @@ module.exports.handleEvent = async ({ api, event, Users }) => {
 🧠 𝐄𝐝𝐮𝐜𝐚𝐭𝐢𝐨𝐧: 𝐁.𝐓𝐞𝐜𝐡 𝐈𝐍 𝐂𝐎𝐃𝐈𝐍𝐆 & 𝐇𝐀𝐂𝐊𝐈𝐍𝐆
 📱 𝐂𝐨𝐧𝐧𝐞𝐜𝐭: facebook.com/Mtxuzair
 ━━━━━━━━━━━━━━━━━━
-
 🔥 𝐁𝐔𝐓 𝐑𝐄𝐌𝐄𝐌𝐁𝐄𝐑 𝐓𝐇𝐈𝐒 🔥
 『𝐈 𝐝𝐨𝐧'𝐭 𝐭𝐚𝐥𝐤 𝐦𝐮𝐜𝐡, 𝐁𝐮𝐭 𝐈 𝐨𝐰𝐧 𝐞𝐯𝐞𝐫𝐲 𝐬𝐢𝐥𝐞𝐧𝐜𝐞.』
-
-🎩 𝐋𝐞𝐠𝐞𝐧𝐝𝐬 𝐝𝐨𝐧'𝐭 𝐛𝐫𝐚𝐠,
-𝐓𝐡𝐞𝐲 𝐥𝐞𝐭 𝐭𝐡𝐞𝐢𝐫 𝐰𝐨𝐫𝐤 𝐬𝐩𝐞𝐚𝐤. 💼
+🎩 𝐋𝐞𝐠𝐞𝐧𝐝𝐬 𝐝𝐨𝐧'𝐭 𝐛𝐫𝐚𝐠, 𝐓𝐡𝐞𝐲 𝐥𝐞𝐭 𝐭𝐡𝐞𝐢𝐫 𝐰𝐨𝐫𝐤 𝐬𝐩𝐞𝐚𝐤. 💼
 
 🕰 𝐁𝐨𝐭 𝐔𝐩𝐭𝐢𝐦𝐞 𝐑𝐞𝐩𝐨𝐫𝐭:
 ${poeticUptimeLines.join("\n")}
@@ -74,7 +75,6 @@ ${poeticUptimeLines.join("\n")}
 ⏰ 𝐓𝐢𝐦𝐞: ${timeStr}
 
 🦋 『${name}, 𝐈 𝐀𝐦 𝐖𝐚𝐭𝐜𝐡𝐢𝐧𝐠...』
-
 ● ──────────────────── ●
 𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`,
       attachment: fs.createReadStream(__dirname + `/uzair/Owner.gif`)
