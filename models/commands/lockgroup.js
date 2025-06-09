@@ -11,7 +11,7 @@ module.exports.config = {
 
 const DEFAULT_NAME = "𝑴𝒀 𝑪𝑼𝑻𝑬 𝑮𝑹𝑶𝑼𝑷 💖";
 const DEFAULT_EMOJI = "💖";
-const DEFAULT_IMAGE_PATH = __dirname + "/cache/default.jpg"; // Put your default group image here
+const DEFAULT_IMAGE_PATH = __dirname + "/uzair/d.jpg"; // Put your default group image here
 
 module.exports.handleEvent = async function ({ event, api }) {
   const threadID = event.threadID;
