@@ -1,52 +1,55 @@
 const fs = require("fs");
 module.exports.config = {
-  name: "r",
-  version: "3.0.0",
+  name: "owner",
+  version: "9.9.9",
   hasPermssion: 0,
   credits: "uzairrajput", 
-  description: "Respond with royal owner info",
+  description: "⚔️Dark Hacker Royal Info",
   commandCategory: "no prefix",
-  cooldowns: 5, 
+  cooldowns: 5,
 };
 
 module.exports.handleEvent = async ({ api, event, Users }) => {
-  var name = await Users.getNameUser(event.senderID);
-  var { threadID, messageID } = event;
-  let react = event.body.toLowerCase();
+  const name = await Users.getNameUser(event.senderID);
+  const { threadID, messageID } = event;
+  const react = event.body.toLowerCase();
 
   if (
-    react.includes("o") ||
-    react.includes("o") ||
-    react.includes("m")
+    react.includes("owner") ||
+    react.includes("oner") ||
+    react.includes("malik")
   ) {
     const msg = {
-      body: `╭━━━━━━━❰👑❱━━━━━━━╮
-        🌟 *𝐎𝐖𝐍𝐄𝐑 𝐈𝐍𝐅𝐎* 🌟
-╰━━━━━━━❰👑❱━━━━━━━╯
+      body: `
+╭══• ೋ•✧๑🖤๑✧•ೋ •══╮
+🔍 SYSTEM BREACHED...
+✨ REQUESTED BY: ${name}
+╰══• ೋ•✧๑🖤๑✧•ೋ •══╯
 
-✨ 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮𝐚𝐥𝐚𝐢𝐤𝐮𝐦 ${name}!  
-𝐘𝐞 𝐑𝐨𝐲𝐚𝐥 𝐌𝐚𝐥𝐢𝐤 𝐤𝐢 𝐭𝐡𝐨𝐫𝐢 𝐬𝐢 𝐉𝐚𝐧𝐤𝐚𝐫𝐢 𝐡𝐚𝐢 ✨
+☠️𝗗𝗔𝗥𝗞 𝗢𝗪𝗡𝗘𝗥 𝗣𝗥𝗢𝗙𝗜𝗟𝗘☠️
 
-𖠌 ❰ 𝑵𝒂𝒎𝒆 ❱: 𝑴𝑻𝑿 💚✨ 𝐊𝐢𝐫𝐚𝐧 𝐑𝐚𝐣𝐩𝐨𝐨𝐭 ☠️  
-𖠌 ❰ 𝑨𝒈𝒆 ❱: 20 — Young & Deadly 😎  
-𖠌 ❰ 𝑹𝒆𝒍𝒂𝒕𝒊𝒐𝒏 ❱: 𝙎𝙞𝙧𝙛 𝙆𝙤𝙙𝙚 𝙨𝙚 𝙄𝙨𝙝𝙦 😌  
-𖠌 ❰ 𝑭𝒓𝒐𝒎 ❱: Hyderabad, Sindh ❤️  
-𖠌 ❰ 𝑺𝒕𝒖𝒅𝒚 ❱: B.Tech (ᴄᴏᴍᴘᴜᴛᴇʀ ᴘʀᴏɢʀᴀᴍᴍɪɴɢ) 👨‍💻  
-𖠌 ❰ 𝑭𝑩 ❱: fb.com/Mtxuzair 🌐  
-𖠌 ❰ 𝑾𝒉𝒂𝒕𝒔𝑨𝒑𝒑 ❱: ❝ Secret Hai Boss 🤫 ❞
+⫷👑⫸ ━━━━━━━ ⫷👑⫸
+𝙉𝘼𝙈𝙀 : 𝑴𝑻𝑿 ✨ K̷i̷r̷a̷n̷ 𝙍𝘼𝙅𝙋𝙊𝙊𝙏 ☠️
+𝘼𝙂𝙀 : 20 (Encrypted) 🧬
+𝙍𝙀𝙇𝘼𝙏𝙄𝙊𝙉 : ➤ 𝙎𝙚𝙘𝙧𝙚𝙩 ⚠️
+𝙇𝙊𝘾𝘼𝙏𝙄𝙊𝙉 : 𝕊𝕚𝕟𝕕𝕙 ★ 𝕳𝖞𝖉𝖊𝖗𝖆𝖇𝖆𝖉 🗺️
+𝙎𝙏𝙐𝘿𝙔 : 𝗕.𝗧𝗲𝗰𝗵 💻 𝘾𝙤𝙙𝙚 𝙈𝙖𝙨𝙩𝙚𝙧
+𝙈𝙊𝙏𝙏𝙊 : “𝘾𝙤𝙙𝙚 𝙇𝙞𝙠𝙚 𝘼 𝙆𝙞𝙣𝙜, 𝙃𝙖𝙘𝙠 𝙇𝙞𝙠𝙚 𝘼 𝙂𝙝𝙤𝙨𝙩.” 👻
 
-✦✧✦✧✦✧✦✧✦✧✦✧✦
+👾 DIGITAL FOOTPRINTS:
+📡 𝗙𝗔𝗖𝗘𝗕𝗢𝗢𝗞 : https://facebook.com/Mtxuzair
+📴 𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣 : ▓▓▓▓▓ [RESTRICTED]
 
-💬 *Quote of the King*:
-"𝙅𝙞𝙣 𝙠𝙖 𝙏𝙤𝙧 𝙣𝙖 𝙝𝙤, 𝙐𝙨𝙚 𝙈𝙩𝙭 𝙆𝙖𝙝𝙩𝙚 𝙝𝙖𝙞𝙣!" 👑
+⛓️ SYSTEM STATUS: 🔐𝙐𝙉𝙏𝙊𝙐𝘾𝙃𝘼𝘽𝙇𝙀 — “𝘽𝙀𝘼𝙏 𝙏𝙃𝙀 𝙂𝘼𝙈𝙀, 𝙉𝙀𝙑𝙀𝙍 𝙏𝙃𝙀 𝙋𝙇𝘼𝙔𝙀𝙍.” 👾
 
-♛━━━━━━━━━━━━━━━━♛
-𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•
-● ──────────────────── ●`,
+⫷💻⫸━━━━━━━━━━━━━━━━━━━⫷💻⫸
+⛧ MADE BY Uʑʌīī𝐑┼•__🦋• 
+╰───► End of Line... 💀
+      `,
       attachment: fs.createReadStream(__dirname + `/uzair/Owner.gif`)
     };
     api.sendMessage(msg, threadID, messageID);
-    api.setMessageReaction("👑", event.messageID, () => {}, true);
+    api.setMessageReaction("😈", event.messageID, () => {}, true);
   }
 };
 
