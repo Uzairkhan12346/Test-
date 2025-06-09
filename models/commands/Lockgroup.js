@@ -2,105 +2,79 @@ const fs = require("fs-extra");
 const axios = require("axios");
 const path = require("path");
 
-module.exports.config = {
-  name: "lockgroup",
-  version: "2.0.0",
-  hasPermssion: 1,
-  credits: "Uzair Rajput Mtx",
-  description: "Group name, photo, emoji aur theme lock karne ka command.",
-  commandCategory: "group",
-  usages: "[on/off]",
-  cooldowns: 5
-};
-
-const lockData = {};
-
-module.exports.run = async function ({ api, event, args }) {
-  const threadID = event.threadID;
-
-  if (!args[0]) return api.sendMessage("⚠️ Bara-e-meherbani: lockgroup on/off likho!", threadID);
-
-  if (args[0].toLowerCase() === "on") {
-    try {
-      const threadInfo = await api.getThreadInfo(threadID);
-      const groupName = threadInfo.threadName;
-      const groupImageSrc = threadInfo.imageSrc;
-      const emoji = threadInfo.emoji;
-      const themeID = threadInfo.threadThemeID;
-
-      let imagePath = null;
-
-      if (groupImageSrc) {
-        const img = await axios.get(groupImageSrc, { responseType: "arraybuffer" });
-        imagePath = path.join(__dirname, "cache", `group_${threadID}.jpg`);
-        fs.writeFileSync(imagePath, Buffer.from(img.data, "binary"));
-      }
-
-      lockData[threadID] = {
-        name: groupName,
-        image: imagePath,
-        emoji: emoji,
-        themeID: themeID
-      };
-
-      return api.sendMessage("🔒 Group ka **Name**, **Photo**, **Emoji** aur **Theme** ab lock kar diya gaya hai!\n👀 Agar kisi ne change kiya toh main foran wapas reset kar dunga.", threadID);
-    } catch (err) {
-      console.log(err);
-      return api.sendMessage("❌ Lock laganay mein masla aa gaya! Dubara koshish karo.", threadID);
+module.exports = {
+  config: {
+    name: "lockgroup",
+    version: "1.0",
+    author: "Uzair",
+    countDown: 5,
+    role: 1,
+    shortDescription: {
+      en: "Lock group name and emoji"
+    },
+    longDescription: {
+      en: "Automatically reverts any group name or emoji change"
+    },
+    category: "group",
+    guide: {
+      en: "{pn} to lock the group name and emoji"
     }
-  }
+  },
 
-  if (args[0].toLowerCase() === "off") {
-    if (!lockData[threadID]) return api.sendMessage("⚠️ Bhai! Group pe pehle se hi koi lock nahi laga hua.", threadID);
+  onStart: async function ({ api, event }) {
+    const threadID = event.threadID;
 
-    if (lockData[threadID].image) fs.unlinkSync(lockData[threadID].image);
-    delete lockData[threadID];
-
-    return api.sendMessage("✅ Group ka **Name**, **Photo**, **Emoji** aur **Theme** ka lock hata diya gaya hai.", threadID);
-  }
-
-  return api.sendMessage("⚠️ Ghalat option! Sirf likho: lockgroup on/off", threadID);
-};
-
-module.exports.handleEvent = async function ({ api, event }) {
-  const threadID = event.threadID;
-  if (!lockData[threadID]) return;
-
-  try {
+    // Get current group info
     const threadInfo = await api.getThreadInfo(threadID);
-    const currentName = threadInfo.threadName;
-    const currentImage = threadInfo.imageSrc;
-    const currentEmoji = threadInfo.emoji;
-    const currentThemeID = threadInfo.threadThemeID;
+    const groupName = threadInfo.threadName || "No name";
+    const emoji = threadInfo.emoji || "❌";
 
-    const { name: lockedName, image: lockedImagePath, emoji: lockedEmoji, themeID: lockedThemeID } = lockData[threadID];
+    const data = {
+      groupName,
+      emoji
+    };
 
-    if (currentName !== lockedName) {
-      await api.setTitle(lockedName, threadID);
-      api.sendMessage(`⚠️ Kisi ne group ka name change kiya tha. Wapas "${lockedName}" set kar diya gaya hai.`, threadID);
+    const filePath = path.join(__dirname, "cache", `lock_${threadID}.json`);
+    fs.ensureDirSync(path.join(__dirname, "cache"));
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+    return api.sendMessage(`✅ Group has been locked.\n🔒 Name: ${groupName}\n🔒 Emoji: ${emoji}`, threadID);
+  },
+
+  handleEvent: async function ({ api, event }) {
+    const { threadID } = event;
+
+    const filePath = path.join(__dirname, "cache", `lock_${threadID}.json`);
+    if (!fs.existsSync(filePath)) return;
+
+    const stored = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    const current = await api.getThreadInfo(threadID);
+
+    const currentName = current.threadName || "No name";
+    const currentEmoji = current.emoji || "❌";
+
+    let changed = false;
+
+    if (currentName !== stored.groupName) {
+      await api.setTitle(stored.groupName, threadID);
+      changed = true;
     }
 
-    if (lockedImagePath && currentImage) {
-      const currentImgRes = await axios.get(currentImage, { responseType: "arraybuffer" });
-      const currentBuffer = Buffer.from(currentImgRes.data, "binary");
-      const lockedBuffer = fs.readFileSync(lockedImagePath);
-
-      if (!currentBuffer.equals(lockedBuffer)) {
-        await api.changeGroupImage(fs.createReadStream(lockedImagePath), threadID);
-        api.sendMessage("🖼️ Group ki photo change hui thi. Wapas lock wali photo laga di gayi hai.", threadID);
-      }
+    if (currentEmoji !== stored.emoji) {
+      await api.changeThreadEmoji(stored.emoji, threadID);
+      changed = true;
     }
 
-    if (lockedEmoji !== currentEmoji) {
-      await api.setEmoji(lockedEmoji, threadID);
-      api.sendMessage(`😊 Emoji change hua tha. Wapas "${lockedEmoji}" set kar diya gaya hai.`, threadID);
-    }
+    if (changed) {
+      const imageURL = "https://i.ibb.co/MD9CrCYw/Messenger-creation-1203929291062179.jpg";
+      const imagePath = path.join(__dirname, "uzair", "locked.jpeg");
+      const res = await axios.get(imageURL, { responseType: "arraybuffer" });
+      fs.writeFileSync(imagePath, Buffer.from(res.data, "binary"));
 
-    if (lockedThemeID !== currentThemeID) {
-      await api.setTheme(lockedThemeID, threadID);
-      api.sendMessage("🎨 Theme change hua tha. Wapas pehle wala lock theme laga diya gaya hai.", threadID);
+      api.sendMessage({
+        body: "🚫 Group name or emoji is locked!",
+        attachment: fs.createReadStream(imagePath)
+      }, threadID);
     }
-  } catch (err) {
-    console.log("lockgroup error:", err.message);
   }
 };
