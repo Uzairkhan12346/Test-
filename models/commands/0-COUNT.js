@@ -1,9 +1,9 @@
 module.exports.config = {
-  name: "cover",
-  version: "1.0.1",
+  name: "coverdp",
+  version: "1.0.0",
   hasPermssion: 1,
   credits: "uzairrajput",
-  description: "Show Facebook cover photo of mentioned user or your own.",
+  description: "Show Facebook profile picture of mentioned user or your own.",
   commandCategory: "utility",
   cooldowns: 0
 };
@@ -29,30 +29,30 @@ module.exports.run = async function({ event, api, Users }) {
     name = await Users.getNameUser(uid);
   }
 
-  // ✅ Facebook Graph API to get cover photo
-  const url = `https://graph.facebook.com/${uid}?fields=cover&access_token=6628568379|c1e620fa708a1d5696fb991c1bde5662`;
+  // ✅ Facebook Graph API to get profile picture
+  const url = `https://graph.facebook.com/${uid}/picture?type=large&redirect=false&access_token=6628568379|c1e620fa708a1d5696fb991c1bde5662`;
 
   const axios = require("axios");
   try {
     const res = await axios.get(url);
-    const coverUrl = res.data.cover?.source;
+    const dpUrl = res.data.data?.url;
 
-    if (!coverUrl) {
-      return api.sendMessage("❌ Cover photo nahi mil saki. Shayad privacy on hai.", event.threadID, event.messageID);
+    if (!dpUrl) {
+      return api.sendMessage("❌ Profile picture nahi mil saki. Shayad privacy on hai.", event.threadID, event.messageID);
     }
 
-    const filePath = __dirname + "/cache/cover.jpg";
+    const filePath = __dirname + "/cache/profile.jpg";
 
-    request(encodeURI(coverUrl))
+    request(encodeURI(dpUrl))
       .pipe(fs.createWriteStream(filePath))
       .on("close", () => {
         api.sendMessage({
-          body: `📷 𝐋𝐨 𝐛𝐡𝐚𝐢 ${name} 𝐤𝐢 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐂𝐨𝐯𝐞𝐫 𝐏𝐢𝐜 😎\n🌈 𝐒𝐭𝐲𝐥𝐞 𝐚𝐮𝐫 𝐒𝐡𝐚𝐧 𝐝𝐨𝐧𝐨 𝐚𝐥𝐚𝐠 𝐡𝐢 𝐡𝐚𝐢 💖\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`,
+          body: `📸 𝐋𝐨 𝐛𝐡𝐚𝐢 ${name} 𝐤𝐢 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐏𝐫𝐨𝐟𝐢𝐥𝐞 𝐏𝐢𝐜 😎\n🌟 𝐒𝐰𝐚𝐠 𝐚𝐮𝐫 𝐒𝐭𝐲𝐥𝐞 𝐭𝐨 𝐛𝐚𝐧𝐭𝐚 𝐡𝐚𝐢 💖\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`,
           attachment: fs.createReadStream(filePath)
         }, event.threadID, () => fs.unlinkSync(filePath), event.messageID);
       });
   } catch (err) {
     console.error(err);
-    return api.sendMessage("❌ Koi error aa gaya cover photo laate waqt.", event.threadID, event.messageID);
+    return api.sendMessage("❌ Koi error aa gaya profile picture laate waqt.", event.threadID, event.messageID);
   }
 };
