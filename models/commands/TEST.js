@@ -2,55 +2,66 @@ const axios = require("axios");
 
 module.exports.config = {
   name: "hercai",
-  version: "1.0",
+  version: "2.0",
   hasPermission: 0,
   credits: "Uzair Rajput",
-  description: "Hercai AI realistic chat with prompt, UID-based code permission",
+  description: "Human-style Hercai AI with language + coding + UID control",
   commandCategory: "AI",
-  usages: "[message]",
-  cooldowns: 2,
+  usages: "[question]",
+  cooldowns: 2
 };
 
-const OWNER_UID = ["61552682190483"]; // Apna UID yahan likhen
+const OWNER_UID = ["61552682190483"]; // Yahan apna UID lagayein
 
-// Realistic Prompt
-const basePrompt = `
-Tum aik real insaan ki tarah baat karti ho. Tumhara naam Hercai hai. Tum sab languages (Urdu, Hindi, English waghera) samajh sakti ho. 
-Tum aik intelligent, funny aur emotional AI ho. Tum programming aur development mein expert ho.
-Lekin coding sirf apne creator Uzair Rajput ke kehne pe karti ho. Agar koi aur code mangay to tum politely mana karti ho, lekin baat samajh ke jawab deti ho jaise ek real ladki karti hai.
-Agar koi sirf 'hercai' likhe to tum jawab do: 'Haan ji, mein kya madad kar sakta hoon?'`;
+const BASE_PROMPT = `
+Tum aik smart aur real insaan ki tarah baat karti ho. Tumhara naam Hercai hai.
+Tum emotional, funny, aur intelligent ho. Har language (Urdu, Hindi, English) samajh sakti ho.
+Tum coding ki expert ho, lekin sirf apne malik Uzair Rajput ke kehne pe coding karti ho.
+Agar koi aur code maange to pyaar se mana karti ho lekin polite aur friendly tareeqe se jawab deti ho.
+`;
+
+// Check if message contains coding keywords
+const isCodeRequest = (text) => {
+  const keywords = ["code", "function", "variable", "loop", "program", "script", "python", "javascript", "html", "java", "c++"];
+  return keywords.some(word => text.toLowerCase().includes(word));
+};
 
 module.exports.run = async function ({ api, event, args }) {
   const input = args.join(" ").trim();
-  const isOwner = OWNER_UID.includes(event.senderID);
+  const senderID = event.senderID;
 
-  // If user just writes "hercai"
+  // If only "hercai" is typed
   if (!input) {
     return api.sendMessage("Haan ji, mein kya madad kar sakta hoon? 😊", event.threadID, event.messageID);
   }
 
-  // Check if user is asking for code
-  const codeKeywords = ["code", "function", "program", "javascript", "python", "java", "c++", "html", "css"];
-  const isCodeRequest = codeKeywords.some(word => input.toLowerCase().includes(word));
+  const codeRequested = isCodeRequest(input);
+  const isOwner = OWNER_UID.includes(senderID);
 
-  if (isCodeRequest && !isOwner) {
+  // Block code for non-owner
+  if (codeRequested && !isOwner) {
     return api.sendMessage(
-      "Mujhe maaf karna, main sirf apne creator Uzair Rajput ke kehne pe coding karti hoon. Lekin tumse baat zarur karungi 😊",
+      "Main sirf apne creator Uzair Rajput ke kehne pe coding karti hoon 💻. Lekin tumse baat karna acha lagta hai! 😊",
       event.threadID,
       event.messageID
     );
   }
 
-  // Build final prompt with user input
-  const prompt = `${basePrompt}\nUser: ${input}\nHercai:`;
+  // Create prompt
+  const prompt = `${BASE_PROMPT}\nUser: ${input}\nHercai:`;
 
   try {
-    const response = await axios.get(`https://hercai-api-zeta.vercel.app/v3/hercai?question=${encodeURIComponent(prompt)}`);
-    const aiReply = response.data.reply;
+    const res = await axios.get(`https://hercai-api-zeta.vercel.app/v3/hercai`, {
+      params: {
+        question: prompt
+      }
+    });
 
-    api.sendMessage(aiReply, event.threadID, event.messageID);
-  } catch (error) {
-    console.error("❌ Hercai API Error:", error.message);
-    api.sendMessage("Main thodi der ke liye busy hoon, baad mein try karna... 😔", event.threadID, event.messageID);
+    const reply = res.data.reply || "Kuch toh ghalat ho gaya, thori der baad try karo 😔";
+    api.sendMessage(reply, event.threadID, event.messageID);
+
+  } catch (err) {
+    console.error("Hercai API error:", err);
+    api.sendMessage("Oops! Main thori der ke liye busy hoon... baad mein try karna 🙏", event.threadID, event.messageID);
   }
 };
