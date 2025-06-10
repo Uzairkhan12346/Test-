@@ -134,8 +134,6 @@
     "lixi": {
         "cooldownTime": 1100000
     },
-    "listenMqtt": true {
-    },
     "sim": {
         "APIKEY": "Priyansh_1234567890"
     },
