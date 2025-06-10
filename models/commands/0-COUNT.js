@@ -1,40 +1,90 @@
-const fs = require("fs");
-
 module.exports.config = {
-  name: "gana",
-  version: "1.1.1",
-  hasPermssion: 0,
-  credits: "uzairrajput", 
-  description: "Just Respond",
-  commandCategory: "no prefix",
-  cooldowns: 5, 
+    name: "botcheck",
+    version: "1.0.1",
+    hasPermssion: 1,
+    credits: "uzairrajput",
+    description: "notifacation in the group",
+    commandCategory: "system",
+    dependencies: {
+        "fs-extra": ""
+    },
+    cooldowns: 5,
+    envConfig: {
+        autoUnsend: false,
+        unsendMessageAfter: 5
+    }
 };
 
-module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
-  const { threadID, messageID, senderID, body } = event;
-  const react = body.toLowerCase();
+module.exports.handleEvent = async function({ api, event, Currencies, Users, getText }) {
+    var {threadID, senderID } = event;
+    const { createReadStream, existsSync, mkdirSync } = global.nodemodule["fs-extra"];
 
-  if (
-    react.includes("gana") ||
-    react.includes("song") ||
-    react.includes("music")
-  ) {
-    api.getUserInfo(senderID, (err, result) => {
-      if (err) return console.error(err);
-      const name = result[senderID].name;
+    threadID = String(threadID);
+    senderID = String(senderID);
 
-      const msg = {
-        body: `🌸 𝐇𝐞𝐲  @${name} 🌸\n\n𝐀𝐠𝐚𝐫 𝐀𝐩𝐧𝐞 𝐣𝐨 [🎵 𝐒𝐨𝐧𝐠] 𝐬𝐮𝐧𝐚 𝐡𝐚𝐢 𝐭𝐰 𝐩𝐡𝐥𝐞 𝐮𝐬𝐤𝐚 𝐧𝐚𝐦𝐞 𝐥𝐢𝐤𝐡𝐞𝐢𝐧 🙂🖐️\n.𝐌𝐮𝐬𝐢𝐜 𝐚𝐨 𝐫𝐚𝐣𝐚 𝐀𝐢𝐬𝐞\n\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`,
-        mentions: [{
-          tag: `@${name}`,
-          id: senderID
-        }]
-      };
+    const thread = global.data.threadData.get(threadID) || {};
 
-      api.sendMessage(msg, threadID, messageID);
-      api.setMessageReaction("🎧", messageID, (err) => {}, true);
-    });
-  }
-};
+    let exp = (await Currencies.getData(senderID)).exp;
+    exp = exp += 1;
 
-module.exports.run = function({ api, event, client, __GLOBAL }) {};
+    if (isNaN(exp)) return;
+
+    if (typeof thread["rankup"] != "undefined" && thread["rankup"] == false) {
+        await Currencies.setData(senderID, { exp });
+        return;
+    };
+
+    const curLevel = Math.floor((Math.sqrt(1 + (4 * exp / 3) + 1) / 2));
+    const level = Math.floor((Math.sqrt(1 + (4 * (exp + 1) / 3) + 1) / 2));
+
+    if (level > curLevel && level != 1) {
+        const name = global.data.userName.get(senderID) || await Users.getNameUser(senderID);
+        var messsage = (typeof thread.customRankup == "undefined") ? msg = getText("levelup") : msg = thread.customRankup,
+            arrayContent;
+
+        messsage = messsage
+            .replace(/\{name}/g, name)
+            .replace(/\{level}/g, level);
+
+        if (existsSync(__dirname + "/cache/rankup/")) mkdirSync(__dirname + "/cache/rankup/", { recursive: true });
+        if (existsSync(__dirname + `/cache/rankup/rankup.mp4`)) arrayContent = { body: messsage, attachment: createReadStream(__dirname + `/cache/rankup/rankup.mp4`), mentions: [{ tag: name, id: senderID }] };
+        else arrayContent = { body: messsage, mentions: [{ tag: name, id: senderID }] };
+        const moduleName = this.config.name;
+        api.sendMessage(arrayContent, threadID, async function (error, info){
+            if (global.configModule[moduleName].autoUnsend) {
+                await new Promise(resolve => setTimeout(resolve, global.configModule[moduleName].unsendMessageAfter * 1000));
+                return api.unsendMessage(info.messageID);
+            } else return;
+        });
+    }
+
+    await Currencies.setData(senderID, { exp });
+    return;
+}
+
+module.exports.languages = {
+    "vi": {
+        "off": "tắt",
+        "on": "bật",
+        "successText": "thành công thông báo rankup!",
+        "levelup": " Chúc mừng {name} đã đạt tới level {level} "
+    },
+    "en": {
+        "on": "on",
+        "off": "off",
+        "successText": "success notification rankup!",
+        "levelup": "✨🧠 𝐂𝐨𝐧𝐠𝐫𝐚𝐭𝐳 {name}! 𝐓𝐮𝐦𝐡𝐚𝐫𝐢 𝐦𝐞𝐡𝐧𝐚𝐭 𝐧𝐞 𝐟𝐢𝐫 𝐬𝐞 𝐤𝐚𝐚𝐫𝐚𝐦𝐚𝐭 𝐝𝐢𝐤𝐡𝐚𝐢 😾🤟",
+    }
+}
+
+module.exports.run = async function({ api, event, Threads, getText }) {
+    const { threadID, messageID } = event;
+    let data = (await Threads.getData(threadID)).data;
+
+    if (typeof data["rankup"] == "undefined" || data["rankup"] == false) data["rankup"] = true;
+    else data["rankup"] = false;
+
+    await Threads.setData(threadID, { data });
+    global.data.threadData.set(threadID, data);
+    return api.sendMessage(`${(data["rankup"] == true) ? getText("on") : getText("off")} ${getText("successText")}`, threadID, messageID);
+                                                                                                                                                                                   }
