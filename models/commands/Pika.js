@@ -8,7 +8,7 @@ module.exports = {
   config: {
     name: "hercai",
     version: "1.0",
-    author: "Uzair Rajput Mtx",
+    author: "Uzair Rajput Mtx,",
     countDown: 0,
     role: 0,
     shortDescription: "AI Romantic Girlfriend",
