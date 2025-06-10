@@ -72,7 +72,7 @@ module.exports.run = async function ({ api, event, args }) {
   const prompt = `${BASE_PROMPT}\nUser: ${input}\nHercai:`;
 
   try {
-    const res = await axios.get(`https://hercai-api-zeta.vercel.app/v3/hercai`, {
+    const res = await axios.get(`https://uzairrajput-ytdl-api-master.onrender.com/v3/hercai`, {
       params: { question: prompt }
     });
     const reply = res.data.reply || "Thoda confuse ho gayi hoon... dobara bolo na 💬";
