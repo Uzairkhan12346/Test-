@@ -4,9 +4,9 @@ const login = require("fca-mtx-uzair");
 
 const config = {
   name: "coverdp",
-  aliases: ["cp", "cover"],
+  aliases: ["cover", "cp"],
   author: "Uzair",
-  description: "Get Facebook Cover Photo (public or private)",
+  description: "Get Facebook cover photo (public/private)",
   usePrefix: true,
   role: 0,
   cooldowns: 5,
@@ -17,10 +17,13 @@ const onStart = async ({ api, event, args }) => {
     const appState = JSON.parse(fs.readFileSync("./Uzair.json", "utf8"));
 
     login({ appState }, async (err, fcaApi) => {
-      if (err) return api.sendMessage("❌ FCA login failed.", event.threadID, event.messageID);
+      if (err) {
+        return api.sendMessage("❌ Login failed. Invalid AppState.", event.threadID, event.messageID);
+      }
 
       let uid;
 
+      // Detect user ID
       if (args[0]) {
         if (/^\d+$/.test(args[0])) {
           uid = args[0];
@@ -31,36 +34,32 @@ const onStart = async ({ api, event, args }) => {
       }
 
       if (!uid) {
-        uid =
-          event.type === "message_reply"
-            ? event.messageReply.senderID
-            : Object.keys(event.mentions)[0] || event.senderID;
+        uid = event.messageReply?.senderID || Object.keys(event.mentions)[0] || event.senderID;
       }
 
+      // Get access token
       const token = fcaApi.getAccessToken?.();
-      if (!token) {
-        return api.sendMessage("❌ Unable to get access token from FCA.", event.threadID, event.messageID);
-      }
+      if (!token) return api.sendMessage("❌ Can't get access token.", event.threadID, event.messageID);
 
+      // Get cover photo via Graph API
       const res = await axios.get(`https://graph.facebook.com/${uid}?fields=cover&access_token=${token}`);
+      const coverUrl = res.data?.cover?.source;
 
-      if (!res.data?.cover?.source) {
-        return api.sendMessage("❌ Cover photo not found (user may not have one).", event.threadID, event.messageID);
+      if (!coverUrl) {
+        return api.sendMessage("❌ Cover photo not found.", event.threadID, event.messageID);
       }
 
-      const image = await axios.get(res.data.cover.source, { responseType: "stream" });
+      // Stream and send
+      const imgStream = await axios.get(coverUrl, { responseType: "stream" });
 
-      return api.sendMessage(
-        {
-          body: `🖼️ Cover Photo of UID: ${uid}`,
-          attachment: image.data,
-        },
-        event.threadID,
-        event.messageID
-      );
+      api.sendMessage({
+        body: `🖼️ Facebook Cover of UID: ${uid}`,
+        attachment: imgStream.data,
+      }, event.threadID, event.messageID);
     });
-  } catch (err) {
-    console.error("CoverDP Error:", err);
+
+  } catch (e) {
+    console.log(e);
     api.sendMessage("❌ Error occurred while fetching cover photo.", event.threadID, event.messageID);
   }
 };
