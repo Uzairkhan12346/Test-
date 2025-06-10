@@ -25,8 +25,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.713Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.176Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "sb",
@@ -34,8 +34,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "locale",
@@ -43,8 +43,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "vpd",
@@ -52,8 +52,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "ps_l",
@@ -61,8 +61,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "ps_n",
@@ -70,8 +70,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "c_user",
@@ -79,8 +79,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "xs",
@@ -88,8 +88,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "fr",
@@ -97,8 +97,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "wl_cbv",
@@ -106,8 +106,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     },
     {
         "key": "fbl_st",
@@ -115,8 +115,8 @@ module.exports.run = async function({ api, event, args }) {
         "domain": "facebook.com",
         "path": "/",
         "hostOnly": false,
-        "creation": "2025-06-10T05:54:03.714Z",
-        "lastAccessed": "2025-06-10T05:54:03.714Z"
+        "creation": "2025-06-10T05:57:41.177Z",
+        "lastAccessed": "2025-06-10T05:57:41.177Z"
     }
 ]"; // Replace with your Facebook cookie
 
