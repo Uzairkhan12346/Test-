@@ -1,70 +1,47 @@
-const axios = require("axios");
-const fs = require("fs");
-const login = require("fca-mtx-uzair");
-
-const config = {
-  name: "coverdp",
-  aliases: ["cover", "cp"],
-  author: "Uzair",
-  description: "Get Facebook cover photo (public/private)",
-  usePrefix: true,
-  role: 0,
-  cooldowns: 5,
+module.exports.config = {
+  name: "quran",
+  version: "1.0.0",
+  hasPermision: 0,
+  credit: "uzairrajput",
+  description: "random quran verse",
+  commandCategory: "random-img",
+  cooldowns: 0,
 };
+module.exports.run = async function({api, event, args, utils, Users, Threads}) {
+const axios = require("axios")
+const request = require("request")
+const fs = require("fs-extra")
+var link = ["https://i.imgur.com/qH2Hb9Z.jpeg", "https://i.imgur.com/3QjXcwo.jpeg", "https://i.imgur.com/tUWF1qD.jpeg", "https://i.imgur.com/0lbMSHZ.jpeg", "https://i.imgur.com/hGmjRO7.jpeg", "https://i.imgur.com/4LyiZOC.jpeg", "https://i.imgur.com/nr0Po7U.jpeg", "https://i.imgur.com/biVmA6I.jpeg", "https://i.imgur.com/eStDAB8.jpeg", "https://i.imgur.com/S09KWaH.jpeg"];
+var amir = [`Surat No 10 : سورة يونس - Ayat No 25
 
-const onStart = async ({ api, event, args }) => {
-  try {
-    const appState = JSON.parse(fs.readFileSync("./Uzair.json", "utf8"));
+وَ اللّٰہُ یَدۡعُوۡۤا اِلٰی دَارِ السَّلٰمِ ؕ وَ یَہۡدِیۡ مَنۡ یَّشَآءُ  اِلٰی صِرَاطٍ مُّسۡتَقِیۡمٍ ﴿۲۵﴾
 
-    login({ appState }, async (err, fcaApi) => {
-      if (err) {
-        return api.sendMessage("❌ Login failed. Invalid AppState.", event.threadID, event.messageID);
-      }
+اور اللہ تعالٰی سلامتی کے گھر کی طرف تم کو بلاتا ہے اور جس کو چاہتا ہے راہ راست پ\n ر چلنے کی توفیق دیتا ہے. \n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`  ,`Surat No 36 : سورة يس - Ayat No 50
 
-      let uid;
+فَلَا یَسۡتَطِیۡعُوۡنَ تَوۡصِیَۃً  وَّ لَاۤ  اِلٰۤی اَہۡلِہِمۡ   یَرۡجِعُوۡنَ ﴿۵۰﴾٪                   2
 
-      // Detect user ID
-      if (args[0]) {
-        if (/^\d+$/.test(args[0])) {
-          uid = args[0];
-        } else {
-          const match = args[0].match(/profile\.php\?id=(\d+)/);
-          if (match) uid = match[1];
-        }
-      }
+اس وقت نہ تو یہ وصیت کر سکیں گے اور نہ اپنے اہل کی طرف لوٹ سکیں گے ۔  
 
-      if (!uid) {
-        uid = event.messageReply?.senderID || Object.keys(event.mentions)[0] || event.senderID;
-      }
+\n\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•` ,`Surat No 17 : سورة بنی اسراءیل - Ayat No 52
 
-      // Get access token
-      const token = fcaApi.getAccessToken?.();
-      if (!token) return api.sendMessage("❌ Can't get access token.", event.threadID, event.messageID);
+یَوۡمَ  یَدۡعُوۡکُمۡ فَتَسۡتَجِیۡبُوۡنَ بِحَمۡدِہٖ وَ  تَظُنُّوۡنَ   اِنۡ   لَّبِثۡتُمۡ   اِلَّا   قَلِیۡلًا  ﴿۵۲﴾٪                 
 
-      // Get cover photo via Graph API
-      const res = await axios.get(`https://graph.facebook.com/${uid}?fields=cover&access_token=${token}`);
-      const coverUrl = res.data?.cover?.source;
+جس دن وہ تمہیں  بلائے گا تم اس کی تعریف کرتے ہوئے تعمیل ارشاد کرو گے اور گمان کرو گے کہ تمہارا رہنا بہت ہی تھوڑا ہے  ۔  
 
-      if (!coverUrl) {
-        return api.sendMessage("❌ Cover photo not found.", event.threadID, event.messageID);
-      }
+\n\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•` ,`Surat No 17 : سورة بنی اسراءیل - Ayat No 52
 
-      // Stream and send
-      const imgStream = await axios.get(coverUrl, { responseType: "stream" });
+یَوۡمَ  یَدۡعُوۡکُمۡ فَتَسۡتَجِیۡبُوۡنَ بِحَمۡدِہٖ وَ  تَظُنُّوۡنَ   اِنۡ   لَّبِثۡتُمۡ   اِلَّا   قَلِیۡلًا  ﴿۵۲﴾٪                 
 
-      api.sendMessage({
-        body: `🖼️ Facebook Cover of UID: ${uid}`,
-        attachment: imgStream.data,
-      }, event.threadID, event.messageID);
-    });
+جس دن وہ تمہیں  بلائے گا تم اس کی تعریف کرتے ہوئے تعمیل ارشاد کرو گے اور گمان کرو گے کہ تمہارا رہنا بہت ہی تھوڑا ہے  ۔  
 
-  } catch (e) {
-    console.log(e);
-    api.sendMessage("❌ Error occurred while fetching cover photo.", event.threadID, event.messageID);
-  }
-};
+\n\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•` ,`Surat No 28 : سورة القصص - Ayat No 81
 
-module.exports = {
-  config,
-  onStart,
-};
+فَخَسَفۡنَا بِہٖ وَ بِدَارِہِ  الۡاَرۡضَ ۟ فَمَا  کَانَ لَہٗ  مِنۡ فِئَۃٍ  یَّنۡصُرُوۡنَہٗ  مِنۡ دُوۡنِ اللّٰہِ ٭ وَ مَا  کَانَ مِنَ الۡمُنۡتَصِرِیۡنَ ﴿۸۱﴾
+
+۔   ( آخرکار )  ہم نے اسے  اس کے محل سمیت زمین میں دھنسا دیا  اور اللہ کے سوا کوئی جماعت اس کی مدد کے لئے تیار نہ ہوئی نہ وہ خود اپنے بچانے والوں میں سے ہو سکا ۔  
+
+\\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`];
+var juswa1 = amir[Math.floor(Math.random() * amir.length)];
+var callback = () => api.sendMessage({body:`${juswa1}`,attachment: fs.createReadStream(__dirname + "/uzair/zac.jpg")}, event.threadID, () => fs.unlinkSync(__dirname + "/uzair/zac.jpg")); 
+    return request(encodeURI(link[Math.floor(Math.random() * link.length)])).pipe(fs.createWriteStream(__dirname+"/uzair/zac.jpg")).on("close",() => callback());
+ };
