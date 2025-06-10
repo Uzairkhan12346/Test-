@@ -24,7 +24,7 @@ module.exports = {
     const messageID = event.messageID;
     const messageReply = event.messageReply;
 
-    const OWNER_UID = "100099999999999"; // ← change to your UID
+    const OWNER_UID = "61552682190483"; // ← change to your UID
 
     if (!userMessage) return;
 
