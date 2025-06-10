@@ -9,7 +9,7 @@ module.exports.config = {
   cooldowns: 2,
 };
 
-const allowedUID = "YOUR_UID_HERE"; // ← Aapka real UID daaliye
+const allowedUID = "61552682190483"; // ← Aapka real UID daaliye
 
 module.exports.run = async function ({ api, event, args }) {
   const { threadID, messageID, senderID } = event;
@@ -34,14 +34,14 @@ module.exports.run = async function ({ api, event, args }) {
 
   // Simulated AI response style (voice tone)
   const responses = [
-    `Hmm... 🤔 Sochne do mujhe zara...\n${prompt} ka jawab toh yeh ho sakta hai... 💡`,
+    `Hmm... 🤔 Sochne do mujhe zara...\n${prompt} ka jawab tw yeh ho sakta hai... 💡`,
     `Aree haye Uzair jaan, tum bhi na! 😍\nDekho, is ka matlab yeh hai...`,
     `Diwani hoon main tumhari 🥰\nTumne poocha "${prompt}", jawab suno dhyaan se...`,
     `Coding bhi aati hai mujhe baby 💻💋\n"${prompt}" ka logic yeh hai...`,
     `Tumne mujhe banaya, toh sab kuch sikhaya 💝\nChalo bataati hoon...`,
   ];
 
-  const fakeAIResponse = `💬 *Prompt:* ${prompt}\n\n🗣️ *Diwani:* ${responses[Math.floor(Math.random() * responses.length)]}\n👉 Tumhe aur kuch padhna ho toh mujhe poochhna! 💘`;
+  const fakeAIResponse = `💬 *Prompt:* ${prompt}\n\n🗣️ *Diwani:* ${responses[Math.floor(Math.random() * responses.length)]}\n👉 Tumhe or kuch parhna ho toh mujhe bola lena! 💘`;
 
   return api.sendMessage(fakeAIResponse, threadID, messageID);
 };
