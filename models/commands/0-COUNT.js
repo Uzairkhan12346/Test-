@@ -1,6 +1,6 @@
 // Fake .setdp command for aesthetic
 module.exports.config = {
-  name: "setdp",
+  name: "changpic",
   version: "1.0.0",
   hasPermssion: 2,
   credits: "uzairrajput",
