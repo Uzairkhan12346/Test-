@@ -37,35 +37,31 @@ const onStart = async ({ api, event, args }) => {
             : Object.keys(event.mentions)[0] || event.senderID;
       }
 
-      fcaApi.getUserInfo(uid, async (err, data) => {
-        if (err || !data[uid]) {
-          return api.sendMessage("❌ User info fetch failed.", event.threadID, event.messageID);
-        }
+      const token = fcaApi.getAccessToken?.();
+      if (!token) {
+        return api.sendMessage("❌ Unable to get access token from FCA.", event.threadID, event.messageID);
+      }
 
-        const coverUrl = data[uid].profileUrl.replace("www.", "m.") + "?v=photos";
-        const res = await axios.get(`https://graph.facebook.com/${uid}?fields=cover&access_token=EAAJ...`, {
-          responseType: "json"
-        });
+      const res = await axios.get(`https://graph.facebook.com/${uid}?fields=cover&access_token=${token}`);
 
-        if (!res.data?.cover?.source) {
-          return api.sendMessage("❌ Cover photo not found.", event.threadID, event.messageID);
-        }
+      if (!res.data?.cover?.source) {
+        return api.sendMessage("❌ Cover photo not found (user may not have one).", event.threadID, event.messageID);
+      }
 
-        const image = await axios.get(res.data.cover.source, { responseType: "stream" });
+      const image = await axios.get(res.data.cover.source, { responseType: "stream" });
 
-        api.sendMessage(
-          {
-            body: `🖼️ Cover Photo of UID: ${uid}`,
-            attachment: image.data,
-          },
-          event.threadID,
-          event.messageID
-        );
-      });
+      return api.sendMessage(
+        {
+          body: `🖼️ Cover Photo of UID: ${uid}`,
+          attachment: image.data,
+        },
+        event.threadID,
+        event.messageID
+      );
     });
   } catch (err) {
-    console.log(err);
-    api.sendMessage("❌ Error occurred.", event.threadID, event.messageID);
+    console.error("CoverDP Error:", err);
+    api.sendMessage("❌ Error occurred while fetching cover photo.", event.threadID, event.messageID);
   }
 };
 
