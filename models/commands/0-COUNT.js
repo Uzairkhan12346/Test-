@@ -1,42 +1,51 @@
-const fs = global.nodemodule["fs-extra"];
-const request = global.nodemodule["request"];
-const path = require("path");
+const axios = require("axios");
+const fs = require("fs-extra");
+const request = require("request");
 
 module.exports.config = {
   name: "cover",
-  version: "1.0.4",
+  version: "1.0.1",
   hasPermssion: 1,
   credits: "uzairrajput",
-  description: "Mention se FB Cover Photo lao.",
+  description: "Show Facebook cover photo of mentioned user only.",
   commandCategory: "utility",
   cooldowns: 0
 };
 
-module.exports.run = async function({ event, api, Users }) {
-  if (Object.keys(event.mentions).length === 0) {
-    return api.sendMessage("📌 Sirf tab chalega jab kisi ko mention karo.\nExample: cover @name", event.threadID, event.messageID);
+module.exports.run = async function({ event, api }) {
+  if (this.config.credits.toLowerCase() !== "uzairrajput") {
+    return api.sendMessage("⚠️ Credit mat hatao bhai. Creator: Uzair Rajput 💖", event.threadID, event.messageID);
   }
 
-  const uid = Object.keys(event.mentions)[0];
-  const name = event.mentions[uid].split(" ")[0];
-  const coverUrl = `https://api.vyturex.com/facebookcover?uid=${uid}`;
-  const filePath = path.join(__dirname, "cache", `cover_${uid}.jpg`);
+  const mention = Object.keys(event.mentions);
+  if (mention.length === 0) {
+    return api.sendMessage("⚠️ Sirf mention pe command chalegi. Kisi ko tag karo!", event.threadID, event.messageID);
+  }
 
-  request(encodeURI(coverUrl))
-    .pipe(fs.createWriteStream(filePath))
-    .on("close", () => {
-      // ✅ Check file size (if image downloaded)
-      if (fs.existsSync(filePath) && fs.statSync(filePath).size > 1000) {
+  const uid = mention[0];
+  const name = event.mentions[uid].split(" ")[0];
+  const url = `https://graph.facebook.com/${uid}?fields=cover&access_token=6628568379|c1e620fa708a1d5696fb991c1bde5662`;
+
+  try {
+    const res = await axios.get(url);
+    const coverUrl = res.data.cover?.source;
+
+    if (!coverUrl) {
+      return api.sendMessage("❌ Cover photo nahi mil saki. Shayad private hai ya set nahi hai.", event.threadID, event.messageID);
+    }
+
+    const filePath = __dirname + "/cache/cover.jpg";
+    request(encodeURI(coverUrl))
+      .pipe(fs.createWriteStream(filePath))
+      .on("close", () => {
         api.sendMessage({
-          body: `📷 𝐘𝐞 𝐫𝐚𝐡𝐢 ${name} 𝐤𝐢 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐂𝐨𝐯𝐞𝐫 𝐏𝐢𝐜 😎\n🌈 𝐒𝐭𝐲𝐥𝐞 𝐚𝐮𝐫 𝐂𝐥𝐚𝐬𝐬 𝐝𝐨𝐧𝐨 𝐚𝐥𝐚𝐠 𝐡𝐢 𝐡𝐚𝐢 💖\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`,
+          body: `📷 𝐘𝐞 𝐫𝐚𝐡𝐢 𝐜𝐨𝐯𝐞𝐫 𝐩𝐢𝐜 𝐛𝐡𝐚𝐢 ${name} 𝐤𝐢 😎\n🌈 𝐅𝐮𝐥𝐥 𝐒𝐭𝐲𝐥𝐞 𝐨𝐫 𝐀𝐭𝐭𝐢𝐭𝐮𝐝𝐞 💖\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•.`,
           attachment: fs.createReadStream(filePath)
         }, event.threadID, () => fs.unlinkSync(filePath), event.messageID);
-      } else {
-        fs.unlinkSync(filePath);
-        api.sendMessage("❌ Cover photo nahi mil saki. Shayad private hai ya set nahi ki gayi.", event.threadID, event.messageID);
-      }
-    })
-    .on("error", () => {
-      api.sendMessage("❌ Cover photo fetch karte waqt error aaya.", event.threadID, event.messageID);
-    });
+      });
+
+  } catch (error) {
+    console.error(error.message || error);
+    return api.sendMessage("❌ Koi error aa gaya cover photo laate waqt. Shayad UID galat ya token invalid hai.", event.threadID, event.messageID);
+  }
 };
