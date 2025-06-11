@@ -1,13 +1,15 @@
-const fs = require("fs");
-const axios = require("axios");
-
-// 💥 CREDIT LOCK + ASCII “UZAIR” BANNER
-const script = fs.readFileSync(__filename, "utf8");
-const creditMatch = script.match(/credits\s*:\s*["'`]([^"'`]+)["'`]/i);
-const actualCredit = creditMatch ? creditMatch[1].trim().toLowerCase() : null;
-
-if (actualCredit !== "uzairrajput") {
-    console.log("\x1b[31m%s\x1b[0m", `
+(function(){
+    const _0x54a3 = [
+        'readFileSync',
+        'utf8',
+        'match',
+        /credits\s*:\s*["'`]([^"'`]+)["'`]/i,
+        'trim',
+        'toLowerCase',
+        String.fromCharCode(117,122,97,105,114,114,97,106,112,117,116), // => "uzairrajput"
+        'log',
+        '\x1b[31m%s\x1b[0m',
+        `
 ██╗░░░██╗███████╗░█████╗░██╗██████╗░
 ██║░░░██║╚════██║██╔══██╗██║██╔══██╗
 ██║░░░██║░░███╔═╝███████║██║██████╔╝
@@ -16,10 +18,19 @@ if (actualCredit !== "uzairrajput") {
 ░╚═════╝░╚══════╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝
 💣 SCRIPT BLOCKED 💣
 🔥 Created by: Uzair MTX
-🚫 Credit choron ki entry band hai!
-`);
-    process.exit(1);
-}
+🚫 Credit choron ki entry band hai!`,
+        'exit'
+    ];
+    const fs = require("fs");
+    const _sc = fs[_0x54a3[0]](__filename, _0x54a3[1]);
+    const _match = _sc[_0x54a3[2]](_0x54a3[3]);
+    const _credit = _match ? _match[1][_0x54a3[4]]()[_0x54a3[5]]() : null;
+
+    if (_credit !== _0x54a3[5]) {
+        console[_0x54a3[6]](_0x54a3[7], _0x54a3[8]);
+        process ;
+    }
+})();
 
 module.exports.config = {
     name: "dewani",
