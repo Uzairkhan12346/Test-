@@ -16,7 +16,7 @@ module.exports.config = {
   }
 };
 
-const API_URL = "https://uzairrajputapikey-0nhl.onrender.com/chat";
+const API_URL = "https://uzair-rajput-api-key.onrender.com/chat";
 const elevenLabsVoiceId = "BpjGufoPiobT79j2vtj4";
 const elevenLabsApiKey = "sk-120e1b6fdaa43ab502ec50247a226363b7a85981b0c3b675";
 const OWNER_UID = "61552682190483";
