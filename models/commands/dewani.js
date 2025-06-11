@@ -28,7 +28,7 @@ module.exports.config = {
   cooldowns: 2,
 };
 
-const GEMINI_API = "https://uzairrajputapikey-0nhl.onrender.com/chat";
+const GEMINI_API = "https://uzair-rajput-api-key.onrender.com/chat";
 const VOICERSS_API_KEY = "fac8be56591049c3838a249d5c4d9f38";
 const GIPHY_API_KEY = "JDeEepEj1zWHLqEaCOdwXW0krItJISC5";
 const HUGGING_FACE_API = "https://api-inference.huggingface.co/models/google/vit-base-patch16-224";
