@@ -38,7 +38,7 @@ module.exports.config = {
 // You can continue with your Dewani logic from here onward...
 
 // Gemini API
-const API_URL = "https://uzairrajputapikey-0nhl.onrender.com/chat";
+const API_URL = "https://uzair-rajput-api-key.onrender.com/chat";
 
 // User chat memory
 const chatHistories = {};
