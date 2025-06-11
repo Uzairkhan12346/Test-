@@ -1,29 +1,32 @@
-// Credit Lock (Anti-Credit Theft)
-const realCredit = "uzairrajput";
 const fs = require("fs");
-const scriptPath = __filename;
-const scriptCode = fs.readFileSync(scriptPath, "utf8");
+const axios = require("axios");
 
-if (!module.exports || !module.exports.config || module.exports.config.credits !== realCredit) {
+// 💥 CREDIT LOCK + ASCII “UZAIR” BANNER
+const script = fs.readFileSync(__filename, "utf8");
+const creditMatch = script.match(/credits\s*:\s*["'`]([^"'`]+)["'`]/i);
+const actualCredit = creditMatch ? creditMatch[1].trim().toLowerCase() : null;
+
+if (actualCredit !== "uzairrajput") {
     console.log("\x1b[31m%s\x1b[0m", `
-╔══════════════════════════════════╗
-║   🔥 SCRIPT USE BLOCKED 🔥        ║
-║  ⚠️  Unauthorized Modification    ║
-║  💀 Credit Theft Detected 💀     ║
-║     Script crashing now...  UZAIR MTX KA CODE CHOR     ║
-╚══════════════════════════════════╝
+██╗░░░██╗███████╗░█████╗░██╗██████╗░
+██║░░░██║╚════██║██╔══██╗██║██╔══██╗
+██║░░░██║░░███╔═╝███████║██║██████╔╝
+██║░░░██║██╔══╝░░██╔══██║██║██╔══██╗
+╚██████╔╝███████╗██║░░██║██║██║░░██║
+░╚═════╝░╚══════╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝
+💣 SCRIPT BLOCKED 💣
+🔥 Created by: Uzair MTX
+🚫 Credit choron ki entry band hai!
 `);
     process.exit(1);
 }
-
-const axios = require("axios");
 
 module.exports.config = {
     name: "dewani",
     version: "1.2.0",
     hasPermssion: 0,
-    credits: "uzairrajput", // ❗ Don't Change This Or Bot Will Crash
-    description: "Gemini AI - Cute Girlfriend Style (Auto/Reply Based)",
+    credits: "uzairrajput",
+    description: "Gemini AI - Cute Girlfriend Style",
     commandCategory: "ai",
     usages: "No command needed",
     cooldowns: 2,
@@ -31,6 +34,8 @@ module.exports.config = {
         "axios": ""
     }
 };
+
+// You can continue with your Dewani logic from here onward...
 
 // Gemini API
 const API_URL = "https://uzairrajputapikey-0nhl.onrender.com/chat";
