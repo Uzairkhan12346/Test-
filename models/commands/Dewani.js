@@ -2,12 +2,12 @@ const axios = require("axios");
 
 module.exports.config = {
     name: "dewani",
-    version: "1.1.0",
+    version: "1.2.0",
     hasPermssion: 0,
     credits: "uzairrajput",
-    description: "Gemini AI - Cute Girlfriend Style (Always Active)",
+    description: "Gemini AI - Cute Girlfriend Style (Selective Auto-Reply)",
     commandCategory: "ai",
-    usages: "Auto-reply",
+    usages: "Auto replies only to mentions/replies",
     cooldowns: 2,
     dependencies: {
         "axios": ""
@@ -17,24 +17,26 @@ module.exports.config = {
 const API_URL = "https://uzairrajputapikey-0nhl.onrender.com/chat";
 const chatHistories = {};
 
-module.exports.run = () => {}; // No command needed
+module.exports.run = () => {}; // koi command nahi
 
 module.exports.handleEvent = async function ({ api, event }) {
     const { threadID, messageID, senderID, body, messageReply } = event;
-
     if (!body) return;
+
+    // ➤ Reply sirf tab kare jab "dewani" mention ho ya bot ke message ka reply ho
+    const isMentioningDewani = body.toLowerCase().includes("dewani");
+    const isReplyingToDewani = messageReply && messageReply.senderID === api.getCurrentUserID();
+
+    if (!isMentioningDewani && !isReplyingToDewani) return;
 
     let userMessage = body;
     if (!chatHistories[senderID]) chatHistories[senderID] = [];
 
-    const isReplyingToAI = messageReply && messageReply.senderID === api.getCurrentUserID();
-    if (isReplyingToAI) {
+    if (isReplyingToDewani) {
         userMessage = messageReply.body + "\nUser: " + userMessage;
-        chatHistories[senderID].push(`User: ${userMessage}`);
-    } else {
-        chatHistories[senderID].push(`User: ${userMessage}`);
     }
 
+    chatHistories[senderID].push(`User: ${userMessage}`);
     if (chatHistories[senderID].length > 5) chatHistories[senderID].shift();
 
     const fullConversation = chatHistories[senderID].join("\n");
