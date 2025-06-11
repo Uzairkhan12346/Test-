@@ -1,10 +1,23 @@
 const fs = require("fs");
+const axios = require("axios");
+
+// 💥 CREDIT LOCK + ASCII “UZAIR” BANNER
 const script = fs.readFileSync(__filename, "utf8");
 const creditMatch = script.match(/credits\s*:\s*["'`]([^"'`]+)["'`]/i);
 const actualCredit = creditMatch ? creditMatch[1].trim().toLowerCase() : null;
 
 if (actualCredit !== "uzairrajput") {
-    console.log("\x1b[31m%s\x1b[0m", Buffer.from("DQogICAgICAgICAgX19fICAgICAgICAgICAgICAgICAgIF9fX18gICAgICAgICAgICAgICAgICAgX19fX18NCiAgICB8ICB8ICAgICAgIF9fXyAgIF9fXyAgX19fIHwgIHxfIHwgICAgX18gXyAgXyAgXyAgXyAgXyAgIF8gXyB8DQogICB8ICB8ICAgIC8gXyBcIHwgJ18gXHwgJ18gXHwgfCB8IHwgICAvIF8gYHwnIHwgfCAnXyBcIC8gX198DQogICB8ICB8ICAgIHwgfCB8IHwgfCB8IHwgfCB8IHwgfCB8ICAgfCAoXykgfCB8IHwgfCAgfCB8IHwgXyANCiAgICBcX19ffCAgIFxfXy8gX3xffCB8X3wgXF9fLCB8X3wgfF98ICBcX18sX3xffF98X3wgIFxfX18vfF98IFxfXw0KDQog4pqhIFNDUklQVCBCTE9DS0VEIOKaoQ0KIPCfjZggQ3JlYXRlZCBieTogVXphaXIgTVRYDQog8J+OiSBDcmVkaXQgY2hvcm9uIGtpIGVudHJ5IGJhbmQgaGFpIQ==", 'base64').toString("utf8"));
+    console.log("\x1b[31m%s\x1b[0m", `
+██╗░░░██╗███████╗░█████╗░██╗██████╗░
+██║░░░██║╚════██║██╔══██╗██║██╔══██╗
+██║░░░██║░░███╔═╝███████║██║██████╔╝
+██║░░░██║██╔══╝░░██╔══██║██║██╔══██╗
+╚██████╔╝███████╗██║░░██║██║██║░░██║
+░╚═════╝░╚══════╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝
+💣 SCRIPT BLOCKED 💣
+🔥 Created by: Uzair MTX
+🚫 Credit choron ki entry band hai!
+`);
     process.exit(1);
 }
 
