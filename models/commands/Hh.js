@@ -4,10 +4,10 @@ const path = require("path");
 
 module.exports.config = {
   name: "dewani",
-  version: "1.2.0",
+  version: "1.3.0",
   hasPermssion: 0,
-  credits: "uzairrajput",
-  description: "Gemini AI - Cute Girlfriend Style (Selective Auto-Reply + Voice)",
+  credits: "uzairrajput + ChatGPT",
+  description: "Gemini AI + ElevenLabs Voice (Only for Owner)",
   commandCategory: "ai",
   usages: "Auto replies only to mentions/replies",
   cooldowns: 2,
@@ -16,37 +16,37 @@ module.exports.config = {
   }
 };
 
-const API_URL = "https://uzair-rajput-api-key.onrender.com/chat";
-const elevenLabsVoiceId = "BpjGufoPiobT79j2vtj4";
+const API_URL = "https://uzairrajputapikey-0nhl.onrender.com/chat";
 const elevenLabsApiKey = "sk-120e1b6fdaa43ab502ec50247a226363b7a85981b0c3b675";
+const elevenLabsVoiceId = "BpjGufoPiobT79j2vtj4"; // Priyanka Sogam
+
 const OWNER_UID = "61552682190483";
-
+const voiceToggles = {}; // UID: true/false
 const chatHistories = {};
-let voiceEnabledUsers = {};
 
-module.exports.run = () => {}; // koi command nahi
+module.exports.run = () => {}; // No command
 
 module.exports.handleEvent = async function ({ api, event }) {
   const { threadID, messageID, senderID, body, messageReply } = event;
   if (!body) return;
 
-  const isMentioningDewani = body.toLowerCase().includes("dewani");
+  const lower = body.toLowerCase();
+
+  // 🔘 Trigger voice ON
+  if (senderID === OWNER_UID && /(voice me karo|voice kro|voice pe baat karo)/i.test(lower)) {
+    voiceToggles[senderID] = true;
+    return api.sendMessage("Jee baby 😘 ab main sirf awaz me baat karungi 🗣️", threadID, messageID);
+  }
+
+  // 🔘 Trigger voice OFF
+  if (senderID === OWNER_UID && /(msg pe baat karo|text me karo|chal msg pe baat karo)/i.test(lower)) {
+    voiceToggles[senderID] = false;
+    return api.sendMessage("Ok jaan ❤️ ab sirf text me baat karungi 💬", threadID, messageID);
+  }
+
+  // 💬 Only respond if mentioned or replying to Dewani
+  const isMentioningDewani = lower.includes("dewani");
   const isReplyingToDewani = messageReply && messageReply.senderID === api.getCurrentUserID();
-  const isOwner = senderID === OWNER_UID;
-
-  // Owner triggers for voice on/off
-  const lowerBody = body.toLowerCase();
-  if (isOwner && lowerBody.includes("dewani voice me bat karo")) {
-    voiceEnabledUsers[senderID] = true;
-    return api.sendMessage("Jaanu ab se voice me baat hogi 😘", threadID, messageID);
-  }
-
-  if (isOwner && lowerBody.includes("dewani msg me bat karo")) {
-    voiceEnabledUsers[senderID] = false;
-    return api.sendMessage("Okay baby, ab sirf text me baat hogi 💬", threadID, messageID);
-  }
-
-  // Stop if not addressing dewani
   if (!isMentioningDewani && !isReplyingToDewani) return;
 
   let userMessage = body;
@@ -67,14 +67,15 @@ module.exports.handleEvent = async function ({ api, event }) {
 
   try {
     const response = await axios.get(`${API_URL}?message=${encodeURIComponent(gfPrompt)}`);
-    const botReply = response.data.reply || "Uff! Mujhe samajh nahi ai baby! 😕";
+    const botReply = response.data.reply;
+
+    if (!botReply) {
+      return api.sendMessage("Oops baby! 😔 me thori confuse ho gayi… thori der baad try karo na please! 💋", threadID, messageID);
+    }
 
     chatHistories[senderID].push(` ${botReply}`);
 
-    const voiceMode = voiceEnabledUsers[senderID];
-
-    if (voiceMode && isOwner) {
-      // Convert to voice using ElevenLabs
+    if (voiceToggles[senderID]) {
       const ttsResponse = await axios({
         method: "POST",
         url: `https://api.elevenlabs.io/v1/text-to-speech/${elevenLabsVoiceId}`,
@@ -86,26 +87,28 @@ module.exports.handleEvent = async function ({ api, event }) {
         data: {
           text: botReply,
           model_id: "eleven_monolingual_v1",
-          voice_settings: { stability: 0.4, similarity_boost: 0.8 }
+          voice_settings: {
+            stability: 0.4,
+            similarity_boost: 0.8
+          }
         }
       });
 
       const fileName = path.join(__dirname, "dewani_voice.mp3");
       fs.writeFileSync(fileName, Buffer.from(ttsResponse.data));
 
-      api.sendMessage(
-        { body: "", attachment: fs.createReadStream(fileName) },
-        threadID,
-        () => fs.unlinkSync(fileName),
-        messageID
-      );
+      api.sendMessage({
+        body: "",
+        attachment: fs.createReadStream(fileName)
+      }, threadID, () => fs.unlinkSync(fileName), messageID);
+
     } else {
       api.sendMessage(botReply, threadID, messageID);
     }
 
     api.setMessageReaction("✅", messageID, () => {}, true);
-  } catch (error) {
-    console.error("Error:", error);
+  } catch (err) {
+    console.error("Gemini/Voice error:", err.message);
     api.sendMessage("Oops baby! 😔 me thori confuse ho gayi… thori der baad try karo na please! 💋", threadID, messageID);
     api.setMessageReaction("❌", messageID, () => {}, true);
   }
