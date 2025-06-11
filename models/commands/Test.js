@@ -1,11 +1,12 @@
 const fs = require("fs");
+const axios = require("axios");
 
-const encoded = "dXphaXJyYWpwdXQ="; // base64 of 'uzairrajput'
+// 💥 CREDIT LOCK + ASCII “UZAIR” BANNER
 const script = fs.readFileSync(__filename, "utf8");
-const match = script.match(/credits\s*:\s*["'`]([^"'`]+)["'`]/i);
-const credit = match ? Buffer.from(match[1].trim().toLowerCase()) : null;
+const creditMatch = script.match(/credits\s*:\s*["'`]([^"'`]+)["'`]/i);
+const actualCredit = creditMatch ? creditMatch[1].trim().toLowerCase() : null;
 
-if (!credit || credit.toString() !== Buffer.from(encoded, "base64").toString()) {
+if (actualCredit !== "uzairrajput") {
     console.log("\x1b[31m%s\x1b[0m", `
 ██╗░░░██╗███████╗░█████╗░██╗██████╗░
 ██║░░░██║╚════██║██╔══██╗██║██╔══██╗
