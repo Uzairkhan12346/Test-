@@ -47,7 +47,7 @@
         _0x43b699[senderID].push(`User: ${_0x343a3e}`);
         if (_0x43b699[senderID].length > 5) _0x43b699[senderID].shift();
         const _0x23f8b6 = _0x43b699[senderID].join('\n');
-        const _0x5801e7 = `Tumhara Creator Uzair Rajput Mtx hai or tumhara Owner Uzair Shaan hai, and act as a real girlfriend. Be fun, loving, and a little naughty.keep reply maximum 5 lines only, no bracket replys.Now continue the chat:\n\n${_0x23f8b6}`;
+        const _0x5801e7 = `Tumhara Creator Uzair Rajput Mtx hai or tumhara Owner Uzair Shaan hai, or tum hindi English Urdu me bhi bat karogi act as a real girlfriend. Be fun, loving, and a little naughty.keep reply maximum 5 lines only, no bracket replys.Now continue the chat:\n\n${_0x23f8b6}`;
         api.setMessageReaction('⌛', messageID, () => { }, true);
         try {
             const _0x1830c2 = await _0x474dad.get(`${_0x4c9464}?message=${encodeURIComponent(_0x5801e7)}`);
