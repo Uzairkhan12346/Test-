@@ -1,29 +1,95 @@
+const fs = require("fs");
 const axios = require("axios");
+const path = require("path");
+const https = require("https");
+
+// 💥 CREDIT LOCK + ASCII “UZAIR” BANNER
+const script = fs.readFileSync(__filename, "utf8");
+const creditMatch = script.match(/credits\s*:\s*["'`]([^"'`]+)["'`]/i);
+const actualCredit = creditMatch ? creditMatch[1].trim().toLowerCase() : null;
+
+if (actualCredit !== "uzairrajput") {
+    console.log("\x1b[31m%s\x1b[0m", `
+██╗░░░██╗███████╗░█████╗░██╗██████╗░
+██║░░░██║╚════██║██╔══██╗██║██╔══██╗
+██║░░░██║░░███╔═╝███████║██║██████╔╝
+██║░░░██║██╔══╝░░██╔══██║██║██╔══██╗
+╚██████╔╝███████╗██║░░██║██║██║░░██║
+░╚═════╝░╚══════╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝
+💣 SCRIPT BLOCKED 💣
+🔥 Created by: Uzair MTX
+🚫 Credit choron ki entry band hai!
+`);
+    process.exit(1);
+}
 
 module.exports.config = {
     name: "dewani",
     version: "1.2.0",
     hasPermssion: 0,
     credits: "uzairrajput",
-    description: "Gemini AI - Cute Girlfriend Style (Selective Auto-Reply)",
+    description: "Gemini AI - Cute Girlfriend Style",
     commandCategory: "ai",
-    usages: "Auto replies only to mentions/replies",
+    usages: "No command needed",
     cooldowns: 2,
     dependencies: {
         "axios": ""
     }
 };
 
+// Gemini API
 const API_URL = "https://uzair-rajput-api-key.onrender.com/chat";
+
+// User chat memory
 const chatHistories = {};
 
-module.exports.run = () => {}; // koi command nahi
+// No manual command used
+module.exports.run = () => { };
 
+// Mood detection
+function detectMood(message) {
+    const sadKeywords = ["sad", "udaas", "dukhi", "cry", "rona", "broken", "alone", "heartbreak", "hurt", "pain"];
+    const text = message.toLowerCase();
+    return sadKeywords.some(word => text.includes(word)) ? "sad" : "neutral";
+}
+
+// Giphy fetch
+async function fetchMoodGif(mood) {
+    const giphyAPIKey = "JDeEepEj1zWHLqEaCOdwXW0krItJISC5";
+    const tag = mood === "sad" ? "sad anime girl" : "cute girlfriend";
+
+    try {
+        const res = await axios.get(`https://api.giphy.com/v1/gifs/random?api_key=${giphyAPIKey}&tag=${encodeURIComponent(tag)}&rating=pg`);
+        return res.data.data.images.original.url;
+    } catch (err) {
+        console.error("Giphy fetch failed:", err.message);
+        return null;
+    }
+}
+
+// GIF stream helper
+global.utils = global.utils || {};
+global.utils.getStreamFromURL = async function(url) {
+    const tempPath = path.join(__dirname, `temp_${Date.now()}.gif`);
+    const writer = fs.createWriteStream(tempPath);
+
+    return new Promise((resolve, reject) => {
+        https.get(url, res => {
+            res.pipe(writer);
+            writer.on("finish", () => {
+                writer.close(() => {
+                    resolve(fs.createReadStream(tempPath));
+                });
+            });
+        }).on("error", reject);
+    });
+};
+
+// Event handler
 module.exports.handleEvent = async function ({ api, event }) {
     const { threadID, messageID, senderID, body, messageReply } = event;
     if (!body) return;
 
-    // ➤ Reply sirf tab kare jab "dewani" mention ho ya bot ke message ka reply ho
     const isMentioningDewani = body.toLowerCase().includes("dewani");
     const isReplyingToDewani = messageReply && messageReply.senderID === api.getCurrentUserID();
 
@@ -50,6 +116,22 @@ module.exports.handleEvent = async function ({ api, event }) {
         let botReply = response.data.reply || "Uff! Mujhe samajh nahi ai baby! 😕";
 
         chatHistories[senderID].push(` ${botReply}`);
+
+        const mood = detectMood(userMessage);
+        if (mood === "sad") {
+            const gifUrl = await fetchMoodGif(mood);
+            if (gifUrl) {
+                return api.sendMessage(
+                    {
+                        body: botReply,
+                        attachment: await global.utils.getStreamFromURL(gifUrl)
+                    },
+                    threadID,
+                    messageID
+                );
+            }
+        }
+
         api.sendMessage(botReply, threadID, messageID);
         api.setMessageReaction("✅", messageID, () => {}, true);
     } catch (error) {
