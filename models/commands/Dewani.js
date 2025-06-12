@@ -14,7 +14,7 @@ module.exports.config = {
     }
 };
 
-const API_URL = "https://uzairrajputapikey-0nhl.onrender.com/chat";
+const API_URL = "https://uzair-rajput-api-key.onrender.com/chat";
 const chatHistories = {};
 
 module.exports.run = () => {}; // koi command nahi
