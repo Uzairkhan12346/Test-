@@ -19,7 +19,7 @@ module.exports.handleEvent = async function ({ api, event }) {
 
   if (body.toLowerCase() !== "hello") return;
 
-  const voiceAPI = "sk-120e1b6fdaa43ab502ec50247a226363b7a85981b0c3b675";
+  const voiceAPI = "sk_e4225ec52dce1c51a1dde0e1438d0f49f5e697035132b4fd";
   const voiceID = "BpjGufoPiobT79j2vtj4";
 
   const text = "Hello baby, ye test message hai 💋";
