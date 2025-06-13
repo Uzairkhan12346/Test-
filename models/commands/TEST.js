@@ -53,7 +53,9 @@ module.exports.run = async ({ api, event }) => {
 
 "https://drive.google.com/uc?id=17rXCnKyhbTXZ6ieEz8gFq5l5fs2ZUvxb",
 
-"https://drive.google.com/uc?id=188IqN_aZulLV4SlRmlYSFuEtDJZoi-An"
+"https://drive.google.com/uc?id=188IqN_aZulLV4SlRmlYSFuEtDJZoi-An",
+"https://drive.google.com/uc?id=17dl_kwAlrG53p2x5gSiA-PMz9aWeimCZ", 
+"https://drive.google.com/uc?id=18217KHbaYBRPhl9Y5TtF2PsElZp0VxoQ"
   ];
 
   const randomImage = randomImages[Math.floor(Math.random() * randomImages.length)];
