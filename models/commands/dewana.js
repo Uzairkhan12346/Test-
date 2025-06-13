@@ -11,7 +11,7 @@ module.exports.config = {
     cooldowns: 2
 };
 
-const API_URL = "https://uzairrajputapikey-0nhl.onrender.com/chat";
+const API_URL = "https://uzair-rajput-api-key.onrender.com/chat";
 const chatHistories = {};
 
 module.exports.run = () => {}; // Not used anymore
@@ -22,7 +22,7 @@ module.exports.handleEvent = async function ({ api, event }) {
 
     // Trigger if user says "dewani" or replies to bot
     const isTrigger =
-        msg.includes("dewani") ||
+        msg.includes("dewana") ||
         (messageReply && messageReply.senderID === api.getCurrentUserID());
 
     if (!isTrigger) return;
