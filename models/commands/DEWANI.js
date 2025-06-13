@@ -1,4 +1,4 @@
-sk_e4225ec52dce1c51a1dde0e1438d0f49f5e697035132b4fdconst axios = require("axios");
+const axios = require("axios");
 const fs = require("fs");
 
 const apiKey = "sk_e4225ec52dce1c51a1dde0e1438d0f49f5e697035132b4fd"; // sk- se start hone wali
