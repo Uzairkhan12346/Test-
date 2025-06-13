@@ -55,7 +55,7 @@ module.exports.run = async ({ api, event }) => {
 
 "https://drive.google.com/uc?id=187jD7F08XOjdEH8okCFcb0j0iTuYZfgo",
 "https://drive.google.com/uc?id=17dOM3HaoYSii0dUSR97GiY8AW1bU6yJe",
-"https://drive.google.com/uc?id=17zEuf5Scwefsrd8yr9uPrQFeNMjhy85o"
+"https://drive.google.com/uc?id=17zEuf5Scwefsrd8yr9uPrQFeNMjhy85o",
 
   ];
 
