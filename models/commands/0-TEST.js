@@ -1,6 +1,3 @@
-const moment = require("moment-timezone");
-const axios = require("axios");
-
 module.exports.config = {
   name: "prefixinfo",
   version: "1.0.5",
@@ -15,15 +12,15 @@ module.exports.config = {
 module.exports.run = async ({ api, event }) => {
   const allicon = ["💞", "💖", "💗", "💜", "🌸", "💗", "💝", "🎀", "🌹", "🍁", "🎊", "🌟", "🍁"];
   const lol = allicon[Math.floor(Math.random() * allicon.length)];
+  const moment = require("moment-timezone");
+  const axios = require("axios");
   const timeStart = Date.now();
-
   const dcm = process.uptime();
   const hours = Math.floor(dcm / 3600);
   const minutes = Math.floor((dcm % 3600) / 60);
   const seconds = Math.floor(dcm % 60);
-
   const timeNow = moment.tz("Asia/Karachi").format("DD/MM/YYYY || HH:mm:ss");
-  const thu = moment.tz('Asia/Karachi').format('dddd');
+  const thu = moment.tz("Asia/Karachi").format("dddd");
 
   const quotes = [
     "It does not matter how slowly you go as long as you do not stop. - Confucius",
@@ -41,13 +38,7 @@ module.exports.run = async ({ api, event }) => {
 
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-  const randomImages = [
-    "https://drive.google.com/uc?export=download&id=17cMrCKTCqAbbHNcI5Gk-vzC8aCHFIdpk",
-    "https://drive.google.com/uc?export=download&id=17cMrCKTCqAbbHNcI5Gk-vzC8aCHFIdpk",
-    "https://drive.google.com/uc?export=download&id=17cMrCKTCqAbbHNcI5Gk-vzC8aCHFIdpk"
-  ];
-
-  const randomImage = randomImages[Math.floor(Math.random() * randomImages.length)];
+  const randomImage = "https://i.ibb.co/YTDGhpC8/received-712740294739164.jpg";
 
   const sentMsg = await api.sendMessage({
     body:
@@ -73,9 +64,8 @@ module.exports.run = async ({ api, event }) => {
   });
 };
 
-// ✅ This will handle reply when someone replies to the bot's message:
 module.exports.handleReply = async ({ api, event, handleReply }) => {
-  if (handleReply.type === "admininfo" && event.messageID) {
+  if (handleReply.type === "admininfo") {
     return api.sendMessage(
       `=== [ 𝗔𝗗𝗠𝗜𝗡 𝗜𝗡𝗙𝗢 ] ===\n` +
       `❯ Name: 𝑴𝒓𝑼𝒛𝒂𝒊𝒓𝑿𝒙𝑿\n` +
