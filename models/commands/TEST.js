@@ -46,16 +46,14 @@ module.exports.run = async ({ api, event }) => {
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
   const randomImages = [
-    "https://drive.google.com/uc?id=18217KHbaYBRPhl9Y5TtF2PsElZp0VxoQ",
-    "https://drive.google.com/uc?id=17dl_kwAlrG53p2x5gSiA-PMz9aWeimCZ",
+    "https://drive.google.com/uc?id=17zEuf5Scwefsrd8yr9uPrQFeNMjhy85o",
+    "https://drive.google.com/uc?id=17dOM3HaoYSii0dUSR97GiY8AW1bU6yJe",
 
-"https://drive.google.com/uc?id=188IqN_aZulLV4SlRmlYSFuEtDJZoi-An",
+"https://drive.google.com/uc?id=187jD7F08XOjdEH8okCFcb0j0iTuYZfgo",
 
 "https://drive.google.com/uc?id=17rXCnKyhbTXZ6ieEz8gFq5l5fs2ZUvxb",
 
-"https://drive.google.com/uc?id=187jD7F08XOjdEH8okCFcb0j0iTuYZfgo",
-"https://drive.google.com/uc?id=17dOM3HaoYSii0dUSR97GiY8AW1bU6yJe",
-"https://drive.google.com/uc?id=17zEuf5Scwefsrd8yr9uPrQFeNMjhy85o",
+"https://drive.google.com/uc?id=188IqN_aZulLV4SlRmlYSFuEtDJZoi-An"
 
   ];
 
