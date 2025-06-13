@@ -66,7 +66,7 @@ module.exports.run = async ({ api, event }) => {
      \nThe Bot Status: Online 24/7\nProcessing speed: ${Date.now() - timeStart} second\nThe Bot Online at: ${seconds} hour ${minutes} minute ${hours} seconds. 」\n=== [ 𝗔𝗗𝗠𝗜𝗡 𝗕𝗢𝗧 ] ===\n`+`❯ Name: 𝑴𝒓𝑼𝒛𝒂𝒊𝒓𝑿𝒙𝑿\n` +`❯ Height: secret\n` + `❯ Date of birth: 15/10/2005\n` + `❯ Instagram: it'xuzair449\n` +
         `❯ Weight: 62\n` +
         `❯ Facebook: https://www.facebook.com/Mtxuzair\n` +
-        `❯ Thanks for using 𝑴𝒓𝑼𝒛𝒂𝒊𝒓𝑿𝒙𝑿-𝑴𝑻𝑿 💚✨ bot 🤖.`,`,
+        `❯ Thanks for using 𝑴𝒓𝑼𝒛𝒂𝒊𝒓𝑿𝒙𝑿-𝑴𝑻𝑿 💚✨ bot 🤖.`,
     attachment: (await global.nodemodule["axios"]({
       url: randomImage,
       method: "GET",
