@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports.config = {
-    name: "dewani",
+    name: "dewana",
     version: "1.3.0",
     hasPermssion: 0,
     credits: "uzairrajput",
