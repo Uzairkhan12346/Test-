@@ -30,17 +30,17 @@ module.exports.run = async ({ api, event }) => {
   if (thu == 'Saturday') thu = 'Saturday';
 
   const quotes = [
-    "It does not matter how slowly you go as long as you do not stop. - Confucius",
-    "The only way to do great work is to love what you do. - Steve Jobs",
-    "The purpose of our lives is to be happy. — Dalai Lama",
-    "Life is what happens when you're busy making other plans. — John Lennon",
-    "Get busy living or get busy dying. — Stephen King",
-    "You only live once, but if you do it right, once is enough. — Mae West",
-    "Many of life’s failures are people who did not realize how close they were to success when they gave up. – Thomas A. Edison",
-    "If you want to live a happy life, tie it to a goal, not to people or things.– Albert Einstein",
-    "Never let the fear of striking out keep you from playing the game.– Babe Ruth",
-    "Money and success don’t change people; they merely amplify what is already there. — Will Smith",
-    "Your time is limited, so don’t waste it living someone else’s life. Don’t be trapped by dogma – which is living with the results of other people’s thinking. – Steve Jobs",
+    "𝑩𝒂𝒔 𝒂𝒑𝒏𝒂 𝒉𝒊 𝒎𝒂𝒔𝒍𝒂 𝒔𝒂𝒎𝒃𝒉𝒂𝒍𝒂 𝒏𝒂𝒉𝒊 𝒈𝒂𝒚𝒂\n𝒀𝒐𝒏 𝒕𝒐 𝒌𝒊𝒕𝒏𝒐𝒏 𝒌𝒆 𝒌𝒂𝒂𝒎 𝒂𝒂𝒚𝒆 𝒕𝒉𝒆 𝒉𝒖𝒎 ☺️🥀",
+    "💜🌸 𝒁𝒊𝒏𝒅𝒂𝒈𝒊 𝒎𝒆𝒊𝒏 𝒌𝒉𝒐𝒐𝒃𝒔𝒖𝒓𝒂𝒕 𝒍𝒐𝒈𝒐𝒏 𝒔𝒆 𝒛𝒚𝒂𝒅𝒂 ✨🩷\n💜🌸 𝑴𝒖𝒌𝒉𝒍𝒊𝒔 𝒍𝒐𝒈𝒐𝒏 𝒌𝒂 𝒉𝒐𝒏𝒂 𝒛𝒂𝒓𝒐𝒐𝒓𝒊 𝒉𝒂𝒊 💜🍂",
+    "𝑶𝒓 𝒎𝒂𝒊𝒏 𝒋𝒊𝒕𝒏𝒊 𝒏𝒂𝒂𝒛𝒖𝒌 𝒎𝒊𝒛𝒂𝒋 𝒉𝒐𝒏 🫠🦋\n𝑼𝒔 𝒔𝒆 𝒌𝒂𝒉𝒊𝒏 𝒛𝒚𝒂𝒅𝒂 𝒑𝒂𝒕𝒉𝒂𝒓 𝒅𝒊𝒍 𝒉𝒐𝒏 🙂🌸",
+    "𝑾𝒂𝒒𝒕 𝒈𝒖𝒛𝒂𝒓𝒏𝒆 𝒌𝒆 𝒃𝒂𝒂𝒅 𝒌𝒊𝒔𝒊 𝒌𝒊 𝒒𝒂𝒅𝒓 𝒂𝒂𝒚𝒆,\n𝒕𝒘 𝒘𝒐𝒉 𝒒𝒂𝒅𝒓 𝒏𝒂𝒉𝒊 𝒃𝒂𝒍𝒌𝒆 𝒂𝒇𝒔𝒐𝒔 𝒌𝒉𝒆𝒍𝒂𝒕𝒂 𝒉𝒂𝒊... 💙🍂",
+    "𝐀𝐜𝐡𝐡𝐞 𝐥𝐠𝐞 𝐣𝐨 𝐭𝐮𝐦 💖 𝐬𝐨 𝐡𝐮𝐦 𝐧𝐞 𝐛𝐚𝐭𝐚 𝐝𝐢𝐚...\n𝐍𝐮𝐪𝐬𝐚𝐧 𝐲𝐞 𝐡𝐮𝐚 𝐤𝐞 𝐭𝐮𝐦 𝐦𝐚𝐠𝐫𝐨𝐨𝐫 𝐡𝐨 𝐠𝐚𝐲𝐞 💔😔",
+    "𝐉𝐨 𝐜𝐡𝐢𝐳𝐞𝐧 𝐲𝐚𝐚𝐝 𝐫𝐚𝐤𝐡𝐧𝐢 𝐡𝐚𝐢𝐧 𝟓 𝐦𝐢𝐧𝐭 𝐦𝐞 𝐛𝐡𝐨𝐨𝐥 𝐣𝐚𝐭𝐢 𝐡𝐮𝐧.\n𝐎𝐫 𝐣𝐨 𝐧𝐚𝐡𝐢𝐧 𝐲𝐚𝐚𝐝 𝐫𝐚𝐤𝐡𝐧𝐢 𝐰𝐨 𝐬𝐚𝐚𝐥𝐨𝐧 𝐭𝐚𝐤 𝐲𝐚𝐚𝐝 𝐫𝐚𝐡𝐭𝐢 𝐡𝐚𝐢... 🫠💔",
+    "𝐋𝐚𝐳𝐦𝐢 𝐧𝐚𝐡𝐢 𝐤𝐞 𝐮𝐬 𝐤𝐨 𝐛𝐡𝐢 𝐦𝐞𝐫𝐚 𝐤𝐡𝐲𝐚𝐚𝐥 𝐡𝐨 ❤️‍🩹🥺\n𝐉𝐨 𝐦𝐞𝐫𝐚 𝐡𝐚𝐚𝐥 𝐡𝐚𝐢 𝐰𝐨𝐡𝐢 𝐮𝐬 𝐤𝐚 𝐛𝐡𝐢 𝐡𝐚𝐚𝐥 𝐡𝐨 💔🥲",
+    "🖤 𝐀𝐛 𝐤𝐡𝐮𝐝 𝐤𝐨 𝐢𝐭𝐧𝐚 𝐬𝐚𝐧𝐰𝐚𝐫𝐧𝐚 𝐡𝐚𝐢 🔥✨\n🍷 𝐏𝐚𝐚𝐧𝐞 𝐰𝐚𝐥𝐞 𝐤𝐨 𝐪𝐚𝐝𝐫 𝐡𝐨𝐠𝐢, 𝐤𝐡𝐨𝐧𝐞 𝐰𝐚𝐥𝐞 𝐤𝐨 𝐚𝐟𝐬𝐨𝐬 🚬🖤✨",
+    "𝐍𝐚𝐝𝐚𝐚𝐧𝐢 𝐦𝐞 𝐡𝐨 𝐠𝐲𝐚 𝐭𝐡𝐚 𝐢𝐬𝐡𝐪 𝐭𝐮𝐣𝐡 𝐬𝐞 🔥\n𝐀𝐠𝐚𝐫 𝐬𝐚𝐦𝐣𝐡𝐝𝐚𝐫 𝐡𝐨𝐭𝐢 𝐭𝐨 𝐭𝐞𝐫𝐢 𝐩𝐚𝐫𝐜𝐡𝐡𝐚𝐢 𝐬𝐞 𝐛𝐡𝐢 𝐝𝐨𝐨𝐫 𝐫𝐚𝐡𝐭𝐢 !! 🙂",
+    "𝐓𝐮𝐦 𝐰𝐨𝐡𝐢 𝐫𝐚𝐡𝐨 𝐣𝐨 𝐭𝐮𝐦 𝐡𝐨 💕🌼\n𝐉𝐨 𝐭𝐡𝐞𝐡𝐫 𝐠𝐚𝐲𝐞 𝐰𝐨 𝐭𝐮𝐦𝐡𝐚𝐫𝐞 𝐡𝐚𝐢𝐧 🥀",
+    "𝐊𝐨𝐢 `م` 𝐬𝐞 𝐌𝐚𝐬𝐫𝐨𝐨𝐟 𝐡𝐚𝐢...\n𝐎𝐮𝐫 𝐤𝐨𝐢 `م` 𝐬𝐞 𝐌𝐮𝐧𝐭𝐚𝐳𝐢𝐫 𝐡𝐚𝐢... 🍁🍂",
   ];
 
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
