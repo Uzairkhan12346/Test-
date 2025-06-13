@@ -54,14 +54,13 @@ module.exports.run = async ({ api, event }) => {
 "https://drive.google.com/uc?id=17rXCnKyhbTXZ6ieEz8gFq5l5fs2ZUvxb",
 
 "https://drive.google.com/uc?id=188IqN_aZulLV4SlRmlYSFuEtDJZoi-An"
-
   ];
 
   const randomImage = randomImages[Math.floor(Math.random() * randomImages.length)];
 
   const messageInfo = await api.sendMessage({
     body: `𝗵𝗲𝗹𝗹𝗼 𝗲𝘃𝗲𝗿𝘆𝗼𝗻𝗲, 𝘆𝗲𝘀 𝘆𝗼𝘂'𝗿𝗲 𝗿𝗶𝗴𝗵𝘁 𝘁𝗵𝗮𝘁'𝘀 𝗺𝘆 𝗽𝗿𝗲𝗳𝗶𝘅 𝗳𝗼𝗿 𝗻𝗼𝘄 𝗶 𝘄𝗶𝗹𝗹 𝗴𝗶𝘃𝗲 𝘆𝗼𝘂 𝗮 𝗿𝗮𝗻𝗱𝗼𝗺𝗲𝗾𝘂𝗼𝘁𝗲𝘀!\n\n 𝗵𝗲𝗿𝗲'𝘀 𝘆𝗼𝘂𝗿 𝗿𝗮𝗻𝗱𝗼𝗺 𝗾𝘂𝗼𝘁𝗲𝘀: ${randomQuote}\n\n𝘁𝗵𝗲 𝗰𝗮𝗹𝗲𝗻𝗱𝗮𝗿 𝘁𝗼𝗹𝗱 𝗺𝗲 𝘁𝗵𝗮𝘁 𝘁𝗵𝗲 𝗱𝗮𝘆 𝗿𝗶𝗴𝗵𝘁 𝗻𝗼𝘄 𝗶𝘀: ${thu}\n\n\𝗵𝗲𝗿𝗲'𝘀 𝘁𝗵𝗲 𝗱𝗮𝘁𝗲 𝗮𝗻𝗱 𝘁𝗶𝗺𝗲 𝗻𝗼𝘄:
-     ${timeNow}\n◆━━━━━◆『 ${lol} 』◆━━━━━◆\n\n𝗕𝗢𝗧 𝗜𝗡𝗙𝗢𝗥𝗠𝗔𝗧𝗜𝗢𝗡:
+     ${timeNow}\n◆━━━━◆『 ${lol} 』◆━━━◆\n\n𝗕𝗢𝗧 𝗜𝗡𝗙𝗢𝗥𝗠𝗔𝗧𝗜𝗢𝗡:
      \nThe Bot Status: Online 24/7\nProcessing speed: ${Date.now() - timeStart} second\nThe Bot Online at: ${seconds} hour ${minutes} minute ${hours} seconds. 」`,
     attachment: (await global.nodemodule["axios"]({
       url: randomImage,
