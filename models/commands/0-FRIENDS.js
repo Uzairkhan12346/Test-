@@ -51,7 +51,7 @@ async function makeImage({ one, two, three }) {
   ]);
 
   // Resize and place on frame
-  frame.composite(circle2.resize(142, 142), 28, 155);   // Left friend
+  frame.composite(circle2.resize(142, 142), 28, 157);   // Left friend
   frame.composite(circle1.resize(152, 152), 240, 28);  // Center (you)
   frame.composite(circle3.resize(142, 142), 478, 155);  // Right friend
 
