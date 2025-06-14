@@ -51,9 +51,9 @@ async function makeImage({ one, two, three }) {
   ]);
 
   // Resize and place on frame
-  frame.composite(circle2.resize(150, 150), 30, 130);   // Left friend
-  frame.composite(circle1.resize(150, 150), 240, 40);  // Center (you)
-  frame.composite(circle3.resize(150, 150), 550, 130);  // Right friend
+  frame.composite(circle2.resize(150, 150), 30, 140);   // Left friend
+  frame.composite(circle1.resize(150, 150), 240, 35);  // Center (you)
+  frame.composite(circle3.resize(150, 150), 500, 140);  // Right friend
 
   // Save final image
   let buffer = await frame.getBufferAsync("image/png");
