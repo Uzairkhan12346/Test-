@@ -76,7 +76,16 @@ module.exports.run = async function ({ event, api }) {
   const [left, right] = mentions;
   return makeImage({ one: senderID, two: left, three: right }).then(path =>
     api.sendMessage({
-      body: `✨ 𝘽𝙚𝙨𝙩𝙞𝙚 𝙏𝙧𝙞𝙤 𝙎𝙥𝙖𝙢 ✨\n\n👑 ${event.senderID} ❤️ ${event.mentions[left]} & ${event.mentions[right]}\nDosti level: OVERLOADED 💞\n● ──────────────────── ●\n𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`,
+      body: `💫 『 𝐁𝐄𝐒𝐓𝐈𝐄 𝐅𝐑𝐈𝐄𝐍𝐃𝐒 𝙁𝙊𝙍𝙀𝙑𝙀𝙍 』💫
+
+👑 𝙆𝙞𝙣𝙜: ${event.senderID}
+👭 𝘽𝙚𝙨𝙩𝙞𝙚𝙨: ${event.mentions[left]} & ${event.mentions[right]}
+
+💖 𝘿𝙤𝙨𝙩𝙞 𝙠𝙖 𝙍𝙞𝙨𝙝𝙩𝙖 💫
+🎀 𝘽𝙝𝙖𝙧𝙤𝙨𝙖 | 𝙋𝙮𝙖𝙧 | 𝙈𝙖𝙨𝙩𝙞 🎀
+
+● ────── ✦ ────── ●
+𒁍⃝𝐌𝐀𝐃𝐄 𝐁𝐘 𝐔ʑʌīī𝐑┼•__🦋•`,
       attachment: fs.createReadStream(path)
     }, threadID, () => fs.unlinkSync(path), messageID)
   );
