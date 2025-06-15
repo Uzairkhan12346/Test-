@@ -75,7 +75,7 @@ module.exports.handleEvent = async ({ event, api }) => {
   if (!body) return;
 
   const content = body.toLowerCase();
-  if (!content.includes("friend")) return;
+  if (!content.includes("friends")) return;
 
   const mentionIDs = Object.keys(mentions);
   if (mentionIDs.length < 2) return;
@@ -90,7 +90,7 @@ module.exports.handleEvent = async ({ event, api }) => {
 
   return makeImage({ one: senderID, two: left, three: right }).then(imgPath =>
     api.sendMessage({
-      body: `✨『 𝘽𝙀𝙎𝙏𝙄𝙀 𝙏𝙍𝙄𝙊 』✨
+      body: `🔥『 𝘿𝙀𝙎𝙄 𝘿𝙐𝙍𝘿𝙀 𝘿𝙊𝙎𝙏 』🔥
 ● ──────────────────── ●
 
 👑 𝙆𝙞𝙣𝙜/𝙌𝙪𝙚𝙚𝙣: ${senderName}
