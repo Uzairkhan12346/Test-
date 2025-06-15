@@ -4,7 +4,7 @@ const path = require("path");
 const jimp = require("jimp");
 
 module.exports.config = {
-  name: "bestie3",
+  name: "friends",
   version: "1.0.2",
   hasPermssion: 0,
   credits: "uzairrajput",
@@ -88,7 +88,7 @@ module.exports.run = async function ({ event, api }) {
       body: `👑 King/Queen: ${senderName}
 👯‍♀️ Besties: ${leftName} 💖 ${rightName}
 
-⭐ Dosti = Masti + Pyar + Trust ⭐
+⭐ Dosti = Masti + Piyar + Trust ⭐
 📸 Share this moment!
 ✘𓆩 MADE BY Uʑʌī𝐑 ┼•__🦋•`,
       attachment: fs.createReadStream(path)
